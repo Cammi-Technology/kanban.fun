@@ -27,7 +27,18 @@ class Components::ApplicationLayout < Components::Base
         javascript_importmap_tags
       end
       body do
-        yield
+        nav do
+          plain "nav"
+        end
+        header do
+          plain "header"
+        end
+        main do
+          yield
+        end
+        footer do
+          plain "footer"
+        end
       end
     end
   end
