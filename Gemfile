@@ -58,6 +58,14 @@ end
 
 group :test do
   # Use system testing [https://guides.rubyonrails.org/testing.html#system-testing]
+  gem "rspec", "~> 3.13"
+  gem "rspec-rails", "~> 8.0"
   gem "capybara"
   gem "selenium-webdriver"
 end
+
+gem "literal", "~> 1.8"
+gem "phlex", "~> 2.3"
+gem "pundit", "~> 2.5"
+gem "phlex-rails", "~> 2.3"
+gem "strict_ivars", "~> 1.0", require: false
