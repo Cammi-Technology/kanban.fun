@@ -28,7 +28,9 @@ class Components::ApplicationLayout < Components::Base
       end
       body do
         nav do
-          plain "nav"
+          NavbarItem(
+            href: root_path, icon: "house-door-fill", label: "Home"
+          )
         end
         header do
           plain "header"

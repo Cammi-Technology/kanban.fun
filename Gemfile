@@ -69,3 +69,5 @@ gem "phlex-rails", "~> 2.3"
 gem "strict_ivars", "~> 1.0", require: false
 
 gem "authentication-zero", "~> 4.0"
+
+gem "phlex-icons", "~> 2.24"
