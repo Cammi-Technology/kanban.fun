@@ -6,4 +6,15 @@ class Views::Base < Components::Base
   # By default, it inherits from `Components::Base`, but you
   # can change that to `Phlex::HTML` if you want to keep views and
   # components independent.
+  #
+  
+  def around_template
+    render Components::ApplicationLayout.new(page_info) do
+      super
+    end
+  end
+
+  def page_info
+    PageInfo.new(title: page_title)
+  end
 end

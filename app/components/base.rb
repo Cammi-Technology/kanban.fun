@@ -1,7 +1,8 @@
 # frozen_string_literal: true
 
 class Components::Base < Phlex::HTML
-  # Include any helpers you want to be available across all components
+  extend Literal::Properties
+
   include Phlex::Rails::Helpers::Routes
 
   if Rails.env.development?
