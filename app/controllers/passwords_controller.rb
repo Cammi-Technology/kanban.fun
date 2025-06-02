@@ -1,6 +1,8 @@
 class PasswordsController < ApplicationController
   before_action :set_user
 
+  skip_after_action :verify_pundit_authorization
+
   def edit
   end
 
