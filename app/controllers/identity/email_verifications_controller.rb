@@ -1,6 +1,8 @@
 class Identity::EmailVerificationsController < ApplicationController
   skip_before_action :authenticate, only: :show
 
+  skip_after_action :verify_pundit_authorization
+
   before_action :set_user, only: :show
 
   def show
