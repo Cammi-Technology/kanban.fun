@@ -13,4 +13,8 @@ class RegistrationsControllerTest < ActionDispatch::IntegrationTest
 
     assert_redirected_to root_url
   end
+
+  test "should send welcome email" do
+    skip "not yet implemented"
+  end
 end
