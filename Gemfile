@@ -72,3 +72,5 @@ gem "strict_ivars", "~> 1.0", require: false
 gem "authentication-zero", "~> 4.0"
 
 gem "phlex-icons", "~> 2.24"
+
+gem "name_of_person", "~> 1.1"
