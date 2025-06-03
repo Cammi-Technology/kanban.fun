@@ -5,6 +5,8 @@ class SessionsController < ApplicationController
   before_action :set_session, only: :destroy
 
   def index
+    authorize(Session, :index?)
+
     @sessions = policy_scope(Current.user.sessions).order(created_at: :desc)
   end
 
@@ -23,13 +25,13 @@ class SessionsController < ApplicationController
   end
 
   def destroy
+    authorize @session, :destroy?
+
     @session.destroy; redirect_to(sessions_path, notice: "That session has been logged out")
   end
 
   private
     def set_session
-      @session = authorize(
-        Current.user.sessions.find(params[:id])
-      )
+      @session = Current.user.sessions.find(params[:id])
     end
 end
