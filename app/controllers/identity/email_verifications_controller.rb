@@ -11,7 +11,7 @@ class Identity::EmailVerificationsController < ApplicationController
   end
 
   def create
-    authorize(Current.user, :update_email?)
+    authorize(Current.user, :create_email_verification?)
 
     send_email_verification
     redirect_to root_path, notice: "We sent a verification email to your email address"

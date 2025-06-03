@@ -1,11 +1,13 @@
 class Identity::EmailsController < ApplicationController
   before_action :set_user
-  skip_after_action :verify_pundit_authorization
 
   def edit
+    authorize @user, :edit_email?
   end
 
   def update
+    authorize @user, :update_email?
+
     if @user.update(user_params)
       redirect_to_root
     else
