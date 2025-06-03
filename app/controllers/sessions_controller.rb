@@ -1,10 +1,13 @@
 class SessionsController < ApplicationController
   skip_before_action :authenticate, only: %i[ new create ]
+  skip_after_action :verify_pundit_authorization, only: %i[ new create ]
 
   before_action :set_session, only: :destroy
 
   def index
-    @sessions = Current.user.sessions.order(created_at: :desc)
+    authorize(Session, :index?)
+
+    @sessions = policy_scope(Current.user.sessions).order(created_at: :desc)
   end
 
   def new
@@ -22,6 +25,8 @@ class SessionsController < ApplicationController
   end
 
   def destroy
+    authorize @session, :destroy?
+
     @session.destroy; redirect_to(sessions_path, notice: "That session has been logged out")
   end
 

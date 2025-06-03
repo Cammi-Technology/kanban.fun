@@ -2,9 +2,12 @@ class PasswordsController < ApplicationController
   before_action :set_user
 
   def edit
+    authorize @user, :edit_password?
   end
 
   def update
+    authorize @user, :update_password?
+
     if @user.update(user_params)
       redirect_to root_path, notice: "Your password has been changed"
     else

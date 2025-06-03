@@ -7,7 +7,7 @@ class Views::Base < Components::Base
   # can change that to `Phlex::HTML` if you want to keep views and
   # components independent.
   #
-  
+
   def around_template
     render Components::ApplicationLayout.new(page_info) do
       super

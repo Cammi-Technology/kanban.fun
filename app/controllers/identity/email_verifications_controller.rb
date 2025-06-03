@@ -1,6 +1,8 @@
 class Identity::EmailVerificationsController < ApplicationController
   skip_before_action :authenticate, only: :show
 
+  skip_after_action :verify_pundit_authorization, only: :show
+
   before_action :set_user, only: :show
 
   def show
@@ -9,6 +11,8 @@ class Identity::EmailVerificationsController < ApplicationController
   end
 
   def create
+    authorize(Current.user, :create_email_verification?)
+
     send_email_verification
     redirect_to root_path, notice: "We sent a verification email to your email address"
   end
