@@ -33,7 +33,9 @@ class Components::ApplicationLayout < Components::Base
           )
         end
         header do
-          plain "header"
+          NavbarItem(
+            href: accounts_path, icon: "gear-fill", label: "Account"
+          )
         end
         main do
           yield
