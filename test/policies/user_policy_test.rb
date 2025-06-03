@@ -5,6 +5,10 @@ class UserPolicyTest < ActiveSupport::TestCase
     @user = users(:rachel_graves)
   end
 
+  def test_visit_home
+    assert_permit @user, @user, :visit_home
+  end
+
   def test_edit_email
     assert_permit @user, @user, :edit_email
   end
