@@ -1,9 +1,9 @@
 require 'test_helper'
 
-class UserPolicyTest < ActiveSupport::TestCase
-  def test_update_email
+class EmailVerificationPolicyTest < ActiveSupport::TestCase
+  def test_create
     user = users(:rachel_graves)
 
-    assert_permit user, user, :update_email
+    assert EmailVerificationPolicy.new(user, user).create?
   end
 end

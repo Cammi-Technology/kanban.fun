@@ -1,5 +1,5 @@
-class UserPolicy < ApplicationPolicy
-  prop :record, _Union(_Class(User), User), :positional, reader: :public
+class EmailVerificationPolicy < ApplicationPolicy
+  prop :record, User, :positional, reader: :public
 
-  def update_email? = true
+  def create? = true
 end
