@@ -1,0 +1,9 @@
+# Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+cammi:
+  name: Cammi Technology
+  owner: account_owner
+
+totally_games:
+  name: Totally Games
+  owner: lazaro_nixon
