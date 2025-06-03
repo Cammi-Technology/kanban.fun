@@ -1,0 +1,9 @@
+# Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+account_owner:
+  account: cammi
+  user: account_owner
+
+account_user:
+  account: cammi
+  user: account_user
