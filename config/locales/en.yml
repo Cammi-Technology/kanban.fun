@@ -29,3 +29,8 @@
 
 en:
   hello: "Hello world"
+  views:
+    accounts:
+      index:
+        title: My Kanban.fun Accounts
+        description: Your Accounts
