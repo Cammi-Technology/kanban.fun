@@ -1,4 +1,4 @@
-require 'test_helper'
+require "test_helper"
 require "test_helpers/authorization_helper"
 
 class SessionPolicyTest < ActiveSupport::TestCase

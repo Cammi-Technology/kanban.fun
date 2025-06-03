@@ -10,7 +10,7 @@ module AuthorizationHelper
   end
 
   def permit(user, record, action)
-    cls = self.class.to_s.gsub(/Test/, '')
-    cls.constantize.new(user, record).public_send("#{action.to_s}?")
+    cls = self.class.to_s.gsub(/Test/, "")
+    cls.constantize.new(user, record).public_send("#{action}?")
   end
 end

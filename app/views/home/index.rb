@@ -28,7 +28,6 @@ class Views::Home::Index < Views::Base
 
     h2 { "Access history" }
     div do
-
       link_to "Devices & Sessions", sessions_path
     end
 

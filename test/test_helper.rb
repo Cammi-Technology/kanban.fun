@@ -5,7 +5,7 @@ require "minitest/reporters"
 require "test_helpers/authentication_helper"
 require "test_helpers/authorization_helper"
 
-Minitest::Reporters.use! Minitest::Reporters::SpecReporter.new(print_failure_summary: true,suppress_inline_failure_output: true)
+Minitest::Reporters.use! Minitest::Reporters::SpecReporter.new(print_failure_summary: true, suppress_inline_failure_output: true)
 Minitest.backtrace_filter = Minitest::BacktraceFilter.new
 
 class ActiveSupport::TestCase
