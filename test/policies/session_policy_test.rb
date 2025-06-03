@@ -19,12 +19,6 @@ class SessionPolicyTest < ActiveSupport::TestCase
     assert_permit(@user, Session.new, :new)
   end
 
-  def test_create
-  end
-
-  def test_show
-  end
-
   def test_destroy
     assert_permit(@signed_in_user, @signed_in_users_session, :destroy)
     refute_permit(@signed_in_user, @other_users_session, :destroy)
