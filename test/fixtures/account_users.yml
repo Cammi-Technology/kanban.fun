@@ -1,11 +1,11 @@
 # Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
 
 account_owner:
-  account: cammi
+  account: account
   user: account_owner
 
 account_user:
-  account: cammi
+  account: account
   user: account_user
 
 other_account_owner:

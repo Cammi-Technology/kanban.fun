@@ -4,7 +4,7 @@ class DashboardsControllerTest < ActionDispatch::IntegrationTest
   setup do
     @account_user = account_users(:account_user)
     @user = users(:account_user)
-    @account = accounts(:cammi)
+    @account = accounts(:account)
     @other_account = accounts(:other_account)
   end
 
