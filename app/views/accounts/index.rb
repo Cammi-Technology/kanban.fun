@@ -10,7 +10,7 @@ class Views::Accounts::Index < Views::Base
     ul do
       accounts.each do |account|
         li do
-          a(href: account_path(account)) { account.name }
+          a(href: account_dashboard_path(account)) { account.name }
         end
       end
     end
