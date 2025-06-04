@@ -4,7 +4,7 @@ class AccountUserTest < ActiveSupport::TestCase
   setup do
     @account_user = account_users(:account_user)
     @user = users(:account_user)
-    @account = accounts(:cammi)
+    @account = accounts(:account)
   end
 
   test "should include account user" do

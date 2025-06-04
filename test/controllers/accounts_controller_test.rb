@@ -1,11 +1,8 @@
 require "test_helper"
-require "test_helpers/authentication_helper"
-
 class AccountsControllerTest < ActionDispatch::IntegrationTest
-  include AuthenticationHelper
 
   setup do
-    @account = accounts(:cammi)
+    @account = accounts(:account)
     @other_users_account = accounts(:totally_games)
     @account_owner = users(:account_owner)
     @user = @account_owner

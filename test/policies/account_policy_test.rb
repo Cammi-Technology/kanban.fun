@@ -1,11 +1,8 @@
 require "test_helper"
-require "test_helpers/authorization_helper"
-
 class AccountPolicyTest < ActiveSupport::TestCase
-  include AuthorizationHelper
 
   def setup
-    @account = accounts(:cammi)
+    @account = accounts(:account)
     @other_account = accounts(:totally_games)
     @user = users(:account_owner)
   end

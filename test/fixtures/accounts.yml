@@ -1,6 +1,6 @@
 # Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
 
-cammi:
+account:
   name: Cammi Technology
   owner: account_owner
 

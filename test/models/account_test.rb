@@ -2,7 +2,7 @@ require "test_helper"
 
 class AccountTest < ActiveSupport::TestCase
   setup do
-    @account = accounts(:cammi)
+    @account = accounts(:account)
     @account_user = users(:account_user)
   end
 

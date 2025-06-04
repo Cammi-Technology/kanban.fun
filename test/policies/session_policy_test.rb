@@ -1,8 +1,5 @@
 require "test_helper"
-require "test_helpers/authorization_helper"
-
 class SessionPolicyTest < ActiveSupport::TestCase
-  include AuthorizationHelper
 
   def setup
     @user = users(:rachel_graves)
