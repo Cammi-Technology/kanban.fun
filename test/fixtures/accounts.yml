@@ -7,3 +7,7 @@ cammi:
 totally_games:
   name: Totally Games
   owner: lazaro_nixon
+
+other_account:
+  name: Other Account Inc.
+  owner: other_account_owner

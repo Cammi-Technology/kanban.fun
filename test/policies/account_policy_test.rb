@@ -21,4 +21,9 @@ class AccountPolicyTest < ActiveSupport::TestCase
     assert_permit(@user, @account, :show)
     refute_permit(@user, @other_account, :show)
   end
+
+  def test_visit_dashboard
+    assert_permit(@user, @account, :visit_dashboard)
+    refute_permit(@user, @other_account, :visit_dashboard)
+  end
 end

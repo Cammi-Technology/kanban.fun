@@ -41,3 +41,10 @@ account_user:
   verified: true
   first_name: Account
   last_name: User
+
+other_account_owner:
+  email: other_account_owner@test.com
+  password_digest: <%= BCrypt::Password.create("Secret1*3*5*") %>
+  verified: true
+  first_name: Other
+  last_name: Account Owner
