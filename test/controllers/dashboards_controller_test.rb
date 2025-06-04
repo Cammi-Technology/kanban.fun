@@ -12,6 +12,7 @@ class DashboardsControllerTest < ActionDispatch::IntegrationTest
     sign_in_as(@user)
     get account_dashboard_path(@account)
     assert_response :success
+    assert_equal @account.id, @user.reload.last_viewed_account_id
   end
 
   test "sould not get show without sign in" do

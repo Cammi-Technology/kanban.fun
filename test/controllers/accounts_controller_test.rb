@@ -12,19 +12,14 @@ class AccountsControllerTest < ActionDispatch::IntegrationTest
     @account_user = users(:account_user)
   end
 
-  test "should get index when signed in" do
+  test "should redirect to account when signed in" do
     sign_in_as(@user)
     get accounts_url
-    assert_response :success
+    assert_redirected_to account_dashboard_url(@account)
   end
 
   test "index should be unauthorized when not signed in" do
     get accounts_url
     assert_requires_authentication
-  end
-
-  test "should not get other users' accounts" do
-    get accounts_url
-    refute_includes response.body, @other_users_account.name
   end
 end

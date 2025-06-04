@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2025_06_03_193257) do
+ActiveRecord::Schema[8.0].define(version: 2025_06_03_210000) do
   create_table "account_users", force: :cascade do |t|
     t.integer "account_id", null: false
     t.integer "user_id", null: false
@@ -45,11 +45,14 @@ ActiveRecord::Schema[8.0].define(version: 2025_06_03_193257) do
     t.datetime "updated_at", null: false
     t.string "first_name"
     t.string "last_name"
+    t.integer "last_viewed_account_id"
     t.index ["email"], name: "index_users_on_email", unique: true
+    t.index ["last_viewed_account_id"], name: "index_users_on_last_viewed_account_id"
   end
 
   add_foreign_key "account_users", "accounts"
   add_foreign_key "account_users", "users"
   add_foreign_key "accounts", "users", column: "owner_id"
   add_foreign_key "sessions", "users"
+  add_foreign_key "users", "accounts", column: "last_viewed_account_id"
 end
