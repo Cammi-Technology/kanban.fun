@@ -1,10 +1,6 @@
 class AccountPolicy < ApplicationPolicy
   prop :record, Account, :positional, reader: :public
 
-  def show?
-    user == record.owner
-  end
-
   # controller actions
   def visit_dashboard?
     record.users.include?(user)

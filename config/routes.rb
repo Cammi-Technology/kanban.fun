@@ -7,7 +7,7 @@ Rails.application.routes.draw do
     resource :dashboard, only: [ :show ]
   end
 
-  resources :accounts, only: [ :index, :show ]
+  resources :accounts, only: [ :index ]
   resources :sessions, only: [ :index, :show, :destroy ]
   resource  :password, only: [ :edit, :update ]
 

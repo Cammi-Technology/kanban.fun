@@ -4,10 +4,4 @@ class AccountsController < ApplicationController
       accounts: policy_scope(Account)
     )
   end
-
-  def show
-    render Views::Accounts::Show.new(
-      account: authorize(Account.find(params[:id]))
-    )
-  end
 end

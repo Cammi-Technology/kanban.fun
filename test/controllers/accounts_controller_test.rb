@@ -25,37 +25,6 @@ class AccountsControllerTest < ActionDispatch::IntegrationTest
 
   test "should not get other users' accounts" do
     get accounts_url
-    assert_no_match @other_users_account.name, response.body
-  end
-
-  test "should show when signed in" do
-    sign_in_as(@user)
-    get account_url(@account)
-    assert_response :success
-  end
-
-  test "show should be unauthorized when not signed in" do
-    get account_url(@account)
-    assert_requires_authentication
-  end
-
-  test "show should be unauthorized when account does not belong to user" do
-    sign_in_as(@user)
-
-    assert_raises(Pundit::NotAuthorizedError) do
-      get account_url(@other_users_account)
-    end
-  end
-
-  test "show should show account owner" do
-    sign_in_as(@user)
-    get account_url(@account)
-    assert_includes response.body, @account_owner.name
-  end
-
-  test "should show account users" do
-    sign_in_as(@user)
-    get account_url(@account)
-    assert_includes response.body, @account_user.name
+    refute_includes response.body, @other_users_account.name
   end
 end
