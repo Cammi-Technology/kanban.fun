@@ -1,6 +1,5 @@
 require "test_helper"
 class SessionPolicyTest < ActiveSupport::TestCase
-
   def setup
     @user = users(:rachel_graves)
     @signed_in_user = users(:signed_in_user)

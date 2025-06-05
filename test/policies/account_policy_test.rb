@@ -1,6 +1,5 @@
 require "test_helper"
 class AccountPolicyTest < ActiveSupport::TestCase
-
   def setup
     @account = accounts(:account)
     @other_account = accounts(:totally_games)

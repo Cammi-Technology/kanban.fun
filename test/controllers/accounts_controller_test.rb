@@ -1,6 +1,5 @@
 require "test_helper"
 class AccountsControllerTest < ActionDispatch::IntegrationTest
-
   setup do
     @account = accounts(:account)
     @other_users_account = accounts(:totally_games)
