@@ -20,9 +20,9 @@ class SessionsControllerTest < ActionDispatch::IntegrationTest
 
   test "should sign in" do
     post sign_in_url, params: { email: @user.email, password: "Secret1*3*5*" }
-    assert_redirected_to root_url
+    assert_redirected_to accounts_url
 
-    get root_url
+    get accounts_url
     assert_response :success
   end
 
