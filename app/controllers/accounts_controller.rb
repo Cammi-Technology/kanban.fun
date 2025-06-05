@@ -2,7 +2,7 @@ class AccountsController < ApplicationController
   def new
     authorize(Current.user, :new_account?)
 
-    render plain: "OK"
+    render Views::Accounts::New.new
   end
 
   def index

@@ -34,3 +34,6 @@ en:
       index:
         title: My Kanban.fun Accounts
         description: Your Accounts
+      new:
+        title: Create a new Account
+        description: And get awesomely cool project management software
