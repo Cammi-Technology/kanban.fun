@@ -28,4 +28,8 @@ class UserPolicyTest < ActiveSupport::TestCase
   def test_update_password
     assert_permit @user, @user, :update_password
   end
+
+  def test_new_account
+    assert_permit @user, @user, :new_account
+  end
 end

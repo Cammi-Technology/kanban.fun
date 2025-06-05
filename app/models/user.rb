@@ -2,6 +2,8 @@ class User < ApplicationRecord
   has_secure_password
   has_person_name
 
+  has_many :accounts, dependent: :destroy, foreign_key: :owner_id, inverse_of: :owner
+
   generates_token_for :email_verification, expires_in: 2.days do
     email
   end

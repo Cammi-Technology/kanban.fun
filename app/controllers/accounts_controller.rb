@@ -1,7 +1,17 @@
 class AccountsController < ApplicationController
+  def new
+    authorize(Current.user, :new_account?)
+
+    render plain: "OK"
+  end
+
   def index
+    accounts = policy_scope(Account).all
+
+    return redirect_to new_account_path if Current.user.accounts.empty?
+
     render Views::Accounts::Index.new(
-      accounts: policy_scope(Account)
+      accounts: accounts
     )
   end
 end
