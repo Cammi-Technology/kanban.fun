@@ -13,10 +13,10 @@ class AccountsController < ApplicationController
       Current.user.account_users.create!(account: @account)
     end
 
-    redirect_to account_dashboard_path(@account), notice: t(".success")
+    redirect_to account_dashboard_path(@account), notice: t(".success"), status: :see_other
   rescue ActiveRecord::RecordInvalid => e
     flash.now[:alert] = t(".error")
-    render Views::Accounts::New.new(account: e.record)
+    render Views::Accounts::New.new(account: e.record), status: :unprocessable_entity
   end
 
   def index

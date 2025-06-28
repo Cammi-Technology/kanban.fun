@@ -15,19 +15,26 @@ class Views::Accounts::New < Views::Base
   def page_title = t(".title")
 
   def show_form
-    form_with model: account do
+    form_with model: account do |form|
+      if form.object.errors.any?
+        form.object.errors.full_messages.each do |message|
+          plain message
+        end
+      end
+
       FormField do
         FormLabel(for: "account_name") { t("activerecord.attributes.account.name") }
         FormInput(
           name: "account[name]",
-          id: "name",
+          id: "account_name",
           required: true,
           placeholder: t("placeholders.account.name"),
+          value: form.object.name
         )
       end
 
       FormField do
-        Button(type: "submit")
+        Button(type: "submit") { "Create Account" }
       end
     end
   end

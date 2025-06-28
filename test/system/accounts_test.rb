@@ -2,7 +2,7 @@ require "application_system_test_case"
 
 class AccountsTest < ApplicationSystemTestCase
   setup do
-    @account = accounts(:one)
+    @account = accounts(:account)
   end
 
   test "visiting the index" do
@@ -11,27 +11,23 @@ class AccountsTest < ApplicationSystemTestCase
   end
 
   test "should create account" do
-    visit accounts_url
-    click_on "New account"
+    sign_in_as(users(:user_without_account))
 
-    fill_in "Name", with: @account.name
-    fill_in "Owner", with: @account.owner_id
+    visit new_account_url
+    fill_in t("activerecord.attributes.account.name"), with: "Omni Corp"
     click_on "Create Account"
 
-    assert_text "Account was successfully created"
-    click_on "Back"
+    assert_text t("accounts.create.success")
   end
 
   test "should update Account" do
     visit account_url(@account)
     click_on "Edit this account", match: :first
 
-    fill_in "Name", with: @account.name
-    fill_in "Owner", with: @account.owner_id
+    fill_in "Name", with: "Kanemitsu Corporation"
     click_on "Update Account"
 
     assert_text "Account was successfully updated"
-    click_on "Back"
   end
 
   test "should destroy Account" do
