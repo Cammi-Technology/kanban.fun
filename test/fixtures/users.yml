@@ -38,6 +38,7 @@ account_owner:
   verified: true
   first_name: Account
   last_name: Owner
+  otp_secret: <%= ROTP::Base32.random %>
 
 account_user:
   email: account_user@test.com
@@ -45,6 +46,7 @@ account_user:
   verified: true
   first_name: Account
   last_name: User
+  otp_secret: <%= ROTP::Base32.random %>
 
 other_account_owner:
   email: other_account_owner@test.com
@@ -52,3 +54,4 @@ other_account_owner:
   verified: true
   first_name: Other
   last_name: Account Owner
+  otp_secret: <%= ROTP::Base32.random %>
