@@ -8,9 +8,12 @@ class AccountsController < ApplicationController
   def create
     authorize(Account, :create?)
 
-    account = Current.user.accounts.create!(account_params)
+    ActiveRecord::Base.transaction do
+      @account = Current.user.accounts.create!(account_params)
+      Current.user.account_users.create!(account: @account)
+    end
 
-    redirect_to account_dashboard_path(account), notice: t(".success")
+    redirect_to account_dashboard_path(@account), notice: t(".success")
   rescue ActiveRecord::RecordInvalid => e
     flash.now[:alert] = t(".error")
     render Views::Accounts::New.new(account: e.record)

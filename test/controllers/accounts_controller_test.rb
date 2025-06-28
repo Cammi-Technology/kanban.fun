@@ -54,6 +54,16 @@ class AccountsControllerTest < ActionDispatch::IntegrationTest
     )
   end
 
+  test "should create an account user when creating an account" do
+    sign_in_as(@user)
+
+    assert_difference -> { @user.account_users.count } do
+      post accounts_url, params: { account: { name: "New Account" } }
+    end
+
+    assert_equal @user.account_users.last.account, @user.accounts.order(id: :desc).limit(1).last
+  end
+
   test "should not create account with invalid params" do
     sign_in_as(@user)
     assert_no_difference -> { @user.reload.accounts.count } do
