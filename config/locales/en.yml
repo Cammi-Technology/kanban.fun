@@ -29,8 +29,15 @@
 
 en:
   hello: "Hello world"
+  accounts:
+    create:
+      success: Your Acount was successfully created
+      error: There was an error creating your account. Please review the information below.
   views:
     accounts:
       index:
         title: My Kanban.fun Accounts
         description: Your Accounts
+      new:
+        title: Create a new Account
+        description: And get awesomely cool project management software

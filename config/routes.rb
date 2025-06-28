@@ -25,7 +25,7 @@ Rails.application.routes.draw do
   get  "sign_up", to: "registrations#new"
   post "sign_up", to: "registrations#create"
 
-  resources :accounts, only: [ :index ] do
+  resources :accounts, only: [ :new, :index, :create ] do
     resource :dashboard, only: [ :show ]
   end
 

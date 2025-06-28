@@ -55,3 +55,11 @@ other_account_owner:
   first_name: Other
   last_name: Account Owner
   otp_secret: <%= ROTP::Base32.random %>
+
+user_without_account:
+  email: user_without_account@test.com
+  password_digest: <%= BCrypt::Password.create("Secret1*3*5*") %>
+  verified: true
+  first_name: User Without
+  last_name: Account
+  otp_secret: <%= ROTP::Base32.random %>
