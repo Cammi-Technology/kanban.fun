@@ -17,6 +17,7 @@ class User < ApplicationRecord
 
   validates :email, presence: true, uniqueness: true, format: { with: URI::MailTo::EMAIL_REGEXP }
   validates :password, allow_nil: true, length: { minimum: 6 }
+  validates :password, not_pwned: { message: "might easily be guessed" }
 
   normalizes :email, with: -> { _1.strip.downcase }
 
@@ -40,7 +41,7 @@ class User < ApplicationRecord
     events.create! action: "password_changed"
   end
 
-  after_update if: [ :verified_previously_changed?, :verified? ] do
+  after_update if: [:verified_previously_changed?, :verified?] do
     events.create! action: "email_verified"
   end
 end

@@ -80,3 +80,5 @@ gem "omniauth-rails_csrf_protection"
 gem "rotp"
 # Use rqrcode for creating and rendering QR codes into various formats [https://github.com/whomwah/rqrcode]
 gem "rqrcode"
+# Use Pwned to check if a password has been found in any of the huge data breaches [https://github.com/philnash/pwned]
+gem "pwned"
