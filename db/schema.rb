@@ -12,13 +12,27 @@
 
 ActiveRecord::Schema[8.0].define(version: 2025_06_28_111659) do
   create_table "events", force: :cascade do |t|
+    t.references :user, null: false, foreign_key: true
+    t.string :action, null: false
+    t.string :user_agent
+    t.string :ip_address
+  end
+
+  create_table "account_users", force: :cascade do |t|
+    t.integer "account_id", null: false
     t.integer "user_id", null: false
-    t.string "action", null: false
-    t.string "user_agent"
-    t.string "ip_address"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.index ["user_id"], name: "index_events_on_user_id"
+    t.index ["account_id"], name: "index_account_users_on_account_id"
+    t.index ["user_id"], name: "index_account_users_on_user_id"
+  end
+
+  create_table "accounts", force: :cascade do |t|
+    t.string "name"
+    t.integer "owner_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["owner_id"], name: "index_accounts_on_owner_id"
   end
 
   create_table "recovery_codes", force: :cascade do |t|
@@ -55,11 +69,16 @@ ActiveRecord::Schema[8.0].define(version: 2025_06_28_111659) do
     t.string "uid"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.string "first_name"
+    t.string "last_name"
     t.index ["email"], name: "index_users_on_email", unique: true
   end
 
   add_foreign_key "events", "users"
   add_foreign_key "recovery_codes", "users"
+  add_foreign_key "account_users", "accounts"
+  add_foreign_key "account_users", "users"
+  add_foreign_key "accounts", "users", column: "owner_id"
   add_foreign_key "sessions", "users"
   add_foreign_key "sign_in_tokens", "users"
 end
