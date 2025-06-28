@@ -49,11 +49,17 @@ group :development, :test do
 
   # Omakase Ruby styling [https://github.com/rails/rubocop-rails-omakase/]
   gem "rubocop-rails-omakase", require: false
+
+  # Open emails in browser
+  gem "letter_opener"
 end
 
 group :development do
   # Use console on exceptions pages [https://github.com/rails/web-console]
   gem "web-console"
+
+  # Authentication generator
+  gem "authentication-zero", "~> 4.0"
 end
 
 group :test do
@@ -67,11 +73,11 @@ gem "literal", "~> 1.8"
 gem "phlex", "~> 2.3"
 gem "pundit", "~> 2.5"
 gem "phlex-rails", "~> 2.3"
+gem "phlex-icons", "~> 2.24"
+
+# Raise errors on nil instance variables
 gem "strict_ivars", "~> 1.0", require: false
 
-gem "authentication-zero", "~> 4.0"
-
-gem "phlex-icons", "~> 2.24"
 # Use OmniAuth to support multi-provider authentication [https://github.com/omniauth/omniauth]
 gem "omniauth"
 # Provides a mitigation against CVE-2015-9284 [https://github.com/cookpad/omniauth-rails_csrf_protection]
