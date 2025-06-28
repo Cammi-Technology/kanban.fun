@@ -1,0 +1,6 @@
+# Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+project:
+  account: account_with_projects
+  name: MyString
+  description: MyText

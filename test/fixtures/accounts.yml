@@ -11,3 +11,7 @@ totally_games:
 other_account:
   name: Other Account Inc.
   owner: other_account_owner
+
+account_with_projects:
+  name: Account with Projects Corporation.
+  owner: account_owner

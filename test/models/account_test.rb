@@ -20,4 +20,8 @@ class AccountTest < ActiveSupport::TestCase
     @account.name = @other_users_account.name
     refute @account.valid?
   end
+
+  test "should have projects" do
+    assert_includes accounts(:account_with_projects).projects, projects(:project)
+  end
 end
