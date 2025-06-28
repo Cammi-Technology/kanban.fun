@@ -3,6 +3,7 @@ class User < ApplicationRecord
   has_person_name
 
   has_many :accounts, dependent: :destroy, foreign_key: :owner_id, inverse_of: :owner
+  has_many :account_users, dependent: :destroy
 
   generates_token_for :email_verification, expires_in: 2.days do
     email
