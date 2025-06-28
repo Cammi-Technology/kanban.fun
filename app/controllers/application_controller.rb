@@ -33,6 +33,7 @@ class ApplicationController < ActionController::Base
         account_id: params[:account_id],
         user_id: Current.user.id
       )
+      Current.account = Current.account_user.account
     end
 
     def verify_pundit_authorization

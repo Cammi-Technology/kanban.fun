@@ -13,4 +13,9 @@ class CurrentTest < ActiveSupport::TestCase
     Current.account_user = @account_user
     assert_equal @account_user, Current.account_user
   end
+
+  test "Current.account can be set" do
+    Current.account = @account_user.account
+    assert_equal @account_user.account, Current.account
+  end
 end
