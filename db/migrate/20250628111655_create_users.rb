@@ -6,6 +6,12 @@ class CreateUsers < ActiveRecord::Migration[8.0]
 
       t.boolean :verified, null: false, default: false
 
+      t.boolean :otp_required_for_sign_in, null: false, default: false
+      t.string  :otp_secret, null: false
+
+      t.string :provider
+      t.string :uid
+
       t.timestamps
     end
   end

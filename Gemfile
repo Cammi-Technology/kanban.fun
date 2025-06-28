@@ -71,4 +71,12 @@ gem "strict_ivars", "~> 1.0", require: false
 
 gem "authentication-zero", "~> 4.0"
 
-gem "phlex-icons", "~> 2.27"
+gem "phlex-icons", "~> 2.24"
+# Use OmniAuth to support multi-provider authentication [https://github.com/omniauth/omniauth]
+gem "omniauth"
+# Provides a mitigation against CVE-2015-9284 [https://github.com/cookpad/omniauth-rails_csrf_protection]
+gem "omniauth-rails_csrf_protection"
+# Use rotp for generating and validating one time passwords [https://github.com/mdp/rotp]
+gem "rotp"
+# Use rqrcode for creating and rendering QR codes into various formats [https://github.com/whomwah/rqrcode]
+gem "rqrcode"
