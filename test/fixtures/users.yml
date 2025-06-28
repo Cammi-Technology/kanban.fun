@@ -4,18 +4,22 @@ rachel_graves:
   email: rachel@cammi.app
   password_digest: <%= BCrypt::Password.create("Secret1*3*5*") %>
   verified: true
+  otp_secret: <%= ROTP::Base32.random %>
 
 lazaro_nixon:
   email: lazaronixon@hotmail.com
   password_digest: <%= BCrypt::Password.create("Secret1*3*5*") %>
   verified: true
+  otp_secret: <%= ROTP::Base32.random %>
 
 signed_in_user:
   email: signed_in_user@test.com
   password_digest: <%= BCrypt::Password.create("Secret1*3*5*") %>
   verified: true
+  otp_secret: <%= ROTP::Base32.random %>
 
 other_signed_in_user:
   email: other_signed_in_user@test.com
   password_digest: <%= BCrypt::Password.create("Secret1*3*5*") %>
   verified: true
+  otp_secret: <%= ROTP::Base32.random %>
