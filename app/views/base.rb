@@ -8,6 +8,6 @@ class Views::Base < Components::Base
   end
 
   def page_info
-    PageInfo.new(title: page_title)
+    PageInfo.new(title: page_title, flash: view_context.flash)
   end
 end
