@@ -24,7 +24,7 @@ account_owner = User.create!(
 
 account_user = User.create!(
   email: "account_user@test.com",
-  password: "1234567890",
+  password_digest: BCrypt::Password.create("1234567890"),
   first_name: "Account",
   last_name: "User",
   otp_secret: ROTP::Base32.random
