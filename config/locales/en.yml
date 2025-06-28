@@ -28,11 +28,21 @@
 #       enabled: "ON"
 
 en:
+  activerecord:
+    attributes:
+      account:
+        name: "Name"
+  placeholders:
+    account:
+      name: "Type a fun name for your Account"
   hello: "Hello world"
   accounts:
     create:
       success: Your Acount was successfully created
       error: There was an error creating your account. Please review the information below.
+  components:
+    button:
+      button_text: Submit
   views:
     accounts:
       index:
@@ -41,3 +51,6 @@ en:
       new:
         title: Create a new Account
         description: And get awesomely cool project management software
+        form:
+          name:
+            placeholder: "Give your Account a Fun Name"

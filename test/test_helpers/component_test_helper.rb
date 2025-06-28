@@ -17,10 +17,10 @@ module ComponentTestHelper
   #   assert_renders(MyComponent, title: "Hello", user: users(:one))
   #
   # Optionally yields the rendered HTML if you want to do further assertions.
-  def assert_renders(component_class, **params)
+  def assert_renders(component_class, **params, &)
     html = nil
     assert_nothing_raised do
-      html = render(component_class.new(**params))
+      html = render(component_class.new(**params, &))
     end
     yield(html) if block_given?
   end

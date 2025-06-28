@@ -4,6 +4,6 @@ class DashboardsController < ApplicationController
 
     authorize account, :visit_dashboard?
 
-    render plain: "Dashboard for account #{account.id}"
+    render Views::Dashboard::Show.new
   end
 end
