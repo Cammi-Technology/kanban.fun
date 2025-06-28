@@ -1,8 +1,19 @@
 class AccountsController < ApplicationController
   def new
-    authorize(Current.user, :new_account?)
+    authorize(Account, :new?)
 
     render Views::Accounts::New.new
+  end
+
+  def create
+    authorize(Account, :create?)
+
+    account = Current.user.accounts.create!(account_params)
+
+    redirect_to account_dashboard_path(account), notice: t(".success")
+  rescue ActiveRecord::RecordInvalid => e
+    flash.now[:alert] = t(".error")
+    render Views::Accounts::New.new(account: e.record)
   end
 
   def index
@@ -13,5 +24,11 @@ class AccountsController < ApplicationController
     render Views::Accounts::Index.new(
       accounts: accounts
     )
+  end
+
+  private
+
+  def account_params
+    params.expect(account: [ :name ])
   end
 end

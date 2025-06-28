@@ -8,4 +8,9 @@ class ViewsAccountsNewTest < ActiveSupport::TestCase
   test "should not catch fire" do
     assert_renders(Views::Accounts::New)
   end
+
+  test "should take optional account param" do
+    account = Account.new(name: "Test Account")
+    assert_renders(Views::Accounts::New, account: account)
+  end
 end

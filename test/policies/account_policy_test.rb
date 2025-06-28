@@ -17,4 +17,12 @@ class AccountPolicyTest < ActiveSupport::TestCase
     assert_permit(@user, @account, :visit_dashboard)
     refute_permit(@user, @other_account, :visit_dashboard)
   end
+
+  test "should permit users to new account" do
+    assert_permit(@user, Account, :new)
+  end
+
+  test "should permit users to create account" do
+    assert_permit(@user, Account, :create)
+  end
 end

@@ -29,6 +29,10 @@
 
 en:
   hello: "Hello world"
+  accounts:
+    create:
+      success: Your Acount was successfully created
+      error: There was an error creating your account. Please review the information below.
   views:
     accounts:
       index:

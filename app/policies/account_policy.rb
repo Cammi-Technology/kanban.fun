@@ -1,5 +1,8 @@
 class AccountPolicy < ApplicationPolicy
-  prop :record, Account, :positional, reader: :public
+  prop :record, _Union(_Class(Account), Account), :positional, reader: :public
+
+  def new? = true
+  def create? = new?
 
   # controller actions
   def visit_dashboard?
