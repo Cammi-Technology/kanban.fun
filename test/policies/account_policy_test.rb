@@ -3,7 +3,7 @@ class AccountPolicyTest < ActiveSupport::TestCase
   def setup
     @account = accounts(:account)
     @other_account = accounts(:totally_games)
-    @user = users(:account_owner)
+    @user = AuthorizationContext.new(user: users(:account_owner))
   end
 
   def test_scope

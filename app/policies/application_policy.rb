@@ -3,7 +3,7 @@
 class ApplicationPolicy
   extend Literal::Properties
 
-  prop :user, User, :positional, reader: :public
+  prop :authorization_context, AuthorizationContext, :positional, reader: :public
   prop :record, _Never, :positional, reader: :public
 
   def index?
@@ -37,11 +37,29 @@ class ApplicationPolicy
   class Scope
     extend Literal::Properties
 
-    prop :user, User, :positional, reader: :private
+    prop :authorization_context, AuthorizationContext, :positional, reader: :public
     prop :scope, _Never, :positional, reader: :private
 
     def resolve
       raise NoMethodError, "You must define #resolve in #{self.class}"
     end
+
+    def user
+      authorization_context.user
+    end
+
+    def account_user
+      authorization_context.account_user
+    end
+  end
+
+  private
+
+  def user
+    authorization_context.user
+  end
+
+  def account_user
+    authorization_context.account_user
   end
 end
