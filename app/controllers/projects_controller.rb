@@ -2,6 +2,10 @@ class ProjectsController < ApplicationController
   def index
     authorize(Project, :index?)
 
+    if Current.account.projects.empty?
+      return redirect_to new_account_project_path(Current.account)
+    end
+
     render Views::Projects::Index.new(
       projects: Current.account.projects
     )
@@ -25,15 +29,18 @@ class ProjectsController < ApplicationController
 
 
   def create
-    project = Current.account.projects.create!(project_params)
+    authorize(
+      project = Current.account.projects.new(project_params),
+      :create?
+    )
 
-    authorize(project, :create?)
+    project.save!
 
     redirect_to [ project.account, project ], notice: t("projects.create.success")
   rescue ActiveRecord::RecordInvalid => e
     render Views::Projects::New.new(
       project: e.record
-    )
+    ), status: :unprocessable_entity
   end
 
   private

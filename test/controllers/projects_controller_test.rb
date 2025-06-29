@@ -24,6 +24,8 @@ class ProjectsControllerTest < ActionDispatch::IntegrationTest
   end
 
   test "should redirect to new_account_project_path when there are no projects" do
+    Project.destroy_all
+
     sign_in_as(@account_user)
     get account_projects_url(@account)
     assert_redirected_to new_account_project_path
@@ -58,6 +60,7 @@ class ProjectsControllerTest < ActionDispatch::IntegrationTest
 
   test "should not create project with invalid params" do
     sign_in_as(@account_owner)
+
     assert_no_difference -> { @account.reload.projects.count } do
       post account_projects_url(@account), params: { project: { name: "" } }
     end
