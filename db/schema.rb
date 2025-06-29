@@ -88,7 +88,6 @@ ActiveRecord::Schema[8.0].define(version: 2025_06_28_175640) do
   add_foreign_key "account_users", "users"
   add_foreign_key "accounts", "users", column: "owner_id"
   add_foreign_key "events", "users"
-  add_foreign_key "events", "users"
   add_foreign_key "projects", "accounts"
   add_foreign_key "recovery_codes", "users"
   add_foreign_key "sessions", "users"
