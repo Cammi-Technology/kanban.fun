@@ -60,6 +60,9 @@ group :development do
 
   # Authentication generator
   gem "authentication-zero", "~> 4.0"
+
+  # run sensible things on commit
+  gem "lefthook", "~> 1.11"
 end
 
 group :test do
