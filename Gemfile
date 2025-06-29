@@ -54,6 +54,11 @@ end
 group :development do
   # Use console on exceptions pages [https://github.com/rails/web-console]
   gem "web-console"
+
+  # run sensible things on commit
+  gem "lefthook", "~> 1.11"
+
+  gem "hello"
 end
 
 group :test do
