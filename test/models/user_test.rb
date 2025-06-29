@@ -6,7 +6,7 @@ class UserTest < ActiveSupport::TestCase
   end
 
   test "should have no accounts" do
-    assert_equal @user.accounts.count, 0
+    assert_equal 0, @user.accounts.count
   end
 
   test "should have account users" do
