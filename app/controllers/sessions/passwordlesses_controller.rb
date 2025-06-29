@@ -1,5 +1,6 @@
 class Sessions::PasswordlessesController < ApplicationController
   skip_before_action :authenticate
+  skip_after_action :verify_pundit_authorization
 
   rate_limit to: 10, within: 1.hour, only: :create, with: -> { redirect_to root_path, alert: "Try again later" }
   before_action :set_user, only: :edit
