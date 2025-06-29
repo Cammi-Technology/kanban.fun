@@ -3,6 +3,7 @@ require "test_helper"
 class SessionsControllerTest < ActionDispatch::IntegrationTest
   setup do
     @user = users(:lazaro_nixon)
+    @other_users_session = sessions(:two)
   end
 
   test "should get index" do
@@ -42,5 +43,15 @@ class SessionsControllerTest < ActionDispatch::IntegrationTest
 
     follow_redirect!
     assert_redirected_to sign_in_url
+  end
+
+  test "should not sign out other users' sessions" do
+    sign_in_as @user
+
+    assert_no_changes -> { Session.count } do
+      delete session_url(@other_users_session)
+    end
+
+    assert_response :not_found
   end
 end

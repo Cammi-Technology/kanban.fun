@@ -1,12 +1,10 @@
 # frozen_string_literal: true
 
 class ApplicationPolicy
-  attr_reader :user, :record
+  extend Literal::Properties
 
-  def initialize(user, record)
-    @user = user
-    @record = record
-  end
+  prop :user, User, :positional, reader: :public
+  prop :record, _Never, :positional, reader: :public
 
   def index?
     false
@@ -37,17 +35,13 @@ class ApplicationPolicy
   end
 
   class Scope
-    def initialize(user, scope)
-      @user = user
-      @scope = scope
-    end
+    extend Literal::Properties
+
+    prop :user, User, :positional, reader: :private
+    prop :scope, _Never, :positional, reader: :private
 
     def resolve
       raise NoMethodError, "You must define #resolve in #{self.class}"
     end
-
-    private
-
-    attr_reader :user, :scope
   end
 end

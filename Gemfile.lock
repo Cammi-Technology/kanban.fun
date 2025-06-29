@@ -74,6 +74,7 @@ GEM
       uri (>= 0.13.1)
     addressable (2.8.7)
       public_suffix (>= 2.0.2, < 7.0)
+    ansi (1.5.0)
     ast (2.4.3)
     authentication-zero (4.0.3)
     base64 (0.3.0)
@@ -159,6 +160,11 @@ GEM
     matrix (0.4.3)
     mini_mime (1.1.5)
     minitest (5.25.5)
+    minitest-reporters (1.7.1)
+      ansi
+      builder
+      minitest (>= 5.0)
+      ruby-progressbar
     msgpack (1.8.0)
     net-imap (0.5.9)
       date
@@ -394,8 +400,9 @@ DEPENDENCIES
   kamal
   lefthook (~> 1.11)
   literal (~> 1.8)
+  minitest-reporters (~> 1.7)
   phlex (~> 2.3)
-  phlex-icons (~> 2.24)
+  phlex-icons (~> 2.27)
   phlex-rails (~> 2.3)
   propshaft
   puma (>= 5.0)

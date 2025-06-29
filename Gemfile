@@ -63,6 +63,7 @@ group :test do
   # Use system testing [https://guides.rubyonrails.org/testing.html#system-testing]
   gem "capybara"
   gem "selenium-webdriver"
+  gem "minitest-reporters", "~> 1.7"
 end
 
 gem "literal", "~> 1.8"
@@ -73,4 +74,4 @@ gem "strict_ivars", "~> 1.0", require: false
 
 gem "authentication-zero", "~> 4.0"
 
-gem "phlex-icons", "~> 2.24"
+gem "phlex-icons", "~> 2.27"
