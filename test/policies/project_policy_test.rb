@@ -24,4 +24,16 @@ class ProjectPolicyTest < ActiveSupport::TestCase
   def test_visit_index
     assert_permit(@user, Project, :index)
   end
+
+  def test_requires_account_user
+    authorization_context_without_user = AuthorizationContext.new(user: users(:rachel_graves), account_user: nil)
+
+    assert_raises(Literal::TypeError) do
+      ProjectPolicy.new(authorization_context_without_user, @project).new?
+    end
+
+    assert_raises(Literal::TypeError) do
+      ProjectPolicy.new(authorization_context_without_user, Project).index?
+    end
+  end
 end
