@@ -5,7 +5,7 @@ class UserTest < ActiveSupport::TestCase
     @user = User.new
   end
 
-  test "should have no accounts" do
+  test "should have no accounts by default" do
     assert_equal 0, @user.accounts.count
   end
 
