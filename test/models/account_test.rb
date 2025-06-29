@@ -22,6 +22,6 @@ class AccountTest < ActiveSupport::TestCase
   end
 
   test "should have projects" do
-    assert_includes accounts(:account_with_projects).projects, projects(:project)
+    assert_includes @account.projects, projects(:project)
   end
 end
