@@ -22,6 +22,7 @@ class User < ApplicationRecord
   validates :email, presence: true, uniqueness: true, format: { with: URI::MailTo::EMAIL_REGEXP }
   validates :password, allow_nil: true, length: { minimum: 6 }
   validates :password, not_pwned: { message: "might easily be guessed" }
+  validates :first_name, :last_name, presence: true
 
   normalizes :email, with: -> { _1.strip.downcase }
 

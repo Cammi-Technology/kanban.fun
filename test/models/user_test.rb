@@ -2,7 +2,7 @@ require "test_helper"
 
 class UserTest < ActiveSupport::TestCase
   setup do
-    @user = User.new
+    @user = users(:account_owner).dup
   end
 
   test "should have no accounts" do
@@ -11,5 +11,15 @@ class UserTest < ActiveSupport::TestCase
 
   test "should have account users" do
     assert_includes users(:account_owner).account_users, account_users(:account_owner)
+  end
+
+  test "should require first name" do
+    @user.first_name = ""
+    refute @user.valid?
+  end
+
+  test "should require last name" do
+    @user.last_name = ""
+    refute @user.valid?
   end
 end
