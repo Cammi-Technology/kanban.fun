@@ -21,7 +21,7 @@ ActiveRecord::Schema[8.0].define(version: 2025_06_28_175640) do
   end
 
   create_table "accounts", force: :cascade do |t|
-    t.string "name"
+    t.string "name", null: false
     t.integer "owner_id", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
@@ -79,8 +79,8 @@ ActiveRecord::Schema[8.0].define(version: 2025_06_28_175640) do
     t.string "uid"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.string "first_name"
-    t.string "last_name"
+    t.string "first_name", null: false
+    t.string "last_name", null: false
     t.index ["email"], name: "index_users_on_email", unique: true
   end
 
@@ -89,6 +89,7 @@ ActiveRecord::Schema[8.0].define(version: 2025_06_28_175640) do
   add_foreign_key "accounts", "users", column: "owner_id"
   add_foreign_key "events", "users"
   add_foreign_key "projects", "accounts"
+  add_foreign_key "events", "users"
   add_foreign_key "recovery_codes", "users"
   add_foreign_key "sessions", "users"
   add_foreign_key "sign_in_tokens", "users"
