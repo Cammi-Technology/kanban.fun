@@ -43,14 +43,7 @@ class ApplicationController < ActionController::Base
     end
 
     def pundit_user
-      if !Current.account_user.nil?
-        raise "Something naughty has happened!" if Current.account_user.user != Current.user
-      end
-
-      AuthorizationContext.new(
-        user: Current.user,
-        account_user: Current.account_user
-      )
+      Current.user
     end
 
     def require_sudo

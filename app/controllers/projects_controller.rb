@@ -1,4 +1,4 @@
-class ProjectsController < ApplicationController
+class ProjectsController < AccountsApplicationController
   def index
     authorize(Project, :index?)
 

@@ -1,8 +1,8 @@
 require "test_helper"
 class SessionPolicyTest < ActiveSupport::TestCase
   def setup
-    @user = AuthorizationContext.new(user: users(:rachel_graves))
-    @signed_in_user = AuthorizationContext.new(user: users(:signed_in_user))
+    @user = users(:rachel_graves)
+    @signed_in_user = users(:signed_in_user)
     @signed_in_users_session = sessions(:one)
     @other_users_session = sessions(:two)
   end
