@@ -54,3 +54,7 @@ en:
         form:
           name:
             placeholder: "Give your Account a Fun Name"
+  invitations:
+    create:
+      success: "An invitation email has been sent to %{email}"
+      error: "There was an error sending the invitation"

@@ -1,4 +1,5 @@
 class InvitationsController < ApplicationController
+  skip_after_action :verify_pundit_authorization
   def new
     @user = User.new
   end
@@ -8,8 +9,9 @@ class InvitationsController < ApplicationController
 
     if @user.save
       send_invitation_instructions
-      redirect_to new_invitation_path, notice: "An invitation email has been sent to #{@user.email}"
+      redirect_to new_invitation_path, notice: t("invitations.create.success", email: @user.email)
     else
+      flash.now[:alert] = t("invitations.create.error")
       render :new, status: :unprocessable_entity
     end
   end
