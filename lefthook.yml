@@ -1,0 +1,28 @@
+pre-commit:
+  jobs:
+    - name: lint
+      run: bin/rubocop -a
+      stage_fixed: true
+
+    - name: brakeman
+      run: bundle exec brakeman --no-pager --no-progress
+
+    - name: zeitwerk check
+      run: rake zeitwerk:check
+
+pre-push:
+  jobs:
+    - name: tests
+      run: bin/rails test
+
+    - name: system tests
+      run: bin/rails test:system
+
+    - name: importmap audit
+      run: bin/importmap audit
+
+    - name: bundle audit
+      run: bundle audit
+
+    - name: bundle outdated
+      run: bundle outdated
