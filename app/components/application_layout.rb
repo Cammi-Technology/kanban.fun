@@ -43,6 +43,9 @@ class Components::ApplicationLayout < Components::Base
         end
         header do
           NavbarItem(
+            href: account_projects_path, icon: "stack", label: "Projects"
+          ) if Current.account
+          NavbarItem(
             href: accounts_path, icon: "gear-fill", label: "Account"
           )
         end

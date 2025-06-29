@@ -4,21 +4,21 @@ Rails.application.routes.draw do
   end
   namespace :two_factor_authentication do
     namespace :challenge do
-      resource :totp,           only: [:new, :create]
-      resource :recovery_codes, only: [:new, :create]
+      resource :totp,           only: [ :new, :create ]
+      resource :recovery_codes, only: [ :new, :create ]
     end
     namespace :profile do
-      resource  :totp,           only: [:new, :create, :update]
-      resources :recovery_codes, only: [:index, :create]
+      resource  :totp,           only: [ :new, :create, :update ]
+      resources :recovery_codes, only: [ :index, :create ]
     end
   end
   get  "/auth/failure",            to: "sessions/omniauth#failure"
   get  "/auth/:provider/callback", to: "sessions/omniauth#create"
   post "/auth/:provider/callback", to: "sessions/omniauth#create"
-  resource :invitation, only: [:new, :create]
+  resource :invitation, only: [ :new, :create ]
   namespace :sessions do
-    resource :passwordless, only: [:new, :edit, :create]
-    resource :sudo, only: [:new, :create]
+    resource :passwordless, only: [ :new, :edit, :create ]
+    resource :sudo, only: [ :new, :create ]
   end
   get  "sign_in", to: "sessions#new"
   post "sign_in", to: "sessions#create"
@@ -27,6 +27,7 @@ Rails.application.routes.draw do
 
   resources :accounts, only: [ :new, :index, :create ] do
     resource :dashboard, only: [ :show ]
+    resources :projects, only: [ :index, :new, :create, :show ]
   end
 
   resources :sessions, only: [ :index, :show, :destroy ]

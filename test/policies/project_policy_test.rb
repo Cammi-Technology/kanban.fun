@@ -8,6 +8,10 @@ class ProjectPolicyTest < ActiveSupport::TestCase
       user: users(:account_owner),
       account_user: account_users(:account_owner)
     )
+    @other_account_user = AuthorizationContext.new(
+      user: users(:other_account_owner),
+      account_user: account_users(:other_account_owner)
+    )
   end
 
   def test_scope
@@ -23,6 +27,21 @@ class ProjectPolicyTest < ActiveSupport::TestCase
 
   def test_visit_index
     assert_permit(@user, Project, :index)
+  end
+
+  def test_visit_new
+    assert_permit(@user, @account.projects.new, :new)
+    refute_permit(@other_account_user, @account.projects.new, :new)
+  end
+
+  def test_create
+    assert_permit(@user, @account.projects.new, :create)
+    refute_permit(@other_account_user, @account.projects.new, :create)
+  end
+
+  def test_show
+    assert_permit(@user, @project, :show)
+    refute_permit(@other_account_user, @project, :show)
   end
 
   def test_requires_account_user
