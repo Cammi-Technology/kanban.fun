@@ -1,7 +1,7 @@
 pre-commit:
   jobs:
     - name: lint
-      run: bin/rubocop
+      run: bin/rubocop -a
       stage_fixed: true
 
     - name: brakeman
