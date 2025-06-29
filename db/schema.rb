@@ -10,7 +10,11 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
+<<<<<<< HEAD
 ActiveRecord::Schema[8.0].define(version: 2025_06_28_175640) do
+=======
+ActiveRecord::Schema[8.0].define(version: 2025_06_28_111700) do
+>>>>>>> origin/main
   create_table "account_users", force: :cascade do |t|
     t.integer "account_id", null: false
     t.integer "user_id", null: false
@@ -36,6 +40,7 @@ ActiveRecord::Schema[8.0].define(version: 2025_06_28_175640) do
     t.index ["user_id"], name: "index_events_on_user_id"
   end
 
+<<<<<<< HEAD
   create_table "projects", force: :cascade do |t|
     t.integer "account_id", null: false
     t.string "name", null: false
@@ -45,6 +50,8 @@ ActiveRecord::Schema[8.0].define(version: 2025_06_28_175640) do
     t.index ["account_id"], name: "index_projects_on_account_id"
   end
 
+=======
+>>>>>>> origin/main
   create_table "recovery_codes", force: :cascade do |t|
     t.integer "user_id", null: false
     t.string "code", null: false
