@@ -7,7 +7,7 @@ pre-commit:
     - name: brakeman
       run: bundle exec brakeman --no-pager --no-progress
 
-    - name: zeitwek check
+    - name: zeitwerk check
       run: rake zeitwerk:check
 
 pre-push:
