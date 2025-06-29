@@ -6,6 +6,7 @@ class ApplicationController < ActionController::Base
 
   before_action :set_current_request_details
   before_action :authenticate
+  before_action :set_current_account_user
 
   after_action :verify_pundit_authorization
 
@@ -25,6 +26,15 @@ class ApplicationController < ActionController::Base
       Current.ip_address = request.ip
     end
 
+    def set_current_account_user
+      return unless params[:account_id]
+
+      Current.account_user = AccountUser.find_by!(
+        account_id: params[:account_id],
+        user_id: Current.user.id
+      )
+    end
+
     def verify_pundit_authorization
       verify_policy_scoped
     rescue Pundit::PolicyScopingNotPerformedError
@@ -33,5 +43,11 @@ class ApplicationController < ActionController::Base
 
     def pundit_user
       Current.user
+    end
+
+    def require_sudo
+      unless Current.session.sudo?
+        redirect_to new_sessions_sudo_path(proceed_to_url: request.original_url)
+      end
     end
 end

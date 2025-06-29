@@ -11,6 +11,7 @@ Minitest.backtrace_filter = Minitest::BacktraceFilter.new
 class ActiveSupport::TestCase
   include AuthenticationHelper
   include AuthorizationHelper
+  include AbstractController::Translation
 
   # Run tests in parallel with specified workers
   parallelize(workers: :number_of_processors)

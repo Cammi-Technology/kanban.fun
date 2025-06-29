@@ -10,4 +10,5 @@ class UserPolicy < ApplicationPolicy
   def update_password? = true
   def edit_email? = true
   def update_email? = true
+  def new_account? = true
 end

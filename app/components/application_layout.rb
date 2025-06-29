@@ -27,13 +27,24 @@ class Components::ApplicationLayout < Components::Base
         javascript_importmap_tags
       end
       body do
+        if flash.present?
+          if flash[:notice]
+            plain flash[:notice]
+          end
+
+          if flash[:alert]
+            plain flash[:alert]
+          end
+        end
         nav do
           NavbarItem(
             href: root_path, icon: "house-door-fill", label: "Home"
           )
         end
         header do
-          plain "header"
+          NavbarItem(
+            href: accounts_path, icon: "gear-fill", label: "Account"
+          )
         end
         main do
           yield
@@ -43,5 +54,9 @@ class Components::ApplicationLayout < Components::Base
         end
       end
     end
+  end
+
+  def flash
+    page_info.flash || {}
   end
 end

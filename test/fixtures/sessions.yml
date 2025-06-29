@@ -2,8 +2,10 @@ one:
   user: signed_in_user
   user_agent: "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7)"
   ip_address: "127.0.0.1"
+  sudo_at: <%= 30.minutes.from_now %>
 
 two:
   user: other_signed_in_user
   user_agent: "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7)"
   ip_address: "127.0.0.1"
+  sudo_at: <%= 30.minutes.from_now %>
