@@ -57,8 +57,6 @@ group :development do
 
   # run sensible things on commit
   gem "lefthook", "~> 1.11"
-
-  gem "hello"
 end
 
 group :test do
