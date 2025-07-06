@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2025_06_28_175640) do
+ActiveRecord::Schema[8.0].define(version: 2025_07_06_120346) do
   create_table "account_users", force: :cascade do |t|
     t.integer "account_id", null: false
     t.integer "user_id", null: false
@@ -34,6 +34,18 @@ ActiveRecord::Schema[8.0].define(version: 2025_06_28_175640) do
     t.string "user_agent"
     t.string "ip_address"
     t.index ["user_id"], name: "index_events_on_user_id"
+  end
+
+  create_table "posts", force: :cascade do |t|
+    t.string "title", null: false
+    t.string "category", null: false
+    t.integer "author_id", null: false
+    t.integer "project_id", null: false
+    t.boolean "published", default: false, null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["author_id"], name: "index_posts_on_author_id"
+    t.index ["project_id"], name: "index_posts_on_project_id"
   end
 
   create_table "projects", force: :cascade do |t|
@@ -88,6 +100,8 @@ ActiveRecord::Schema[8.0].define(version: 2025_06_28_175640) do
   add_foreign_key "account_users", "users"
   add_foreign_key "accounts", "users", column: "owner_id"
   add_foreign_key "events", "users"
+  add_foreign_key "posts", "account_users", column: "author_id"
+  add_foreign_key "posts", "projects"
   add_foreign_key "projects", "accounts"
   add_foreign_key "recovery_codes", "users"
   add_foreign_key "sessions", "users"
