@@ -34,6 +34,12 @@ class ApplicationPolicy
     false
   end
 
+  private def account_user
+    raise "Should be class AccountUser but received #{user.class_name}" unless user.is_a?(AccountUser)
+
+    user
+  end
+
   class Scope
     extend Literal::Properties
 

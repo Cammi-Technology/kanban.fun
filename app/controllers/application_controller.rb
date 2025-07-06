@@ -43,7 +43,7 @@ class ApplicationController < ActionController::Base
     end
 
     def pundit_user
-      Current.user
+      Current.account_user || Current.user
     end
 
     def require_sudo
