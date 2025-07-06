@@ -20,4 +20,8 @@ class ProjectTest < ActiveSupport::TestCase
     assert_includes project.posts, posts(:post)
     refute_includes project.posts, posts(:other_users_post)
   end
+
+  test "should provide access to account" do
+    assert_equal accounts(:account), projects(:project).account
+  end
 end

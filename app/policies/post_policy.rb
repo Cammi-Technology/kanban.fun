@@ -5,19 +5,15 @@ class PostPolicy < ApplicationPolicy
   def index? = true
 
   def new?
-    user.account == record.account
+    user.account == record.project.account
   end
-
-  def set_current_project? = new?
-  def create? = new?
-  def show? = new?
 
   class Scope < ApplicationPolicy::Scope
     prop :user, AccountUser, :positional, reader: :public
     prop :scope, _Union(_Class(Post), ActiveRecord::Relation(Post)), :positional, reader: :private
 
     def resolve
-      scope.where(account: user.account).all
+      scope.where(project: user.account.projects).all
     end
   end
 end

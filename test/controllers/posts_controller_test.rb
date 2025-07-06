@@ -35,17 +35,17 @@ class PostsControllerTest < ActionDispatch::IntegrationTest
     assert_response :success
   end
 
-  # test "should get new when signed in" do
-  #   get new_account_project_url(@account)
-  #   assert_requires_authentication
-  #
-  #   sign_in_as(@account_user)
-  #   get new_account_project_url(@account)
-  #   assert_response :success
-  #
-  #   get new_account_project_url(@other_users_account)
-  #   assert_response :not_found
-  # end
+  test "should get new when signed in" do
+    get new_account_project_post_url(@account, @project)
+    assert_requires_authentication
+
+    sign_in_as(@account_user)
+    get new_account_project_post_url(@account, @project)
+    assert_response :success
+
+    get new_account_project_url(@other_users_account, @other_accounts_project)
+    assert_response :not_found
+  end
   #
   # test "should create project when signed in" do
   #   post account_projects_url(@account)

@@ -42,7 +42,7 @@ en:
       name: Type a fun name for your Account
     post:
       title: Type a title…
-      content: Wirte away…
+      content: Write away…
     project:
       name: Type in a Dystopian Project Name
       description: e.g. Plans for evicting people from Detroit City
@@ -51,6 +51,10 @@ en:
     create:
       success: Your Account was successfully created
       error: There was an error creating your account. Please review the information below.
+  posts:
+    create:
+      success: Your Post was successful
+      error: There was an error creating your post. Please review the information below.
   projects:
     create:
       success: Your Project was successfully created. Good Luck!
@@ -69,6 +73,9 @@ en:
       index:
         title: "Message Board"
         description: Send messages to your dystopian team!
+      new:
+        title: Add a Post
+        description: Write a really good dystopian message
     projects:
       index:
         title: Projects
