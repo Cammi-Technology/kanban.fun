@@ -45,7 +45,7 @@ class Views::Posts::New < Views::Base
       end
 
       FormField do
-        Button(type: "submit") { "Post this message" }
+        Button(name: "post[published]", value: "true", type: "submit") { "Post this message" }
       end
     end
   end

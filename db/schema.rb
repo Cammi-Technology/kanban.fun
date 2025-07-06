@@ -76,7 +76,7 @@ ActiveRecord::Schema[8.0].define(version: 2025_07_06_152515) do
 
   create_table "posts", force: :cascade do |t|
     t.string "title", null: false
-    t.string "category", null: false
+    t.string "category"
     t.integer "author_id", null: false
     t.integer "project_id", null: false
     t.boolean "published", default: false, null: false

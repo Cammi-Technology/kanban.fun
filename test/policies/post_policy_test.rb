@@ -29,4 +29,9 @@ class PostPolicyTest < ActiveSupport::TestCase
     assert_permit(@account_user, @project.posts.new, :new)
     refute_permit(@other_account_user, @project.posts.new, :new)
   end
+
+  def test_create
+    assert_permit(@account_user, @project.posts.new, :create)
+    refute_permit(@other_account_user, @project.posts.new, :create)
+  end
 end

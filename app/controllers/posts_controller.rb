@@ -14,4 +14,25 @@ class PostsController < ApplicationController
       post: post
     )
   end
+
+  def create
+    authorize (post = Current.project.posts.new(post_params)), :create?
+
+    post.save!
+
+    redirect_to [ Current.account, Current.project, post ], notice: t(".success")
+  rescue ActiveRecord::RecordInvalid => e
+    render Views::Posts::New.new(
+      post: e.record
+    ), status: :unprocessable_entity
+  end
+
+
+  private
+
+  def post_params
+    params.expect(post: [ :title, :content, :category, :published ]).merge(
+      author: Current.account_user
+    )
+  end
 end
