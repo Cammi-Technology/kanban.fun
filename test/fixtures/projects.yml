@@ -1,0 +1,11 @@
+# Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+project:
+  account: account
+  name: MyString
+  description: MyText
+
+other_accounts_project:
+  account: other_account
+  name: Other Account's Secret Dystopian Project
+  description: Steal all the cats from Detroit city

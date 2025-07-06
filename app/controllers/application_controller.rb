@@ -4,8 +4,8 @@ class ApplicationController < ActionController::Base
   # Only allow modern browsers supporting webp images, web push, badges, import maps, CSS nesting, and CSS :has.
   allow_browser versions: :modern
 
-  before_action :set_current_request_details
   before_action :authenticate
+  before_action :set_current_request_details
   before_action :set_current_account_user
 
   after_action :verify_pundit_authorization
@@ -33,6 +33,7 @@ class ApplicationController < ActionController::Base
         account_id: params[:account_id],
         user_id: Current.user.id
       )
+      Current.account = Current.account_user.account
     end
 
     def verify_pundit_authorization
@@ -42,7 +43,7 @@ class ApplicationController < ActionController::Base
     end
 
     def pundit_user
-      Current.user
+      Current.account_user || Current.user
     end
 
     def require_sudo
