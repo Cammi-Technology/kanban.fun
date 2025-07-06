@@ -49,4 +49,9 @@ class ProjectPolicyTest < ActiveSupport::TestCase
       ProjectPolicy.new(user, Project).index?
     end
   end
+
+  def test_set_current_project
+    assert_permit(@account_user, @project, :set_current_project)
+    refute_permit(@other_account_user, @project, :set_current_project)
+  end
 end

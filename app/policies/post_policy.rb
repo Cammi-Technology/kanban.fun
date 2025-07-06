@@ -1,6 +1,6 @@
-class ProjectPolicy < ApplicationPolicy
+class PostPolicy < ApplicationPolicy
   prop :user, AccountUser, :positional, reader: :public
-  prop :record, _Union(_Class(Project), Project), :positional, reader: :public
+  prop :record, _Union(_Class(Post), Post), :positional, reader: :public
 
   def index? = true
 
@@ -14,7 +14,7 @@ class ProjectPolicy < ApplicationPolicy
 
   class Scope < ApplicationPolicy::Scope
     prop :user, AccountUser, :positional, reader: :public
-    prop :scope, _Class(Project), :positional, reader: :private
+    prop :scope, _Union(_Class(Post), ActiveRecord::Relation(Post)), :positional, reader: :private
 
     def resolve
       scope.where(account: user.account).all

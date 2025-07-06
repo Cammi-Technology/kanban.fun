@@ -32,12 +32,17 @@ en:
     attributes:
       account:
         name: Name
+      post:
+        title: Title
       project:
         name: Name
         description: Description
   placeholders:
     account:
       name: Type a fun name for your Account
+    post:
+      title: Type a title…
+      content: Wirte away…
     project:
       name: Type in a Dystopian Project Name
       description: e.g. Plans for evicting people from Detroit City
@@ -60,6 +65,10 @@ en:
       new:
         title: Create a new Account
         description: And get awesomely cool project management software
+    posts:
+      index:
+        title: "Message Board"
+        description: Send messages to your dystopian team!
     projects:
       index:
         title: Projects
