@@ -27,6 +27,14 @@ class PostsController < ApplicationController
     ), status: :unprocessable_entity
   end
 
+  def show
+    authorize (post = Current.project.posts.find(params[:id])), :show?
+
+    render Views::Posts::Show.new(
+      post: post
+    )
+  end
+
 
   private
 

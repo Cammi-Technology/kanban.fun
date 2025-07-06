@@ -9,6 +9,7 @@ class PostPolicy < ApplicationPolicy
   end
 
   def create? = new?
+  def show? = new?
 
   class Scope < ApplicationPolicy::Scope
     prop :user, AccountUser, :positional, reader: :public
