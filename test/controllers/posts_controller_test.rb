@@ -37,7 +37,7 @@ class PostsControllerTest < ActionDispatch::IntegrationTest
     get new_account_project_post_url(@account, @project)
     assert_response :success
 
-    get new_account_project_url(@other_users_account, @other_accounts_project)
+    get new_account_project_post_url(@other_users_account, @other_accounts_project)
     assert_response :not_found
   end
 
