@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2025_06_28_111700) do
+ActiveRecord::Schema[8.0].define(version: 2025_06_28_175640) do
   create_table "account_users", force: :cascade do |t|
     t.integer "account_id", null: false
     t.integer "user_id", null: false
@@ -34,6 +34,15 @@ ActiveRecord::Schema[8.0].define(version: 2025_06_28_111700) do
     t.string "user_agent"
     t.string "ip_address"
     t.index ["user_id"], name: "index_events_on_user_id"
+  end
+
+  create_table "projects", force: :cascade do |t|
+    t.integer "account_id", null: false
+    t.string "name", null: false
+    t.text "description"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["account_id"], name: "index_projects_on_account_id"
   end
 
   create_table "recovery_codes", force: :cascade do |t|
@@ -79,7 +88,7 @@ ActiveRecord::Schema[8.0].define(version: 2025_06_28_111700) do
   add_foreign_key "account_users", "users"
   add_foreign_key "accounts", "users", column: "owner_id"
   add_foreign_key "events", "users"
-  add_foreign_key "events", "users"
+  add_foreign_key "projects", "accounts"
   add_foreign_key "recovery_codes", "users"
   add_foreign_key "sessions", "users"
   add_foreign_key "sign_in_tokens", "users"

@@ -34,10 +34,16 @@ class ApplicationPolicy
     false
   end
 
+  private def account_user
+    raise "Should be class AccountUser but received #{user.class_name}" unless user.is_a?(AccountUser)
+
+    user
+  end
+
   class Scope
     extend Literal::Properties
 
-    prop :user, User, :positional, reader: :private
+    prop :user, User, :positional, reader: :public
     prop :scope, _Never, :positional, reader: :private
 
     def resolve

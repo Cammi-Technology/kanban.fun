@@ -31,15 +31,24 @@ en:
   activerecord:
     attributes:
       account:
-        name: "Name"
+        name: Name
+      project:
+        name: Name
+        description: Description
   placeholders:
     account:
-      name: "Type a fun name for your Account"
-  hello: "Hello world"
+      name: Type a fun name for your Account
+    project:
+      name: Type in a Dystopian Project Name
+      description: e.g. Plans for evicting people from Detroit City
+  hello: Hello world
   accounts:
     create:
-      success: Your Acount was successfully created
+      success: Your Account was successfully created
       error: There was an error creating your account. Please review the information below.
+  projects:
+    create:
+      success: Your Project was successfully created. Good Luck!
   components:
     button:
       button_text: Submit
@@ -51,6 +60,12 @@ en:
       new:
         title: Create a new Account
         description: And get awesomely cool project management software
-        form:
-          name:
-            placeholder: "Give your Account a Fun Name"
+    projects:
+      index:
+        title: Projects
+        description: My Dystopian Kanban.fun projects
+      new:
+        title: New Project
+        description: "Create a Dystopian Project"
+      show:
+        title: Your Dystopian Project
