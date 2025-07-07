@@ -1,4 +1,5 @@
 class InvitationsController < ApplicationController
+  skip_after_action :verify_pundit_authorization
   def new
     @user = User.new
   end
