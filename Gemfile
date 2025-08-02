@@ -70,6 +70,7 @@ group :test do
   gem "capybara"
   gem "selenium-webdriver"
   gem "minitest-reporters", "~> 1.7"
+  gem "mocha"
 end
 
 gem "literal", "~> 1.8"
