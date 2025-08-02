@@ -94,3 +94,5 @@ gem "rqrcode"
 gem "pwned"
 
 gem "name_of_person", "~> 1.1"
+
+gem "noticed", "~> 2.8"

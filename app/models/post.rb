@@ -8,4 +8,14 @@ class Post < ApplicationRecord
   validates :published, presence: true
 
   has_rich_text :content
+
+  after_create :notify_new_post
+
+  delegate :account, to: :project
+
+  private
+
+  def notify_new_post
+    NewPostNotifier.with(record: self).deliver(account.users)
+  end
 end

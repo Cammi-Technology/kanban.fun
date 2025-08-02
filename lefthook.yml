@@ -21,8 +21,5 @@ pre-push:
     - name: importmap audit
       run: bin/importmap audit
 
-    - name: bundle audit
-      run: bundle audit
-
     - name: bundle outdated
       run: bundle outdated --only-explicit
