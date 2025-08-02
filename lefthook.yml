@@ -25,4 +25,4 @@ pre-push:
       run: bundle audit
 
     - name: bundle outdated
-      run: bundle outdated
+      run: bundle outdated --only-explicit
