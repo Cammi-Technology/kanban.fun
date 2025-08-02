@@ -11,6 +11,8 @@ class ProjectsTest < ApplicationSystemTestCase
 
     visit new_account_project_url(@account)
 
+    assert_current_path new_account_project_path(@account), wait: true
+
     fill_in t("activerecord.attributes.project.name"), with: "Redevelop Detroit City into Delta City"
     fill_in t("placeholders.project.description"), with: "Delta City: 'For Our Children!'"
 
