@@ -8,8 +8,10 @@ class ProjectsTest < ApplicationSystemTestCase
 
   test "account owner can create project" do
     sign_in_as(@account_owner)
+    assert_current_path accounts_path, wait: true
 
     visit new_account_project_url(@account)
+    assert_current_path new_account_project_path(@account), wait: true
 
     fill_in t("activerecord.attributes.project.name"), with: "Redevelop Detroit City into Delta City"
     fill_in t("placeholders.project.description"), with: "Delta City: 'For Our Children!'"

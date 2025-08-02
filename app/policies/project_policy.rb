@@ -8,6 +8,7 @@ class ProjectPolicy < ApplicationPolicy
     user.account == record.account
   end
 
+  def set_current_project? = new?
   def create? = new?
   def show? = new?
 

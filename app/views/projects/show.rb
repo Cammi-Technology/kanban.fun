@@ -6,6 +6,9 @@ class Views::Projects::Show < Views::Base
   def view_template
     h1 { project.name }
     p { project.description } if project.description.present?
+    a(href: account_project_posts_path(project.account, project)) do
+      t(".posts")
+    end
   end
 
   private

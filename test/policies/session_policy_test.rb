@@ -23,7 +23,7 @@ class SessionPolicyTest < ActiveSupport::TestCase
   def test_scope
     refute_includes(
       SessionPolicy::Scope.new(@user, Session.all).resolve,
-      @other_session
+      @other_users_session
     )
   end
 end

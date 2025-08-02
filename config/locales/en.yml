@@ -32,12 +32,18 @@ en:
     attributes:
       account:
         name: Name
+      post:
+        title: Title
+        content: "Content"
       project:
         name: Name
         description: Description
   placeholders:
     account:
       name: Type a fun name for your Account
+    post:
+      title: Type a title…
+      content: Write away…
     project:
       name: Type in a Dystopian Project Name
       description: e.g. Plans for evicting people from Detroit City
@@ -46,6 +52,10 @@ en:
     create:
       success: Your Account was successfully created
       error: There was an error creating your account. Please review the information below.
+  posts:
+    create:
+      success: Your Post was successful
+      error: There was an error creating your post. Please review the information below.
   projects:
     create:
       success: Your Project was successfully created. Good Luck!
@@ -60,6 +70,14 @@ en:
       new:
         title: Create a new Account
         description: And get awesomely cool project management software
+    posts:
+      index:
+        title: Message Board
+        description: Send messages to your dystopian team!
+        new: New Post
+      new:
+        title: Add a Post
+        description: Write a really good dystopian message
     projects:
       index:
         title: Projects
@@ -69,3 +87,4 @@ en:
         description: "Create a Dystopian Project"
       show:
         title: Your Dystopian Project
+        posts: Show Posts

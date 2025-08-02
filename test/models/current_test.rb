@@ -18,4 +18,9 @@ class CurrentTest < ActiveSupport::TestCase
     Current.account = @account_user.account
     assert_equal @account_user.account, Current.account
   end
+
+  test "Current.project can be set" do
+    Current.project = projects(:project)
+    assert_equal projects(:project), Current.project
+  end
 end
