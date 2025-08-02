@@ -16,10 +16,6 @@ class Post < ApplicationRecord
   private
 
   def notify_new_post
-    NewPostNotifier.with(record: self).deliver(account_members_without_current_user)
-  end
-
-  def account_members_without_current_user
-    account.users.where.not(id: author_id)
+    NewPostNotifier.with(record: self).deliver(account.users)
   end
 end
