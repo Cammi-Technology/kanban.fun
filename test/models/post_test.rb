@@ -31,4 +31,15 @@ class PostTest < ActiveSupport::TestCase
     @post.valid?
     assert @post.errors.of_kind? :published, :blank
   end
+
+  test "should notify folks when created" do
+    assert_difference -> { Noticed::Notification.count } do
+      @post.title = "Hello World"
+      @post.content = "<p>Content</p>"
+      @post.author = account_users(:account_user)
+      @post.project = projects(:project)
+      @post.published = true
+      @post.save!
+    end
+  end
 end

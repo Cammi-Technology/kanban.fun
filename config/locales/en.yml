@@ -56,6 +56,10 @@ en:
     create:
       success: Your Post was successful
       error: There was an error creating your post. Please review the information below.
+  post_mailer:
+    new_post:
+      subject: A new post was added
+      title: A new post was added
   projects:
     create:
       success: Your Project was successfully created. Good Luck!
