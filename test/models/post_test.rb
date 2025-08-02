@@ -33,7 +33,7 @@ class PostTest < ActiveSupport::TestCase
   end
 
   test "should notify folks when created" do
-    assert_difference -> { Noticed::Notification.count } do
+    assert_changes -> { Noticed::Notification.count } do
       @post.title = "Hello World"
       @post.content = "<p>Content</p>"
       @post.author = account_users(:account_user)
