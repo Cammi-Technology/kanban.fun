@@ -72,8 +72,9 @@ en:
         description: And get awesomely cool project management software
     posts:
       index:
-        title: "Message Board"
+        title: Message Board
         description: Send messages to your dystopian team!
+        new: New Post
       new:
         title: Add a Post
         description: Write a really good dystopian message
@@ -86,3 +87,4 @@ en:
         description: "Create a Dystopian Project"
       show:
         title: Your Dystopian Project
+        posts: Show Posts

@@ -11,7 +11,16 @@ class PostsTest < ApplicationSystemTestCase
     sign_in_as(@account_owner)
     assert_current_path accounts_path, wait: true
 
-    visit new_account_project_post_url(@account, @project)
+    click_on @account.name
+    assert_current_path account_dashboard_path(@account), wait: true
+
+    click_on @project.name
+    assert_current_path account_project_path(@account, @project), wait: true
+
+    click_on t("views.projects.show.posts")
+    assert_current_path account_project_posts_path(@account, @project), wait: true
+
+    click_on t("views.posts.index.new")
     assert_current_path new_account_project_post_path(@account, @project), wait: true
 
     fill_in t("activerecord.attributes.post.title"), with: "Nuke Initiative for increasing crime in Detroit City"
