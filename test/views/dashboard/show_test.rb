@@ -6,7 +6,7 @@ class ViewsDashboardShowTest < ActiveSupport::TestCase
   include Rails.application.routes.url_helpers
 
   test "should not catch fire" do
-    Current.stubs(:account_user).returns(users(:account_owner))
+    Current.stubs(:account).returns(accounts(:account))
 
     assert_renders(Views::Dashboard::Show, projects: Project.all)
   end
