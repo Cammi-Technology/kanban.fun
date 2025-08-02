@@ -4,6 +4,10 @@ class DashboardsController < ApplicationController
 
     authorize account, :visit_dashboard?
 
-    render Views::Dashboard::Show.new
+    projects = policy_scope(Project).where(account: account)
+
+    render Views::Dashboard::Show.new(
+      projects: projects
+    )
   end
 end
