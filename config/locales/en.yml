@@ -34,6 +34,7 @@ en:
         name: Name
       post:
         title: Title
+        content: "Content"
       project:
         name: Name
         description: Description

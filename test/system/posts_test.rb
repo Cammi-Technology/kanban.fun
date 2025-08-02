@@ -18,9 +18,9 @@ class PostsTest < ApplicationSystemTestCase
     fill_in_rich_text_area "post_content", with: "Info about Nuke Initiative"
 
     click_on "Post this message"
-    save_and_open_screenshot
-    assert_current_path account_project_post_path(@account, @project, Post.last), wait: true
+
     assert_text t("posts.create.success")
+    assert_current_path account_project_post_path(@account, @project, Post.order(created_at: :asc).last), wait: true
     assert_text "Nuke Initiative for increasing crime in Detroit City"
     assert_text "Info about Nuke Initiative"
 

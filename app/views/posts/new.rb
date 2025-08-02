@@ -34,14 +34,8 @@ class Views::Posts::New < Views::Base
       end
 
       FormField do
-        FormLabel(for: "post_content") { t("activerecord.attributes.project.description") }
-        FormRichTextarea(
-          name: "post[content]",
-          id: "post_content",
-          required: false,
-          placeholder: t("placeholders.post.content"),
-          value: form.object.content
-        )
+        FormLabel(for: "post_content") { t("activerecord.attributes.post.content") }
+        form.rich_text_area :content
       end
 
       FormField do
