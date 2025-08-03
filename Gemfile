@@ -63,6 +63,9 @@ group :development do
 
   # run sensible things on commit
   gem "lefthook", "~> 1.11"
+
+  # page auto refresh
+  gem "hotwire-spark"
 end
 
 group :test do
