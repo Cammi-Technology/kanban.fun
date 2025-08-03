@@ -51,6 +51,7 @@ class Components::ApplicationLayout < Components::Base
           NavbarItem(
             href: accounts_path, icon: "gear-fill", label: "Account"
           )
+          NotificationBell()
         end
         main do
           yield
