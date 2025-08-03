@@ -14,7 +14,7 @@ class AccountUsersControllerTest < ActionDispatch::IntegrationTest
     body = JSON.parse(response.body)
 
     assert_equal 2, body.length
-    assert_equal users(:account_user).name, body[0]["name"]
+    assert_equal users(:account_user).name, body[0]["key"]
   end
 
   test "should filter users by name" do
@@ -26,6 +26,6 @@ class AccountUsersControllerTest < ActionDispatch::IntegrationTest
     body = JSON.parse(response.body)
 
     assert_equal 1, body.length
-    assert_equal users(:account_owner).name, body[0]["name"]
+    assert_equal users(:account_owner).name, body[0]["key"]
   end
 end
