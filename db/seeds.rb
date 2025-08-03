@@ -37,7 +37,7 @@ account = Account.create!(
   name: "Account Inc."
 )
 
-AccountUser.create!(
+account_user_owner = AccountUser.create!(
   user: account_owner,
   account: account
 )
@@ -45,4 +45,17 @@ AccountUser.create!(
 AccountUser.create!(
   user: account_user,
   account: account
+)
+
+project = Project.create!(
+  account: account,
+  name: "My very good project"
+)
+
+Post.create!(
+  project: project,
+  title: "Welcome to the project",
+  content: "<p>Welcome</p>",
+  author: account_user_owner,
+  published: true
 )
