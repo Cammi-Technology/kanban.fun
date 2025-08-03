@@ -1,4 +1,5 @@
 Rails.application.routes.draw do
+  resources :web_push_subscriptions, param: :endpoint, only: [ :create, :destroy ]
   namespace :authentications do
     resources :events, only: :index
   end
