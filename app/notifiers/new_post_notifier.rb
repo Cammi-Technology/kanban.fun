@@ -16,7 +16,7 @@ class NewPostNotifier < ApplicationNotifier
     config.if = :not_author?
   end
 
-  deliver_by :web_push, data_method: :web_push_message, class: "DeliveryMethods::WebPush"
+  deliver_by :web_push, data_method: :web_push_message, class: "DeliveryMethods::WebPush", if: :not_author?
 
   def not_author?(notification)
     notification.record.author.user != notification.recipient
