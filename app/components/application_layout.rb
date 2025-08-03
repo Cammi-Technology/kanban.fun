@@ -52,6 +52,7 @@ class Components::ApplicationLayout < Components::Base
             href: accounts_path, icon: "gear-fill", label: "Account"
           )
           NotificationBell()
+        plain Current.user&.email
         end
         main do
           yield
