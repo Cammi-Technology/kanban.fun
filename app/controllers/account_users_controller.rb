@@ -5,7 +5,13 @@ class AccountUsersController < ApplicationController
       .where(account: Current.account)
       .where("users.first_name || ' ' || users.last_name LIKE :query", query: "%#{params[:query]}%")
 
-    render json: account_users, only: [ :id ], methods: [ :name, :attachable_sgid ]
+    render json: account_users.map { |user|
+      {
+        key: user.name,
+        value: user.attachable_sgid,
+        content: "@#{user.name}"
+      }
+    }
   end
 
   private
