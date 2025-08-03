@@ -16,4 +16,16 @@ class AccountUsersControllerTest < ActionDispatch::IntegrationTest
     assert_equal 2, body.length
     assert_equal users(:account_user).name, body[0]["name"]
   end
+
+  test "should filter users by name" do
+    sign_in_as users(:account_user)
+    get account_project_account_users_path(accounts(:account), projects(:project), format: :json, query: "Account O")
+
+    assert_response :success
+
+    body = JSON.parse(response.body)
+
+    assert_equal 1, body.length
+    assert_equal users(:account_owner).name, body[0]["name"]
+  end
 end
