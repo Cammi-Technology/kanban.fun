@@ -16,25 +16,29 @@ class NewPostNotifier < ApplicationNotifier
     config.if = :not_author?
   end
 
+  deliver_by :web_push, data_method: :web_push_message, class: "DeliveryMethods::WebPush", if: :not_author?
+
   def not_author?(notification)
     notification.record.author.user != notification.recipient
   end
-  #
-  # bulk_deliver_by :slack do |config|
-  #   config.url = -> { Rails.application.credentials.slack_webhook_url }
-  # end
-  #
-  # deliver_by :custom do |config|
-  #   config.class = "MyDeliveryMethod"
-  # end
 
-  # Add required params
-  #
-  # required_param :message
+  notification_methods do
+    include ActionView::Helpers::TextHelper
 
-  # Compute recipients without having to pass them in
-  #
-  # recipients do
-  #   params[:record].thread.all_authors
-  # end
+    def title
+      truncate("#{record.author.user.name.familiar} posted #{record.title}", length: 50)
+    end
+
+    def message
+      @message ||= truncate(record.content.to_plain_text, length: 100)
+    end
+
+    def web_push_message
+      {
+        title: title,
+        body: message,
+        path: account_project_post_path(record.account, record.project, record)
+      }
+    end
+  end
 end

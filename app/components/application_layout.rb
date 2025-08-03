@@ -9,7 +9,8 @@ class Components::ApplicationLayout < Components::Base
   prop :page_info, ::PageInfo, :positional, reader: :private
 
   def view_template(&)
-    html do
+    doctype
+    html(lang: I18n.locale) do
       head do
         title { page_info.title }
         meta(name: "viewport", content: "width=device-width,initial-scale=1")
@@ -17,8 +18,10 @@ class Components::ApplicationLayout < Components::Base
         meta(name: "mobile-web-app-capable", content: "yes")
         csrf_meta_tags
         csp_meta_tag
-        # Enable PWA manifest for installable apps (make sure to enable in config/routes.rb too!)
-        # = tag.link rel: "manifest", href: pwa_manifest_path(format: :json)
+
+        link rel: "manifest", href: pwa_manifest_path(format: :json)
+        meta name: "vapid-public-key", content: Rails.application.credentials.dig(:web_push, :public_key)
+
         link(rel: "icon", href: "/icon.png", type: "image/png")
         link(rel: "icon", href: "/icon.svg", type: "image/svg+xml")
         link(rel: "apple-touch-icon", href: "/icon.png")
@@ -48,6 +51,7 @@ class Components::ApplicationLayout < Components::Base
           NavbarItem(
             href: accounts_path, icon: "gear-fill", label: "Account"
           )
+          NotificationBell()
         end
         main do
           yield

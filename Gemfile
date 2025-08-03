@@ -63,6 +63,9 @@ group :development do
 
   # run sensible things on commit
   gem "lefthook", "~> 1.11"
+
+  # page auto refresh
+  gem "hotwire-spark"
 end
 
 group :test do
@@ -96,3 +99,6 @@ gem "pwned"
 gem "name_of_person", "~> 1.1"
 
 gem "noticed", "~> 2.8"
+
+# Web Push support
+gem "web-push"

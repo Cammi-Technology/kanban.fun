@@ -79,6 +79,7 @@ en:
         title: Message Board
         description: Send messages to your dystopian team!
         new: New Post
+        no_posts: No posts, dear
       new:
         title: Add a Post
         description: Write a really good dystopian message

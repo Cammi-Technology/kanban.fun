@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2025_08_02_114325) do
+ActiveRecord::Schema[8.0].define(version: 2025_08_02_151512) do
   create_table "account_users", force: :cascade do |t|
     t.integer "account_id", null: false
     t.integer "user_id", null: false
@@ -98,6 +98,17 @@ ActiveRecord::Schema[8.0].define(version: 2025_08_02_114325) do
     t.index ["recipient_type", "recipient_id"], name: "index_noticed_notifications_on_recipient"
   end
 
+  create_table "noticed_web_push_subscriptions", force: :cascade do |t|
+    t.integer "user_id", null: false
+    t.string "endpoint", null: false
+    t.string "p256dh", null: false
+    t.string "auth", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["endpoint"], name: "index_noticed_web_push_subscriptions_on_endpoint", unique: true
+    t.index ["user_id"], name: "index_noticed_web_push_subscriptions_on_user_id"
+  end
+
   create_table "posts", force: :cascade do |t|
     t.string "title", null: false
     t.string "category"
@@ -164,6 +175,7 @@ ActiveRecord::Schema[8.0].define(version: 2025_08_02_114325) do
   add_foreign_key "active_storage_attachments", "active_storage_blobs", column: "blob_id"
   add_foreign_key "active_storage_variant_records", "active_storage_blobs", column: "blob_id"
   add_foreign_key "events", "users"
+  add_foreign_key "noticed_web_push_subscriptions", "users"
   add_foreign_key "posts", "account_users", column: "author_id"
   add_foreign_key "posts", "projects"
   add_foreign_key "projects", "accounts"

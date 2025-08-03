@@ -4,6 +4,7 @@ class User < ApplicationRecord
 
   has_many :accounts, dependent: :destroy, foreign_key: :owner_id, inverse_of: :owner
   has_many :account_users, dependent: :destroy
+  has_many :web_push_subscriptions, dependent: :destroy, class_name: "Noticed::WebPush::Subscription"
 
   generates_token_for :email_verification, expires_in: 2.days do
     email
