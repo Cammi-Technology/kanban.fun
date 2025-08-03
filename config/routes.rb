@@ -29,6 +29,7 @@ Rails.application.routes.draw do
   resources :accounts, only: [ :new, :index, :create ] do
     resource :dashboard, only: [ :show ]
     resources :projects, only: [ :index, :new, :create, :show ] do
+      resources :account_users, only: [ :index ]
       resources :posts, only: [ :index, :new, :create, :show ]
     end
   end
