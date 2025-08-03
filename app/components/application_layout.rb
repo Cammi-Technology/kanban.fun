@@ -9,7 +9,8 @@ class Components::ApplicationLayout < Components::Base
   prop :page_info, ::PageInfo, :positional, reader: :private
 
   def view_template(&)
-    html do
+    doctype
+    html(lang: I18n.locale) do
       head do
         title { page_info.title }
         meta(name: "viewport", content: "width=device-width,initial-scale=1")
