@@ -12,4 +12,6 @@ pin "@hotwired/stimulus-loading", to: "stimulus-loading.js"
 
 pin "@rails/request.js", to: "@rails--request.js.js" # @0.0.12
 
+pin "tributejs" # @5.1.3
+
 pin_all_from "app/javascript/controllers", under: "controllers"
