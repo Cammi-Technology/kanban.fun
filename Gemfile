@@ -80,7 +80,7 @@ gem "literal", "~> 1.8"
 gem "phlex", "~> 2.3"
 gem "pundit", "~> 2.5"
 gem "phlex-rails", "~> 2.3"
-gem "phlex-icons", "~> 2.24"
+gem "phlex-icons", "~> 2.32"
 
 # Raise errors on nil instance variables
 gem "strict_ivars", "~> 1.0", require: false
