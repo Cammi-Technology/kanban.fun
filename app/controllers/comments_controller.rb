@@ -3,7 +3,7 @@ class CommentsController < ApplicationController
 
   def create
     post = Current.project.posts.find(params[:post_id])
-    authorize (comment = post.comments.new(comment_params.merge(author: Current.account_user)))
+    authorize (comment = post.comments.new(comment_params.merge(author: Current.account_user))), :create?
 
     comment.save!
 
@@ -14,7 +14,7 @@ class CommentsController < ApplicationController
 
   def destroy
     post = Current.project.posts.find(params[:post_id])
-    authorize (comment = post.comments.find(params[:id]))
+    authorize (comment = post.comments.find(params[:id])), :destroy?
 
     comment.destroy!
 
