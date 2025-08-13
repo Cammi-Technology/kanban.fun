@@ -82,3 +82,27 @@ patch account_project_post_url(@account, @project, posts(:post)),
 ```
 
 For single line method calls, parentheses are optional.
+
+### Test Variable Assignment
+
+In test files, avoid creating unnecessary local variables:
+
+```ruby
+# Preferred - reuse setup instance variables or inline fixture calls
+def test_update
+  refute_permit(@account_owner_user, @post, :update)
+end
+
+# Preferred - use fixtures directly if only used once
+def test_create  
+  refute_permit(account_users(:other_user), @post, :create)
+end
+
+# Not preferred - unnecessary local variable assignment
+def test_update
+  account_owner_user = account_users(:account_owner)
+  refute_permit(account_owner_user, @post, :update)
+end
+```
+
+When the same fixture is used multiple times within a test class, assign it to an instance variable in the `setup` method rather than creating local variables in each test method.

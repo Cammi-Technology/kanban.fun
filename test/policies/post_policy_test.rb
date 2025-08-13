@@ -8,6 +8,7 @@ class PostPolicyTest < ActiveSupport::TestCase
     @other_accounts_post = posts(:other_users_post)
     @account_user = account_users(:account_user)
     @other_account_user = account_users(:other_account_owner)
+    @account_owner_user = account_users(:account_owner)
   end
 
   def test_scope
@@ -45,8 +46,7 @@ class PostPolicyTest < ActiveSupport::TestCase
     assert_permit(@account_user, @post, :edit)
     
     # Different user in same account cannot edit someone else's post
-    account_owner_user = account_users(:account_owner)
-    refute_permit(account_owner_user, @post, :edit)
+    refute_permit(@account_owner_user, @post, :edit)
     
     # User from different account cannot edit
     refute_permit(@other_account_user, @post, :edit)
@@ -57,8 +57,7 @@ class PostPolicyTest < ActiveSupport::TestCase
     assert_permit(@account_user, @post, :update)
     
     # Different user in same account cannot update someone else's post
-    account_owner_user = account_users(:account_owner)
-    refute_permit(account_owner_user, @post, :update)
+    refute_permit(@account_owner_user, @post, :update)
     
     # User from different account cannot update
     refute_permit(@other_account_user, @post, :update)
