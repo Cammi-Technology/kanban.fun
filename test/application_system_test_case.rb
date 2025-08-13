@@ -8,5 +8,11 @@ class ApplicationSystemTestCase < ActionDispatch::SystemTestCase
     fill_in "Email", with: user.email
     fill_in "Password", with: "Secret1*3*5*"
     click_on "Sign in"
+
+    if user.accounts.any?
+      assert_current_path accounts_path, wait: true
+    else
+      assert_current_path new_account_path, wait: true
+    end
   end
 end

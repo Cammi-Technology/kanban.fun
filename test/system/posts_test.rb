@@ -9,7 +9,6 @@ class PostsTest < ApplicationSystemTestCase
 
   test "should create post" do
     sign_in_as(@account_owner)
-    assert_current_path accounts_path, wait: true
 
     click_on @account.name
     assert_current_path account_dashboard_path(@account), wait: true
@@ -39,7 +38,6 @@ class PostsTest < ApplicationSystemTestCase
 
   test "should display comment form on post show page" do
     sign_in_as(@account_owner)
-    assert_current_path accounts_path, wait: true
 
     post = posts(:post)
     visit account_project_post_path(@account, @project, post)
@@ -52,7 +50,6 @@ class PostsTest < ApplicationSystemTestCase
 
   test "should create comment on post" do
     sign_in_as(@account_owner)
-    assert_current_path accounts_path, wait: true
 
     post = posts(:post)
     visit account_project_post_path(@account, @project, post)
@@ -95,7 +92,6 @@ class PostsTest < ApplicationSystemTestCase
   test "should not show edit link to non-author" do
     non_author = users(:account_owner)  # Different from post author
     sign_in_as(non_author)
-    assert_current_path accounts_path, wait: true
 
     post = posts(:post)  # This post is authored by account_user, not account_owner
     visit account_project_post_path(@account, @project, post)
