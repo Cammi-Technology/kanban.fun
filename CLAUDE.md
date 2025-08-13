@@ -31,13 +31,6 @@ This is a Rails 8 application called "Wokecamp" - a kanban-style project managem
 - **Pundit Authorization**: Policy-based authorization - always specify the action being tested explicitly rather than inferring it
 - **Phlex 2 Views**: All views, layouts, and components use Phlex 2 instead of ERB templates
 - **Multi-tenancy**: Account-scoped resources with `Current.account_user` context
-- **Comment** - Nested comments on posts (polymorphic record association)
-
-### Key Architectural Patterns
-- **Current Attributes**: Thread-local state management via `Current` class
-- **Pundit Authorization**: Policy-based authorization - always specify the action being tested explicitly rather than inferring it
-- **Phlex 2 Views**: All views, layouts, and components use Phlex 2 instead of ERB templates
-- **Multi-tenancy**: Account-scoped resources with `Current.account_user` context
 - **Record Association**: Shared polymorphic commenting functionality
 - **Noticed Notifications**: Web push notifications for new posts
 
