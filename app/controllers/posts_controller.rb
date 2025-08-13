@@ -35,6 +35,25 @@ class PostsController < ApplicationController
     )
   end
 
+  def edit
+    authorize (post = Current.project.posts.find(params[:id])), :edit?
+
+    render Views::Posts::New.new(
+      post: post
+    )
+  end
+
+  def update
+    authorize (post = Current.project.posts.find(params[:id])), :update?
+
+    post.update!(post_params)
+
+    redirect_to [ Current.account, Current.project, post ], notice: t(".success")
+  rescue ActiveRecord::RecordInvalid => e
+    render Views::Posts::New.new(
+      post: e.record
+    ), status: :unprocessable_entity
+  end
 
   private
 

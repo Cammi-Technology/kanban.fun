@@ -11,6 +11,12 @@ class PostPolicy < ApplicationPolicy
   def create? = new?
   def show? = new?
 
+  def edit?
+    user.account == record.project.account && user == record.author
+  end
+
+  def update? = edit?
+
   class Scope < ApplicationPolicy::Scope
     prop :user, AccountUser, :positional, reader: :public
     prop :scope, _Union(_Class(Post), ActiveRecord::Relation(Post)), :positional, reader: :private

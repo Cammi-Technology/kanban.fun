@@ -1,6 +1,8 @@
 # frozen_string_literal: true
 
 class Views::Base < Components::Base
+  register_value_helper :policy
+
   def around_template
     render Components::ApplicationLayout.new(page_info) do
       super

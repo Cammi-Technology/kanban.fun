@@ -8,7 +8,12 @@ module ComponentTestHelper
   end
 
   def controller
-    @controller ||= ActionView::TestCase::TestController.new
+    @controller ||= begin
+      controller = ActionView::TestCase::TestController.new
+      controller.class.include Pundit::Authorization
+      controller.define_singleton_method(:pundit_user) { Current.account_user || Current.user }
+      controller
+    end
   end
 
   # Asserts that the component renders without raising an error.

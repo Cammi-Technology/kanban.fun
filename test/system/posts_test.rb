@@ -65,4 +65,42 @@ class PostsTest < ApplicationSystemTestCase
     # Now verify comment is displayed
     assert_text "This is a test comment"
   end
+
+  test "should edit post when author" do
+    post_author = users(:account_user)
+    sign_in_as(post_author)
+
+    post = posts(:post)
+    visit account_project_post_path(@account, @project, post)
+    
+    # Edit link should be visible for the author
+    assert_text "Edit"
+    click_on "Edit"
+    
+    assert_current_path edit_account_project_post_path(@account, @project, post), wait: true
+    
+    # Update the post
+    fill_in t("activerecord.attributes.post.title"), with: "Updated Post Title"
+    fill_in_rich_text_area "post_content", with: "Updated post content"
+    
+    click_on "Post this message"
+    
+    # Verify redirect and success message
+    assert_text t("posts.update.success")
+    assert_current_path account_project_post_path(@account, @project, post), wait: true
+    assert_text "Updated Post Title"
+    assert_text "Updated post content"
+  end
+
+  test "should not show edit link to non-author" do
+    non_author = users(:account_owner)  # Different from post author
+    sign_in_as(non_author)
+    assert_current_path accounts_path, wait: true
+
+    post = posts(:post)  # This post is authored by account_user, not account_owner
+    visit account_project_post_path(@account, @project, post)
+    
+    # Edit link should not be visible for non-authors
+    assert_no_text "Edit"
+  end
 end

@@ -6,13 +6,21 @@ class Views::Posts::New < Views::Base
   prop :post, Post, reader: :private
 
   def view_template
-    p { t(".description") }
+    p { t(description_key) }
     show_form
   end
 
   private
 
-  def page_title = t(".title")
+  def page_title = t(title_key)
+
+  def title_key
+    post.persisted? ? "views.posts.edit.title" : ".title"
+  end
+
+  def description_key
+    post.persisted? ? "views.posts.edit.description" : ".description"
+  end
 
   def show_form
     form_with model: [ post.project.account, post.project, post ] do |form|

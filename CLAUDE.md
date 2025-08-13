@@ -62,3 +62,23 @@ This is a Rails 8 application called "Wokecamp" - a kanban-style project managem
 
 ### Git Hooks (Lefthook)
 Pre-commit runs linting, security scans, and autoloading checks. Pre-push runs full test suite and dependency audits.
+
+## Coding Style Guidelines
+
+### Ruby Method Calls Across Multiple Lines
+
+When method calls span multiple lines, use parentheses with the opening parenthesis on the same line as the method name:
+
+```ruby
+# Preferred
+patch(
+  account_project_post_url(@account, @project, posts(:post)),
+  params: { post: { title: "Updated Title", content: "Updated content" } }
+)
+
+# Not preferred  
+patch account_project_post_url(@account, @project, posts(:post)),
+      params: { post: { title: "Updated Title", content: "Updated content" } }
+```
+
+For single line method calls, parentheses are optional.
