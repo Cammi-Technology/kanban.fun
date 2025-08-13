@@ -64,8 +64,7 @@ class PostsTest < ApplicationSystemTestCase
   end
 
   test "should edit post when author" do
-    post_author = users(:account_user)
-    sign_in_as(post_author)
+    sign_in_as(users(:account_user))
 
     post = posts(:post)
     visit account_project_post_path(@account, @project, post)
@@ -90,8 +89,7 @@ class PostsTest < ApplicationSystemTestCase
   end
 
   test "should not show edit link to non-author" do
-    non_author = users(:account_owner)  # Different from post author
-    sign_in_as(non_author)
+    sign_in_as(users(:account_owner))  # Different from post author
 
     post = posts(:post)  # This post is authored by account_user, not account_owner
     visit account_project_post_path(@account, @project, post)
