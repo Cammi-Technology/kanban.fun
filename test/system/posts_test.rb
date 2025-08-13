@@ -72,19 +72,19 @@ class PostsTest < ApplicationSystemTestCase
 
     post = posts(:post)
     visit account_project_post_path(@account, @project, post)
-    
+
     # Edit link should be visible for the author
     assert_text "Edit"
     click_on "Edit"
-    
+
     assert_current_path edit_account_project_post_path(@account, @project, post), wait: true
-    
+
     # Update the post
     fill_in t("activerecord.attributes.post.title"), with: "Updated Post Title"
     fill_in_rich_text_area "post_content", with: "Updated post content"
-    
+
     click_on "Post this message"
-    
+
     # Verify redirect and success message
     assert_text t("posts.update.success")
     assert_current_path account_project_post_path(@account, @project, post), wait: true
@@ -99,7 +99,7 @@ class PostsTest < ApplicationSystemTestCase
 
     post = posts(:post)  # This post is authored by account_user, not account_owner
     visit account_project_post_path(@account, @project, post)
-    
+
     # Edit link should not be visible for non-authors
     assert_no_text "Edit"
   end

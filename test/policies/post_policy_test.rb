@@ -44,10 +44,10 @@ class PostPolicyTest < ActiveSupport::TestCase
   def test_edit
     # Author can edit their own post
     assert_permit(@account_user, @post, :edit)
-    
+
     # Different user in same account cannot edit someone else's post
     refute_permit(@account_owner_user, @post, :edit)
-    
+
     # User from different account cannot edit
     refute_permit(@other_account_user, @post, :edit)
   end
@@ -55,10 +55,10 @@ class PostPolicyTest < ActiveSupport::TestCase
   def test_update
     # Author can update their own post
     assert_permit(@account_user, @post, :update)
-    
+
     # Different user in same account cannot update someone else's post
     refute_permit(@account_owner_user, @post, :update)
-    
+
     # User from different account cannot update
     refute_permit(@other_account_user, @post, :update)
   end

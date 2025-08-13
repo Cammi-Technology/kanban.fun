@@ -5,13 +5,13 @@ class Views::Posts::Show < Views::Base
 
   def view_template
     h1 { post.title }
-    
+
     if policy(post).edit?
       div do
         a(href: edit_account_project_post_path(Current.account, Current.project, post)) { "Edit" }
       end
     end
-    
+
     raw safe(post.content.to_s)
 
     div do
