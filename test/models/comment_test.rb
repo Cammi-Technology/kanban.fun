@@ -18,7 +18,7 @@ class CommentTest < ActiveSupport::TestCase
     assert_equal comments(:comment).author, account_users(:account_user)
   end
 
-  test "belongs to commentable" do
-    assert_equal comments(:comment).commentable, posts(:post)
+  test "belongs to record" do
+    assert_equal comments(:comment).record, posts(:post)
   end
 end

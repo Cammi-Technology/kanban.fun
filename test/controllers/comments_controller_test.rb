@@ -66,7 +66,7 @@ class CommentsControllerTest < ActionDispatch::IntegrationTest
 
     other_comment = Comment.create!(
       author: account_users(:other_account_owner),
-      commentable: @other_accounts_post,
+      record: @other_accounts_post,
       content: "Bar"
     )
 
