@@ -56,6 +56,11 @@ en:
     create:
       success: Your Post was successful
       error: There was an error creating your post. Please review the information below.
+  comments:
+    create:
+      success: Your Comment was successfully created
+    destroy:
+      success: Your Comment was successfully removed
   post_mailer:
     new_post:
       subject: A new post was added

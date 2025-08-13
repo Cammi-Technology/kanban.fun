@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2025_08_02_151513) do
+ActiveRecord::Schema[8.0].define(version: 2025_08_13_155934) do
   create_table "account_users", force: :cascade do |t|
     t.integer "account_id", null: false
     t.integer "user_id", null: false
@@ -68,12 +68,12 @@ ActiveRecord::Schema[8.0].define(version: 2025_08_02_151513) do
 
   create_table "comments", force: :cascade do |t|
     t.integer "author_id", null: false
-    t.string "commentable_type", null: false
-    t.integer "commentable_id", null: false
+    t.string "record_type", null: false
+    t.integer "record_id", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["author_id"], name: "index_comments_on_author_id"
-    t.index ["commentable_type", "commentable_id"], name: "index_comments_on_commentable"
+    t.index ["record_type", "record_id"], name: "index_comments_on_record"
   end
 
   create_table "events", force: :cascade do |t|

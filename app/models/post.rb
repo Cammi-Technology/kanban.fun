@@ -1,4 +1,6 @@
 class Post < ApplicationRecord
+  include Commentable
+
   belongs_to :author, class_name: "AccountUser", foreign_key: "author_id"
   belongs_to :project
 
