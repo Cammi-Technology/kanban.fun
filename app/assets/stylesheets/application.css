@@ -65,3 +65,33 @@ body > main {
   min-width: 0;
 }
 
+/* Tribute styles */
+ .tribute-container {
+   border-radius: 4px;
+   z-index: 100;
+   background-color: #FFFFFF;
+   border: 1px solid rgba(0, 0, 0, 0.1);
+   box-shadow: 0 0 4px rgba(0, 0, 0, 0.1), 0 5px 20px rgba(0, 0, 0, 0.05);
+ }
+
+ .tribute-container ul {
+   list-style: none;
+   margin: 0;
+   padding: 0;
+ }
+
+ .tribute-container li {
+   background: #fff;
+   padding: 0.2em 1em;
+   min-width: 15em;
+   max-width: 100%;
+ }
+
+ .tribute-container .highlight {
+   background-color: #0ea5e9;
+   color: #fff;
+ }
+
+ .tribute-container .highlight span {
+   font-weight: bold;
+ }

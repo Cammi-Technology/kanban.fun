@@ -35,7 +35,7 @@ class Views::Posts::New < Views::Base
 
       FormField do
         FormLabel(for: "post_content") { t("activerecord.attributes.post.content") }
-        form.rich_text_area :content
+        form.rich_text_area :content, data: { controller: "mentions", mentions_target: "input", mentions_url_value: account_project_account_users_path(Current.account, Current.project, format: :json) }
       end
 
       FormField do

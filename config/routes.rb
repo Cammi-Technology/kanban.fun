@@ -27,8 +27,10 @@ Rails.application.routes.draw do
   post "sign_up", to: "registrations#create"
 
   resources :accounts, only: [ :new, :index, :create ] do
+    resources :account_users, only: [ :show ]
     resource :dashboard, only: [ :show ]
     resources :projects, only: [ :index, :new, :create, :show ] do
+      resources :account_users, only: [ :index ]
       resources :posts, only: [ :index, :new, :create, :show ]
     end
   end
