@@ -24,7 +24,7 @@ class PostsController < ApplicationController
   rescue ActiveRecord::RecordInvalid => e
     render Views::Posts::New.new(
       post: e.record
-    ), status: :unprocessable_entity
+    ), status: :unprocessable_content
   end
 
   def show
@@ -52,7 +52,7 @@ class PostsController < ApplicationController
   rescue ActiveRecord::RecordInvalid => e
     render Views::Posts::New.new(
       post: e.record
-    ), status: :unprocessable_entity
+    ), status: :unprocessable_content
   end
 
   private

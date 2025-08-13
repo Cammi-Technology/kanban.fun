@@ -65,6 +65,6 @@ class ProjectsControllerTest < ActionDispatch::IntegrationTest
       post account_projects_url(@account), params: { project: { name: "" } }
     end
 
-    assert_response :unprocessable_entity
+    assert_response :unprocessable_content
   end
 end

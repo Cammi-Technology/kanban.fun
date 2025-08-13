@@ -69,7 +69,7 @@ class PostsControllerTest < ActionDispatch::IntegrationTest
       post account_project_posts_url(@account, @project), params: { post: { title: "New Post" } }
     end
 
-    assert_response :unprocessable_entity
+    assert_response :unprocessable_content
   end
 
   test "should get show when signed in" do
@@ -140,6 +140,6 @@ class PostsControllerTest < ActionDispatch::IntegrationTest
     sign_in_as(@account_user)
     patch account_project_post_url(@account, @project, posts(:post)),
           params: { post: { title: "" } }
-    assert_response :unprocessable_entity
+    assert_response :unprocessable_content
   end
 end

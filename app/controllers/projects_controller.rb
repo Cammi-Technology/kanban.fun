@@ -40,7 +40,7 @@ class ProjectsController < ApplicationController
   rescue ActiveRecord::RecordInvalid => e
     render Views::Projects::New.new(
       project: e.record
-    ), status: :unprocessable_entity
+    ), status: :unprocessable_content
   end
 
   private

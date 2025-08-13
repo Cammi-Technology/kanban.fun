@@ -42,7 +42,7 @@ class CommentsControllerTest < ActionDispatch::IntegrationTest
       post account_project_post_comments_url(@account, @project, @post), params: { comment: { content: "" } }
     end
 
-    assert_response :unprocessable_entity
+    assert_response :unprocessable_content
   end
 
   test "should destroy comment when signed in" do

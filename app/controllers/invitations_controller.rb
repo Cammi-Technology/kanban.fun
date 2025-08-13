@@ -10,7 +10,7 @@ class InvitationsController < ApplicationController
       send_invitation_instructions
       redirect_to new_invitation_path, notice: "An invitation email has been sent to #{@user.email}"
     else
-      render :new, status: :unprocessable_entity
+      render :new, status: :unprocessable_content
     end
   end
 
