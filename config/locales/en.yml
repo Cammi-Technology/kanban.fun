@@ -56,6 +56,8 @@ en:
     create:
       success: Your Post was successful
       error: There was an error creating your post. Please review the information below.
+    update:
+      success: Your Post was successfully updated
   comments:
     create:
       success: Your Comment was successfully created
@@ -88,6 +90,9 @@ en:
       new:
         title: Add a Post
         description: Write a really good dystopian message
+      edit:
+        title: Edit Post
+        description: Update your dystopian message
     projects:
       index:
         title: Projects

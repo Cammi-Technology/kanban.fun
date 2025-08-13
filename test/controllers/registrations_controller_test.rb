@@ -21,6 +21,14 @@ class RegistrationsControllerTest < ActionDispatch::IntegrationTest
   end
 
   test "should send welcome email" do
-    skip "not yet implemented"
+    assert_emails 1 do
+      post sign_up_url, params: {
+        email: "newuser@hey.com",
+        password: "Secret1*3*5*",
+        password_confirmation: "Secret1*3*5*",
+        first_name: "New",
+        last_name: "User"
+      }
+    end
   end
 end

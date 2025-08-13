@@ -16,7 +16,7 @@ class AccountsController < ApplicationController
     redirect_to account_dashboard_path(@account), notice: t(".success"), status: :see_other
   rescue ActiveRecord::RecordInvalid => e
     flash.now[:alert] = t(".error")
-    render Views::Accounts::New.new(account: e.record), status: :unprocessable_entity
+    render Views::Accounts::New.new(account: e.record), status: :unprocessable_content
   end
 
   def index

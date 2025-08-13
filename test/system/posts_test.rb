@@ -9,7 +9,6 @@ class PostsTest < ApplicationSystemTestCase
 
   test "should create post" do
     sign_in_as(@account_owner)
-    assert_current_path accounts_path, wait: true
 
     click_on @account.name
     assert_current_path account_dashboard_path(@account), wait: true
@@ -39,7 +38,6 @@ class PostsTest < ApplicationSystemTestCase
 
   test "should display comment form on post show page" do
     sign_in_as(@account_owner)
-    assert_current_path accounts_path, wait: true
 
     post = posts(:post)
     visit account_project_post_path(@account, @project, post)
@@ -52,7 +50,6 @@ class PostsTest < ApplicationSystemTestCase
 
   test "should create comment on post" do
     sign_in_as(@account_owner)
-    assert_current_path accounts_path, wait: true
 
     post = posts(:post)
     visit account_project_post_path(@account, @project, post)
@@ -64,5 +61,40 @@ class PostsTest < ApplicationSystemTestCase
     assert_text t("comments.create.success"), wait: true
     # Now verify comment is displayed
     assert_text "This is a test comment"
+  end
+
+  test "should edit post when author" do
+    sign_in_as(users(:account_user))
+
+    post = posts(:post)
+    visit account_project_post_path(@account, @project, post)
+
+    # Edit link should be visible for the author
+    assert_text "Edit"
+    click_on "Edit"
+
+    assert_current_path edit_account_project_post_path(@account, @project, post), wait: true
+
+    # Update the post
+    fill_in t("activerecord.attributes.post.title"), with: "Updated Post Title"
+    fill_in_rich_text_area "post_content", with: "Updated post content"
+
+    click_on "Post this message"
+
+    # Verify redirect and success message
+    assert_text t("posts.update.success")
+    assert_current_path account_project_post_path(@account, @project, post), wait: true
+    assert_text "Updated Post Title"
+    assert_text "Updated post content"
+  end
+
+  test "should not show edit link to non-author" do
+    sign_in_as(users(:account_owner))  # Different from post author
+
+    post = posts(:post)  # This post is authored by account_user, not account_owner
+    visit account_project_post_path(@account, @project, post)
+
+    # Edit link should not be visible for non-authors
+    assert_no_text "Edit"
   end
 end

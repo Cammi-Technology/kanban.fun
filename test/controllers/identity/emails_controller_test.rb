@@ -26,7 +26,7 @@ class Identity::EmailsControllerTest < ActionDispatch::IntegrationTest
     sign_in_as @user
     patch identity_email_url, params: { email: "new_email@hey.com", password_challenge: "SecretWrong1*3" }
 
-    assert_response :unprocessable_entity
+    assert_response :unprocessable_content
     assert_select "li", /Password challenge is invalid/
   end
 

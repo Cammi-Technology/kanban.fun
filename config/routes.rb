@@ -31,7 +31,7 @@ Rails.application.routes.draw do
     resource :dashboard, only: [ :show ]
     resources :projects, only: [ :index, :new, :create, :show ] do
       resources :account_users, only: [ :index ]
-      resources :posts, only: [ :index, :new, :create, :show ] do
+      resources :posts, only: [ :index, :new, :create, :show, :edit, :update ] do
         resources :comments, only: %i[create destroy]
       end
     end

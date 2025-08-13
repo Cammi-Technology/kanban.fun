@@ -62,3 +62,47 @@ This is a Rails 8 application called "Wokecamp" - a kanban-style project managem
 
 ### Git Hooks (Lefthook)
 Pre-commit runs linting, security scans, and autoloading checks. Pre-push runs full test suite and dependency audits.
+
+## Coding Style Guidelines
+
+### Ruby Method Calls Across Multiple Lines
+
+When method calls span multiple lines, use parentheses with the opening parenthesis on the same line as the method name:
+
+```ruby
+# Preferred
+patch(
+  account_project_post_url(@account, @project, posts(:post)),
+  params: { post: { title: "Updated Title", content: "Updated content" } }
+)
+
+# Not preferred  
+patch account_project_post_url(@account, @project, posts(:post)),
+      params: { post: { title: "Updated Title", content: "Updated content" } }
+```
+
+For single line method calls, parentheses are optional.
+
+### Test Variable Assignment
+
+In test files, avoid creating unnecessary local variables:
+
+```ruby
+# Preferred - reuse setup instance variables or inline fixture calls
+def test_update
+  refute_permit(@account_owner_user, @post, :update)
+end
+
+# Preferred - use fixtures directly if only used once
+def test_create  
+  refute_permit(account_users(:other_user), @post, :create)
+end
+
+# Not preferred - unnecessary local variable assignment
+def test_update
+  account_owner_user = account_users(:account_owner)
+  refute_permit(account_owner_user, @post, :update)
+end
+```
+
+When the same fixture is used multiple times within a test class, assign it to an instance variable in the `setup` method rather than creating local variables in each test method.

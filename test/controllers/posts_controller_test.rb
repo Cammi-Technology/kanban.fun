@@ -69,7 +69,7 @@ class PostsControllerTest < ActionDispatch::IntegrationTest
       post account_project_posts_url(@account, @project), params: { post: { title: "New Post" } }
     end
 
-    assert_response :unprocessable_entity
+    assert_response :unprocessable_content
   end
 
   test "should get show when signed in" do
@@ -82,5 +82,64 @@ class PostsControllerTest < ActionDispatch::IntegrationTest
 
     get account_project_post_url(@other_users_account, @other_accounts_project, posts(:post))
     assert_response :not_found
+  end
+
+  test "should get edit when author" do
+    get edit_account_project_post_url(@account, @project, posts(:post))
+    assert_requires_authentication
+
+    # Author can edit their own post
+    sign_in_as(@account_user)
+    get edit_account_project_post_url(@account, @project, posts(:post))
+    assert_response :success
+
+    # Different user in same account cannot edit
+    sign_in_as(@account_owner)
+    assert_raises(Pundit::NotAuthorizedError) do
+      get edit_account_project_post_url(@account, @project, posts(:post))
+    end
+
+    # User from different account cannot edit
+    sign_in_as(users(:other_account_owner))
+    get edit_account_project_post_url(@account, @project, posts(:post))
+    assert_response :not_found
+  end
+
+  test "should update post when author" do
+    patch account_project_post_url(@account, @project, posts(:post))
+    assert_requires_authentication
+
+    # Author can update their own post
+    sign_in_as(@account_user)
+    patch(
+      account_project_post_url(@account, @project, posts(:post)),
+      params: { post: { title: "Updated Title", content: "Updated content", published: "true" } }
+    )
+    assert_redirected_to account_project_post_url(@account, @project, posts(:post))
+    assert_equal "Updated Title", posts(:post).reload.title
+
+    # Different user in same account cannot update
+    sign_in_as(@account_owner)
+    assert_raises(Pundit::NotAuthorizedError) do
+      patch(
+        account_project_post_url(@account, @project, posts(:post)),
+        params: { post: { title: "Hacked Title" } }
+      )
+    end
+
+    # User from different account cannot update
+    sign_in_as(users(:other_account_owner))
+    patch(
+      account_project_post_url(@account, @project, posts(:post)),
+      params: { post: { title: "Hacked Title" } }
+    )
+    assert_response :not_found
+  end
+
+  test "should not update post with invalid params" do
+    sign_in_as(@account_user)
+    patch account_project_post_url(@account, @project, posts(:post)),
+          params: { post: { title: "" } }
+    assert_response :unprocessable_content
   end
 end

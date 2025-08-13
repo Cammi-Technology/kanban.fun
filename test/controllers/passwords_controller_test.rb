@@ -31,7 +31,7 @@ class PasswordsControllerTest < ActionDispatch::IntegrationTest
     sign_in_as @user
     patch password_url, params: { password_challenge: "SecretWrong1*3", password: "Secret6*4*2*", password_confirmation: "Secret6*4*2*" }
 
-    assert_response :unprocessable_entity
+    assert_response :unprocessable_content
     assert_select "li", /Password challenge is invalid/
   end
 end

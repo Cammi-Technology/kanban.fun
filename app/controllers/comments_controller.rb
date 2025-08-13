@@ -9,7 +9,7 @@ class CommentsController < ApplicationController
 
     redirect_to [ Current.account, Current.project, post ], notice: t(".success")
   rescue ActiveRecord::RecordInvalid
-    render Views::Posts::Show.new(post: post), status: :unprocessable_entity
+    render Views::Posts::Show.new(post: post), status: :unprocessable_content
   end
 
   def destroy

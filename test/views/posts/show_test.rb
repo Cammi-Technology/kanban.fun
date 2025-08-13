@@ -8,9 +8,11 @@ class ViewsPostsShowTest < ActiveSupport::TestCase
   setup do
     @account = accounts(:account)
     @project = projects(:project)
+    @account_user = account_users(:account_user)
 
     Current.stubs(:account).returns(@account)
     Current.stubs(:project).returns(@project)
+    Current.stubs(:account_user).returns(@account_user)
   end
 
   test "should not catch fire" do
