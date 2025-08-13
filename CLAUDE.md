@@ -57,6 +57,9 @@ This is a Rails 8 application called "Wokecamp" - a kanban-style project managem
 - **Tribute.js**: @mentions functionality with SGID attachments
 - **Web Push**: Browser notifications
 
+### Components
+- **CommentForm**: Reusable component for creating and editing comments with mentions support. Accepts `record` (polymorphic) and optional `comment` parameters. Handles both new comment creation and existing comment editing.
+
 ### Testing Setup
 - Minitest with parallel execution
 - System tests with Capybara/Selenium
