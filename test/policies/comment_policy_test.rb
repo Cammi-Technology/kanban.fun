@@ -10,7 +10,7 @@ class CommentPolicyTest < ActiveSupport::TestCase
     @other_accounts_post = posts(:other_users_post)
     @other_accounts_comment = Comment.create!(
       author: @other_account_user,
-      commentable: @other_accounts_post,
+      record: @other_accounts_post,
       content: "Other"
     )
   end

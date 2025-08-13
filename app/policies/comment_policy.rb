@@ -10,13 +10,13 @@ class CommentPolicy < ApplicationPolicy
     prop :scope, _Union(_Class(Comment), ActiveRecord::Relation(Comment)), :positional, reader: :private
 
     def resolve
-      scope.where(commentable: Post.where(project: user.account.projects))
+      scope.where(record: Post.where(project: user.account.projects))
     end
   end
 
   private
 
   def same_account?
-    record.commentable.project.account == user.account
+    record.record.project.account == user.account
   end
 end

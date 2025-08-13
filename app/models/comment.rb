@@ -1,6 +1,6 @@
 class Comment < ApplicationRecord
   belongs_to :author, class_name: "AccountUser"
-  belongs_to :commentable, polymorphic: true
+  belongs_to :record, polymorphic: true
 
   has_rich_text :content
 
