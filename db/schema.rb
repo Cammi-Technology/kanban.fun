@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2025_08_02_151512) do
+ActiveRecord::Schema[8.0].define(version: 2025_08_02_151513) do
   create_table "account_users", force: :cascade do |t|
     t.integer "account_id", null: false
     t.integer "user_id", null: false
@@ -64,6 +64,16 @@ ActiveRecord::Schema[8.0].define(version: 2025_08_02_151512) do
     t.bigint "blob_id", null: false
     t.string "variation_digest", null: false
     t.index ["blob_id", "variation_digest"], name: "index_active_storage_variant_records_uniqueness", unique: true
+  end
+
+  create_table "comments", force: :cascade do |t|
+    t.integer "author_id", null: false
+    t.string "commentable_type", null: false
+    t.integer "commentable_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["author_id"], name: "index_comments_on_author_id"
+    t.index ["commentable_type", "commentable_id"], name: "index_comments_on_commentable"
   end
 
   create_table "events", force: :cascade do |t|
@@ -174,6 +184,7 @@ ActiveRecord::Schema[8.0].define(version: 2025_08_02_151512) do
   add_foreign_key "accounts", "users", column: "owner_id"
   add_foreign_key "active_storage_attachments", "active_storage_blobs", column: "blob_id"
   add_foreign_key "active_storage_variant_records", "active_storage_blobs", column: "blob_id"
+  add_foreign_key "comments", "account_users", column: "author_id"
   add_foreign_key "events", "users"
   add_foreign_key "noticed_web_push_subscriptions", "users"
   add_foreign_key "posts", "account_users", column: "author_id"
