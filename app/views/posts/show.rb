@@ -12,13 +12,15 @@ class Views::Posts::Show < Views::Base
       end
     end
 
-    raw safe(post.content.to_s)
+    div(data_controller: "syntax-highlight") do
+      raw safe(post.content.to_s)
+    end
 
     div do
       h2 { "Comments" }
 
       post.comments.each do |comment|
-        div do
+        div(data_controller: "syntax-highlight") do
           raw safe(comment.content.to_s)
         end
       end
