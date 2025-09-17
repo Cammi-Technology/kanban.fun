@@ -62,7 +62,7 @@ group :development do
   gem "authentication-zero", "~> 4.0"
 
   # run sensible things on commit
-  gem "lefthook", "~> 1.11"
+  gem "lefthook", "~> 1.13"
 
   # page auto refresh
   gem "hotwire-spark"
