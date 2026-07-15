@@ -3,6 +3,11 @@ module ComponentTestHelper
     view_context.render(*args, **kwargs, &block)
   end
 
+  def render_fragment(component)
+    html = view_context.render(component)
+    Nokogiri::HTML5.fragment(html)
+  end
+
   def view_context
     controller.view_context
   end

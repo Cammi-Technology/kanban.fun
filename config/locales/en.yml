@@ -73,6 +73,16 @@ en:
   components:
     button:
       button_text: Submit
+    project_dropdown:
+      trigger: Projects
+      shortcuts_label: Project shortcuts
+      posts: Posts
+      title: Jump to a project
+      close: Close
+      close_label: Close project switcher
+      projects_label: Projects
+      current_project: Current project
+      open_project: Open project
   views:
     accounts:
       index:

@@ -12,7 +12,7 @@ class ProjectsController < ApplicationController
   end
 
   def new
-    project = Current.account.projects.new
+    project = Project.new(account: Current.account)
 
     authorize(project, :new?)
 
@@ -30,7 +30,7 @@ class ProjectsController < ApplicationController
 
   def create
     authorize(
-      project = Current.account.projects.new(project_params),
+      project = Project.new(project_params.merge(account: Current.account)),
       :create?
     )
 

@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
 class Components::ApplicationLayout < Components::Base
+  include Phlex::Rails::Helpers::ButtonTo
   include Phlex::Rails::Helpers::CSRFMetaTags
   include Phlex::Rails::Helpers::CSPMetaTag
   include Phlex::Rails::Helpers::JavascriptImportmapTags
@@ -39,26 +40,78 @@ class Components::ApplicationLayout < Components::Base
             plain flash[:alert]
           end
         end
-        nav do
-          NavbarItem(
-            href: root_path, icon: "house-door-fill", label: "Home"
-          )
+        header(class: "app-shell__header") do
+          if Current.account
+            ProjectDropdown(projects: Current.account.projects)
+          end
         end
-        header do
-          NavbarItem(
-            href: account_projects_path(Current.account), icon: "stack", label: "Projects"
-          ) if Current.account
-          NavbarItem(
-            href: accounts_path, icon: "gear-fill", label: "Account"
-          )
-          NotificationBell()
-        plain Current.user&.email
-        end
-        main do
+        main(class: "app-shell__main") do
           yield
         end
-        footer do
-          plain "footer"
+        footer(class: "app-shell__footer") do
+          if Current.user
+            div(class: "app-shell__footer-user-menu", data: { controller: "footer-user-menu" }) do
+              button(
+                type: "button",
+                class: "app-shell__footer-user-trigger",
+                aria: { haspopup: "dialog", expanded: "false" },
+                data: {
+                  action: "footer-user-menu#open",
+                  footer_user_menu_target: "trigger"
+                }
+              ) do
+                div(class: "app-shell__footer-avatar", aria: { hidden: "true" }) do
+                  plain Current.user.first_name.to_s.first&.upcase || Current.user.email.to_s.first&.upcase || "U"
+                end
+
+                div(class: "app-shell__footer-user-meta") do
+                  p(class: "app-shell__footer-user-name") do
+                    plain Current.user.first_name.presence || Current.user.email
+                  end
+                  p(class: "app-shell__footer-user-email") { Current.user.email }
+                end
+
+                span(class: "app-shell__footer-user-trigger-icon", aria: { hidden: "true" }) do
+                  Icon("bootstrap/chevron-down")
+                end
+              end
+
+              dialog(
+                class: "app-shell__footer-user-dialog",
+                aria: { labelledby: "footer-user-menu-title" },
+                data: {
+                  action: "click->footer-user-menu#backdropClose cancel->footer-user-menu#cancel close->footer-user-menu#closed",
+                  footer_user_menu_target: "dialog"
+                }
+              ) do
+                div(class: "app-shell__footer-user-panel") do
+                  div(class: "app-shell__footer-user-panel-header") do
+                    h2(id: "footer-user-menu-title", class: "app-shell__footer-user-panel-title") do
+                      plain Current.user.first_name.presence || Current.user.email
+                    end
+                    p(class: "app-shell__footer-user-panel-subtitle") { Current.user.email }
+                  end
+
+                  nav(aria: { label: "User menu" }, class: "app-shell__footer-user-panel-nav") do
+                    a(href: accounts_path, class: "app-shell__footer-user-panel-link") { "Accounts" }
+                    a(href: edit_identity_email_path, class: "app-shell__footer-user-panel-link") { "Email settings" }
+                    a(href: edit_password_path, class: "app-shell__footer-user-panel-link") { "Password" }
+                    a(href: sessions_path, class: "app-shell__footer-user-panel-link") { "Sessions" }
+                  end
+
+                  div(class: "app-shell__footer-user-panel-actions") do
+                    button_to("Log out", Current.session, method: :delete, class: "app-shell__footer-user-panel-button")
+                  end
+                end
+              end
+            end
+
+            div(class: "app-shell__footer-links") do
+              a(href: accounts_path, class: "app-shell__footer-link") { "Accounts" }
+              a(href: edit_password_path, class: "app-shell__footer-link") { "Password" }
+              a(href: sessions_path, class: "app-shell__footer-link") { "Sessions" }
+            end
+          end
         end
       end
     end
