@@ -10,7 +10,9 @@ class Views::Projects::Index < Views::Base
     ul do
       projects.each do |project|
         li do
-          a(href: account_project_path(project.account, project)) { project.name }
+          a(href: account_project_path(project.account, project)) do
+            project.name
+          end
         end
       end
     end
