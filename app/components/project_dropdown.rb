@@ -23,7 +23,7 @@ class Components::ProjectDropdown < Components::Base
       ) do
         span(
           class: "project-dropdown__trigger-label"
-        ) { current_project&.name || "Projects" }
+        ) { current_project&.name || t("components.project_dropdown.trigger") }
         span(
           class: "project-dropdown__trigger-icon",
           aria: { hidden: "true" }
@@ -45,7 +45,7 @@ class Components::ProjectDropdown < Components::Base
         div(class: "project-dropdown__content") do
           if current_project
             nav(
-              aria: { label: "Project shortcuts" },
+              aria: { label: t("components.project_dropdown.shortcuts_label") },
               class: "project-dropdown__quick-actions"
             ) do
               a(
@@ -60,7 +60,7 @@ class Components::ProjectDropdown < Components::Base
                 end
                 span(
                   class: "project-dropdown__quick-action-label"
-                ) { "Posts" }
+                ) { t("components.project_dropdown.posts") }
               end
             end
           end
@@ -69,20 +69,20 @@ class Components::ProjectDropdown < Components::Base
             h2(
               id: "project-dropdown-title",
               class: "project-dropdown__title"
-            ) { "Jump to a project" }
+            ) { t("components.project_dropdown.title") }
 
             button(
               type: "button",
               class: "project-dropdown__close",
-              aria: { label: "Close project switcher" },
+              aria: { label: t("components.project_dropdown.close_label") },
               data_action: "project-navigation-dropdown#close"
             ) do
-              plain "Close"
+              plain t("components.project_dropdown.close")
             end
           end
 
           nav(
-            aria: { label: "Projects" },
+            aria: { label: t("components.project_dropdown.projects_label") },
             class: "project-dropdown__nav"
           ) do
             ul(class: "project-dropdown__list") do
@@ -119,7 +119,11 @@ class Components::ProjectDropdown < Components::Base
             class: "project-dropdown__link-title"
           ) { project.name }
           span(class: "project-dropdown__link-meta") do
-            current_project?(project) ? "Current project" : "Open project"
+            if current_project?(project)
+              t("components.project_dropdown.current_project")
+            else
+              t("components.project_dropdown.open_project")
+            end
           end
         end
       end
