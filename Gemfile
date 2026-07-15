@@ -1,7 +1,7 @@
 source "https://rubygems.org"
 
 # Bundle edge Rails instead: gem "rails", github: "rails/rails", branch: "main"
-gem "rails", "~> 8.0.2"
+gem "rails", "~> 8.1.0"
 # The modern asset pipeline for Rails [https://github.com/rails/propshaft]
 gem "propshaft"
 # Use sqlite3 as the database for Active Record
@@ -38,7 +38,7 @@ gem "kamal", require: false
 gem "thruster", require: false
 
 # Use Active Storage variants [https://guides.rubyonrails.org/active_storage_overview.html#transforming-images]
-gem "image_processing", "~> 1.2"
+gem "image_processing", "~> 2.0"
 
 group :development, :test do
   # See https://guides.rubyonrails.org/debugging_rails_applications.html#debugging-with-the-debug-gem
@@ -62,7 +62,7 @@ group :development do
   gem "authentication-zero", "~> 4.0"
 
   # run sensible things on commit
-  gem "lefthook", "~> 1.11"
+  gem "lefthook", "~> 2.1"
 
   # page auto refresh
   gem "hotwire-spark"
@@ -98,7 +98,7 @@ gem "pwned"
 
 gem "name_of_person", "~> 1.1"
 
-gem "noticed", "~> 2.8"
+gem "noticed", "~> 3.0"
 
 # Web Push support
 gem "web-push"
