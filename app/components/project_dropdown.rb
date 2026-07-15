@@ -99,8 +99,6 @@ class Components::ProjectDropdown < Components::Base
   private
 
   def project_row(project)
-    return unless project.persisted?
-
     li(class: "project-dropdown__item") do
       a(
         href: account_project_path(Current.account, project),
