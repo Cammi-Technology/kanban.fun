@@ -40,9 +40,9 @@ class Views::Posts::Show < Views::Base
         section(class: "posts-show__comments") do
           h2(class: "posts-show__comments-title") { "Comments" }
 
-          if post.comments.any?
+          if persisted_comments.any?
             ul(class: "posts-show__comments-list") do
-              post.comments.each do |comment|
+              persisted_comments.each do |comment|
                 li(class: "posts-show__comment") do
                   Avatar(
                     name: comment.author.name,
@@ -78,6 +78,10 @@ class Views::Posts::Show < Views::Base
   end
 
   private
+
+  def persisted_comments
+    @persisted_comments ||= post.comments.select(&:persisted?)
+  end
 
   def formatted_date(record)
     record.created_at.strftime("%b %-d")
