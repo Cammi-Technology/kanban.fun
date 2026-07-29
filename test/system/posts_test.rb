@@ -79,7 +79,7 @@ class PostsTest < ApplicationSystemTestCase
     fill_in t("activerecord.attributes.post.title"), with: "Updated Post Title"
     fill_in_rich_text_area "post_content", with: "Updated post content"
 
-    click_on "Post this message"
+    click_on "Update this message"
 
     # Verify redirect and success message
     assert_text t("posts.update.success")
