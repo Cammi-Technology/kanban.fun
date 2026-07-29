@@ -1,7 +1,7 @@
 source "https://rubygems.org"
 
 # Bundle edge Rails instead: gem "rails", github: "rails/rails", branch: "main"
-gem "rails", "~> 8.1.0"
+gem "rails", "~> 8.1.3"
 # The modern asset pipeline for Rails [https://github.com/rails/propshaft]
 gem "propshaft"
 # Use sqlite3 as the database for Active Record
@@ -18,7 +18,7 @@ gem "stimulus-rails"
 gem "jbuilder"
 
 # Use Active Model has_secure_password [https://guides.rubyonrails.org/active_model_basics.html#securepassword]
-gem "bcrypt", "~> 3.1.7"
+gem "bcrypt", "~> 3.1.22"
 
 # Windows does not include zoneinfo files, so bundle the tzinfo-data gem
 gem "tzinfo-data", platforms: %i[ windows jruby ]
@@ -38,7 +38,7 @@ gem "kamal", require: false
 gem "thruster", require: false
 
 # Use Active Storage variants [https://guides.rubyonrails.org/active_storage_overview.html#transforming-images]
-gem "image_processing", "~> 2.0"
+gem "image_processing", "~> 2.0.2"
 
 group :development, :test do
   # See https://guides.rubyonrails.org/debugging_rails_applications.html#debugging-with-the-debug-gem
@@ -59,10 +59,10 @@ group :development do
   gem "web-console"
 
   # Authentication generator
-  gem "authentication-zero", "~> 4.0"
+  gem "authentication-zero", "~> 4.0.3"
 
   # run sensible things on commit
-  gem "lefthook", "~> 2.1"
+  gem "lefthook", "~> 2.1.10"
 
   # page auto refresh
   gem "hotwire-spark"
@@ -72,18 +72,18 @@ group :test do
   # Use system testing [https://guides.rubyonrails.org/testing.html#system-testing]
   gem "capybara"
   gem "selenium-webdriver"
-  gem "minitest-reporters", "~> 1.7"
+  gem "minitest-reporters", "~> 1.8.0"
   gem "mocha"
 end
 
-gem "literal", "~> 1.8"
-gem "phlex", "~> 2.3"
-gem "pundit", "~> 2.5"
-gem "phlex-rails", "~> 2.3"
-gem "phlex-icons", "~> 2.24"
+gem "literal", "~> 1.9.0"
+gem "phlex", "~> 2.4.1"
+gem "pundit", "~> 2.5.2"
+gem "phlex-rails", "~> 2.4.0"
+gem "phlex-icons", "~> 2.56.0"
 
 # Raise errors on nil instance variables
-gem "strict_ivars", "~> 1.0", require: false
+gem "strict_ivars", "~> 1.0.2", require: false
 
 # Use OmniAuth to support multi-provider authentication [https://github.com/omniauth/omniauth]
 gem "omniauth"
@@ -96,9 +96,9 @@ gem "rqrcode"
 # Use Pwned to check if a password has been found in any of the huge data breaches [https://github.com/philnash/pwned]
 gem "pwned"
 
-gem "name_of_person", "~> 1.1"
+gem "name_of_person", "~> 1.1.3"
 
-gem "noticed", "~> 3.0"
+gem "noticed", "~> 3.0.0"
 
 # Web Push support
 gem "web-push"
