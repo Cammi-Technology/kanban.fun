@@ -60,9 +60,11 @@ class Components::ApplicationLayout < Components::Base
                   footer_user_menu_target: "trigger"
                 }
               ) do
-                div(class: "app-shell__footer-avatar", aria: { hidden: "true" }) do
-                  plain Current.user.first_name.to_s.first&.upcase || Current.user.email.to_s.first&.upcase || "U"
-                end
+                Avatar(
+                  name: Current.user.first_name.presence || Current.user.email,
+                  size: :sm,
+                  class: "app-shell__footer-avatar"
+                )
 
                 div(class: "app-shell__footer-user-meta") do
                   p(class: "app-shell__footer-user-name") do
@@ -106,11 +108,6 @@ class Components::ApplicationLayout < Components::Base
               end
             end
 
-            div(class: "app-shell__footer-links") do
-              a(href: accounts_path, class: "app-shell__footer-link") { "Accounts" }
-              a(href: edit_password_path, class: "app-shell__footer-link") { "Password" }
-              a(href: sessions_path, class: "app-shell__footer-link") { "Sessions" }
-            end
           end
         end
       end
