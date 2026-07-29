@@ -45,7 +45,7 @@ en:
       title: Type a title…
       content: Write away…
     project:
-      name: Type in a Dystopian Project Name
+      name: Type a title
       description: e.g. Plans for evicting people from Detroit City
   hello: Hello world
   accounts:
@@ -76,6 +76,7 @@ en:
     project_dropdown:
       trigger: Projects
       shortcuts_label: Project shortcuts
+      home: Home
       posts: Posts
       title: Jump to a project
       close: Close
