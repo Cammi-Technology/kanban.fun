@@ -79,6 +79,18 @@ body > main {
   width: 100%;
 }
 
+.content-shell {
+  margin: 0 auto;
+}
+
+.content-shell--wide {
+  width: min(100%, 118rem);
+}
+
+.content-shell--narrow {
+  width: min(100%, 82rem);
+}
+
 .app-shell__footer-user-menu {
   position: relative;
 }
