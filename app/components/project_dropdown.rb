@@ -48,20 +48,17 @@ class Components::ProjectDropdown < Components::Base
               aria: { label: t("components.project_dropdown.shortcuts_label") },
               class: "project-dropdown__quick-actions"
             ) do
-              a(
+              QuickActionTile(
+                href: account_dashboard_path(Current.account),
+                icon: :house,
+                label: t("components.project_dropdown.home")
+              )
+
+              QuickActionTile(
                 href: account_project_posts_path(Current.account, current_project),
-                class: "project-dropdown__quick-action"
-              ) do
-                span(
-                  class: "project-dropdown__quick-action-icon",
-                  aria: { hidden: "true" }
-                ) do
-                  Icon("bootstrap/file-post")
-                end
-                span(
-                  class: "project-dropdown__quick-action-label"
-                ) { t("components.project_dropdown.posts") }
-              end
+                icon: :file_post,
+                label: t("components.project_dropdown.posts")
+              )
             end
           end
 

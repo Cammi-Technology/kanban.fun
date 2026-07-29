@@ -7,7 +7,10 @@ class Components::CommentForm < Components::Base
   prop :comment, _Nilable(Comment), default: nil, reader: :private
 
   def view_template
-    form_with model: [ Current.account, Current.project, comment_instance.record, comment_instance ] do |form|
+    form_with(
+      model: [ Current.account, Current.project, comment_instance.record, comment_instance ],
+      **@attrs
+    ) do |form|
       if form.object.errors.any?
         form.object.errors.full_messages.each do |message|
           plain message
@@ -23,7 +26,9 @@ class Components::CommentForm < Components::Base
       end
 
       FormField do
-        Button(type: "submit") { comment.present? ? "Update Comment" : "Add Comment" }
+        Button(type: "submit", class: "primary-button") do
+          comment.present? ? "Update Comment" : "Add Comment"
+        end
       end
     end
   end

@@ -4,6 +4,8 @@ class PostsController < ApplicationController
   def index
     render Views::Posts::Index.new(
       posts: policy_scope(Current.project.posts)
+        .includes(author: :user, comments: [])
+        .with_rich_text_content
     )
   end
 
