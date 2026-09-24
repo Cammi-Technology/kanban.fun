@@ -43,9 +43,9 @@ DEBUG = env_bool("DJANGO_DEBUG", default=False)
 
 _secret_key = env("DJANGO_SECRET_KEY")
 if _secret_key is None:
-    if not (DEBUG or TESTING):
+    if not (DEBUG or TESTING or "mypy" in sys.modules):
         raise ImproperlyConfigured("DJANGO_SECRET_KEY must be set in production")
-    _secret_key = "django-insecure-development-key-only-for-local-use-0123456789"
+    _secret_key = "django-insecure-development-key-only-for-local-use"  # noqa: S105
 SECRET_KEY: str = _secret_key
 
 ALLOWED_HOSTS = env_list("DJANGO_ALLOWED_HOSTS", "localhost,127.0.0.1,[::1]")

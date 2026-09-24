@@ -5,9 +5,9 @@ from __future__ import annotations
 import logging
 
 from django.tasks import task
-from steady_queue.recurring_task import recurring
 
 from kanban.cable.broadcast import prune_expired
+from kanban.core.jobs import recurring
 
 logger = logging.getLogger(__name__)
 

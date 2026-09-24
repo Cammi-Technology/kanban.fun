@@ -28,4 +28,4 @@ def redirect(request: HttpRequest, url: str) -> HttpResponse:
         response = HttpResponse(status=204)
         response["HX-Location"] = url
         return response
-    return HttpResponseRedirect(url, status=303)  # type: ignore[call-arg]
+    return HttpResponseRedirect(url, status=303)

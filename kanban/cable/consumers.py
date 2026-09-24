@@ -38,7 +38,9 @@ RECHECK_SECONDS = 30.0
 def authorised_topics(user: User, topics: list[str]) -> list[str]:
     """Return ``topics`` if the user may read every one, else an empty list."""
     account_ids = set(
-        AccountUser.objects.filter(user=user).values_list("account_id", flat=True)
+        AccountUser.objects.filter(user=user, is_active=True).values_list(
+            "account_id", flat=True
+        )
     )
     for topic in topics:
         kind, _, raw_id = topic.partition(":")
@@ -65,7 +67,9 @@ def authorised_topics(user: User, topics: list[str]) -> list[str]:
     return topics
 
 
-def session_is_live(user_id: int, device_session_id: object) -> bool:
+def session_is_live(user_id: int, device_session_id: int | None) -> bool:
+    if device_session_id is None:
+        return False
     return DeviceSession.objects.filter(pk=device_session_id, user_id=user_id).exists()
 
 
@@ -99,11 +103,11 @@ def frame(event_id: int, html: str) -> str:
     return f"<!--cable:{event_id}-->{html}"
 
 
-class CableConsumer(AsyncWebsocketConsumer):
+class CableConsumer(AsyncWebsocketConsumer):  # type: ignore[misc]
     topics: list[str]
     last_id: int
     user_id: int
-    device_session_id: object
+    device_session_id: int | None
     poller: asyncio.Task[None] | None = None
 
     async def connect(self) -> None:

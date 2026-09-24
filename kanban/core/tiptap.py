@@ -132,7 +132,7 @@ def _clean_marks(marks: object) -> list[Doc]:
     return cleaned
 
 
-def _clean_node(node: object, depth: int) -> Doc | None:  # noqa: PLR0911, PLR0912
+def _clean_node(node: object, depth: int) -> Doc | None:  # noqa: PLR0912
     if depth > MAX_DEPTH or not isinstance(node, Mapping):
         return None
     node_type = node.get("type")
@@ -299,9 +299,7 @@ def _render_children(node: Mapping[str, Any], mention_link: MentionLink) -> list
     ]
 
 
-def _render_node(  # noqa: PLR0911
-    node: Mapping[str, Any], mention_link: MentionLink
-) -> Node:
+def _render_node(node: Mapping[str, Any], mention_link: MentionLink) -> Node:
     node_type = node.get("type")
     children = _render_children(node, mention_link)
     attrs = node.get("attrs") or {}

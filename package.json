@@ -1,0 +1,25 @@
+{
+  "name": "kanban-fun-frontend",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "build": "node frontend/build.mjs",
+    "watch": "node frontend/build.mjs --watch",
+    "typecheck": "tsc --noEmit -p frontend/tsconfig.json"
+  },
+  "dependencies": {
+    "@tiptap/core": "^3.31.3",
+    "@tiptap/extension-mention": "^3.31.3",
+    "@tiptap/pm": "^3.31.3",
+    "@tiptap/starter-kit": "^3.31.3",
+    "@tiptap/suggestion": "^3.31.3",
+    "highlight.js": "^11.12.0",
+    "htmx-ext-ws": "^2.0.4",
+    "htmx.org": "^2.0.11",
+    "idiomorph": "^0.8.0"
+  },
+  "devDependencies": {
+    "esbuild": "^0.28.2",
+    "typescript": "^5.9.3"
+  }
+}

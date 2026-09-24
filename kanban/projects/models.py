@@ -2,15 +2,12 @@
 
 from __future__ import annotations
 
-from typing import TYPE_CHECKING, Any
+from typing import Any
 
 from django.db import models
 
 from kanban.accounts.models import Account, AccountUser
 from kanban.core import tiptap
-
-if TYPE_CHECKING:
-    from django.db.models.manager import RelatedManager
 
 
 def empty_document() -> dict[str, Any]:
@@ -25,9 +22,6 @@ class Project(models.Model):
     description = models.TextField(blank=True)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
-
-    if TYPE_CHECKING:
-        posts: RelatedManager[Post]
 
     class Meta:
         ordering = ("name", "id")
@@ -45,7 +39,7 @@ class Project(models.Model):
 class Post(models.Model):
     project = models.ForeignKey(Project, on_delete=models.CASCADE, related_name="posts")
     author = models.ForeignKey(
-        AccountUser, on_delete=models.CASCADE, related_name="posts"
+        AccountUser, on_delete=models.PROTECT, related_name="posts"
     )
     title = models.CharField(max_length=200)
     category = models.CharField(max_length=60, blank=True)
@@ -54,9 +48,6 @@ class Post(models.Model):
     published_at = models.DateTimeField(null=True, blank=True)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
-
-    if TYPE_CHECKING:
-        comments: RelatedManager[Comment]
 
     class Meta:
         ordering = ("-created_at", "-id")
@@ -92,7 +83,7 @@ class Post(models.Model):
 class Comment(models.Model):
     post = models.ForeignKey(Post, on_delete=models.CASCADE, related_name="comments")
     author = models.ForeignKey(
-        AccountUser, on_delete=models.CASCADE, related_name="comments"
+        AccountUser, on_delete=models.PROTECT, related_name="comments"
     )
     content = models.JSONField(default=empty_document)
     content_text = models.TextField(editable=False, default="")

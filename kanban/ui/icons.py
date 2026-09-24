@@ -64,7 +64,7 @@ def icon(name: IconName, *, label: str | None = None) -> Markup:
         if label
         else 'aria-hidden="true" focusable="false"'
     )
-    return Markup(
+    return Markup(  # noqa: S704 - static SVG paths; the label is escaped
         '<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" '
         f'fill="currentColor" class="icon icon--{name}" viewBox="0 0 16 16" {aria}>'
         f"{_PATHS[name]}</svg>"

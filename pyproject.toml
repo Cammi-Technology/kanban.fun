@@ -47,13 +47,16 @@ ignore = [
     "ANN401",   # Any is sometimes the honest type at the Django boundary
     "PLR0913",  # view helpers take several keyword arguments
     "PLR2004",  # magic values are fine in tests and HTTP status checks
+    "PLR0911",  # views return early for each outcome
+    "PLR0917",  # component functions take several positional arguments
     "S101",     # assert is how pytest works
     "RUF012",   # Django Meta/admin class attributes
+    "PLC0415",  # deliberate lazy imports break app-level import cycles
 ]
 
 [tool.ruff.lint.per-file-ignores]
 "tests/**" = ["S105", "S106", "PLR0915", "ANN"]
-"**/migrations/**" = ["E501", "RUF"]
+"**/migrations/**" = ["E501", "RUF", "I001"]
 "kanban/ui/icons.py" = ["E501"]
 
 [tool.mypy]

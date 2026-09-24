@@ -4,7 +4,7 @@ from __future__ import annotations
 
 import secrets
 from datetime import timedelta
-from typing import TYPE_CHECKING, Any, ClassVar
+from typing import Any, ClassVar
 
 import pyotp
 from django.contrib.auth.base_user import AbstractBaseUser, BaseUserManager
@@ -12,11 +12,6 @@ from django.contrib.auth.models import PermissionsMixin
 from django.db import models
 from django.db.models.functions import Lower
 from django.utils import timezone
-
-if TYPE_CHECKING:
-    from django.db.models.manager import RelatedManager
-
-    from kanban.identity.models import DeviceSession
 
 
 class UserManager(BaseUserManager["User"]):
@@ -65,15 +60,11 @@ class User(AbstractBaseUser, PermissionsMixin):
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 
-    objects: ClassVar[UserManager] = UserManager()  # type: ignore[assignment]
+    objects: ClassVar[UserManager] = UserManager()
 
     USERNAME_FIELD = "email"
     EMAIL_FIELD = "email"
     REQUIRED_FIELDS: ClassVar[list[str]] = ["first_name", "last_name"]
-
-    if TYPE_CHECKING:
-        device_sessions: RelatedManager[DeviceSession]
-        memberships: RelatedManager[AccountUser]
 
     class Meta:
         constraints = [
@@ -118,9 +109,6 @@ class Account(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 
-    if TYPE_CHECKING:
-        memberships: RelatedManager[AccountUser]
-
     class Meta:
         ordering = ("name",)
 
@@ -142,6 +130,9 @@ class AccountUser(models.Model):
     )
     user = models.ForeignKey(User, on_delete=models.CASCADE, related_name="memberships")
     role = models.CharField(max_length=16, choices=Role.choices, default=Role.MEMBER)
+    # Removed members are deactivated, not deleted, so their posts and
+    # comments keep an author.
+    is_active = models.BooleanField(default=True)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 

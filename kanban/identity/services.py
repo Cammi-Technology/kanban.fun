@@ -3,7 +3,7 @@
 from __future__ import annotations
 
 from datetime import timedelta
-from typing import Any, cast
+from typing import Any
 
 from django.contrib.auth import login, logout
 from django.core import signing
@@ -48,14 +48,14 @@ def record_event(
 
 def current_user(request: HttpRequest) -> User:
     user = request.user
-    if not user.is_authenticated:
+    if not isinstance(user, User):
         raise NotSignedInError
-    return cast(User, user)
+    return user
 
 
 def optional_user(request: HttpRequest) -> User | None:
     user = request.user
-    return cast(User, user) if user.is_authenticated else None
+    return user if isinstance(user, User) else None
 
 
 def device_session(request: HttpRequest) -> DeviceSession | None:
@@ -120,7 +120,7 @@ def challenged_user(request: HttpRequest) -> User | None:
         user_id = signing.loads(
             token,
             salt="two-factor-challenge",
-            max_age=CHALLENGE_MAX_AGE.total_seconds(),
+            max_age=CHALLENGE_MAX_AGE,
         )
     except signing.BadSignature:
         return None

@@ -12,7 +12,7 @@ import functools
 import logging
 from collections.abc import Callable
 from datetime import timedelta
-from typing import Any, Concatenate, Protocol
+from typing import Any, Concatenate, Protocol, cast
 
 from django.db import transaction
 from django.tasks import Task
@@ -81,6 +81,18 @@ def retrying[**P](
                 )
                 raise
 
-        return wrapper
+        return cast(Callable[Concatenate[int, P], None], wrapper)
 
     return decorate
+
+
+def recurring[T](
+    schedule: str, key: str, queue_name: str | None = None
+) -> Callable[[T], T]:
+    """Typed wrapper for Steady Queue's ``@recurring`` (cron-style) decorator."""
+    from steady_queue.recurring_task import recurring as steady_recurring
+
+    return cast(
+        Callable[[T], T],
+        steady_recurring(schedule=schedule, key=key, queue_name=queue_name),
+    )

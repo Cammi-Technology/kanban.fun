@@ -47,7 +47,7 @@ class AuthEvent(models.Model):
     class Action(models.TextChoices):
         SIGNED_IN = "signed_in"
         SIGNED_OUT = "signed_out"
-        PASSWORD_CHANGED = "password_changed"
+        PASSWORD_CHANGED = "password_changed"  # noqa: S105
         EMAIL_VERIFICATION_REQUESTED = "email_verification_requested"
         EMAIL_VERIFIED = "email_verified"
         TWO_FACTOR_ENABLED = "two_factor_enabled"
