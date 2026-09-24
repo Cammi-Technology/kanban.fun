@@ -17,7 +17,7 @@ Keep **one** web container and **one** worker. SQLite allows one writer at a tim
 
 1. **New resource**: choose *Docker Compose*, point it at this repository and branch `main`, and set the compose file to `docker-compose.yaml`.
 2. **Domain**: on the `web` service, set the domain, e.g. `https://kanban.example.com`. The compose file declares `SERVICE_FQDN_WEB_8000`, so Coolify routes that domain to port 8000 and issues a Let's Encrypt certificate. Leave `worker` without a domain.
-3. **Environment variables**: set them in Coolify's *Environment Variables* tab (see the table below). Tick *Is Build Variable?* for none of them; they're all runtime.
+3. **Environment variables**: set them in Coolify's *Environment Variables* tab (see the table below). `DJANGO_ENV=production` is already set by the image and the compose file. Keep it that way, and don't set `DJANGO_DEBUG`. Tick *Is Build Variable?* for none of them; they're all runtime.
 4. **Secrets**: generate `DJANGO_SECRET_KEY` with `python -c "import secrets; print(secrets.token_urlsafe(50))"`. Generate VAPID keys with `docker compose run --rm web python manage.py generate_vapid_keys`, or with any machine that has the repo. Mark both as secrets in Coolify.
 5. **Storages**: Coolify creates the named volumes `kanban-data` and `kanban-media` from the compose file. Check they're listed under *Storages* and are *not* marked as ephemeral.
 6. **Health check**: `web` has a health check on `GET /up`, which returns `ok` once Django boots and SQLite answers. `worker` starts only after `web` is healthy, so migrations never run twice.
@@ -31,6 +31,7 @@ Keep **one** web container and **one** worker. SQLite allows one writer at a tim
 
 | Variable | Required | Example / default | Notes |
 | --- | --- | --- | --- |
+| `DJANGO_ENV` | yes | `production` | Set by the image and the compose file. Without it the app runs in development mode (`DEBUG` on, throwaway key). Production refuses to boot without `DJANGO_SECRET_KEY`, or with `DJANGO_DEBUG` on. |
 | `DJANGO_SECRET_KEY` | yes | 50 random chars | Secret. Rotating it signs everyone out. |
 | `DJANGO_ALLOWED_HOSTS` | yes* | `kanban.example.com` | Defaults to Coolify's `SERVICE_FQDN_WEB`. `localhost`/`127.0.0.1` are always allowed for the health check. |
 | `DJANGO_CSRF_TRUSTED_ORIGINS` | no | `https://kanban.example.com` | Defaults to `SERVICE_URL_WEB`. |
@@ -48,7 +49,7 @@ Keep **one** web container and **one** worker. SQLite allows one writer at a tim
 | `DJANGO_SECURE_HSTS_SECONDS` | no | `31536000` | HSTS with `includeSubDomains` and `preload`. Lower it while you first try a domain. |
 | `DJANGO_LOG_LEVEL` | no | `INFO` | |
 
-`DJANGO_DEBUG` must be unset or `0` in production. `python manage.py check --deploy --fail-level WARNING` passes with the settings above, and CI enforces it.
+`DJANGO_ENV=production` turns `DEBUG` off. Setting `DJANGO_DEBUG=1` alongside it is refused at startup. `python manage.py check --deploy --fail-level WARNING` passes with the settings above, and CI enforces it.
 
 ## Build and run commands
 

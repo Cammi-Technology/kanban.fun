@@ -33,7 +33,7 @@ Open http://localhost:8000 and sign in as `account_owner@test.com`, `account_use
 | Back up SQLite | `uv run python manage.py backup_database` |
 | Web Push keys | `uv run python manage.py generate_vapid_keys` |
 
-Set `DJANGO_DEBUG=1` for local commands. Production requires `DJANGO_SECRET_KEY`.
+No environment variables are needed locally. Without `DJANGO_ENV`, the app runs in development mode with `DEBUG` on and a throwaway secret key. Production is opt-in with `DJANGO_ENV=production`, which the Docker image sets. In production the app refuses to start without `DJANGO_SECRET_KEY`, or with `DJANGO_DEBUG` on.
 
 ## Layout
 

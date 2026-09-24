@@ -21,9 +21,9 @@ npm run typecheck
 npm run build
 
 step "Django checks"
-DJANGO_DEBUG=1 uv run python manage.py check --fail-level WARNING
-DJANGO_DEBUG=1 uv run python manage.py makemigrations --check --dry-run
-DJANGO_SECRET_KEY="ci-deploy-check-$(python3 -c 'import secrets; print(secrets.token_urlsafe(48))')" \
+uv run python manage.py check --fail-level WARNING
+uv run python manage.py makemigrations --check --dry-run
+DJANGO_ENV=production DJANGO_SECRET_KEY="ci-deploy-check-$(python3 -c 'import secrets; print(secrets.token_urlsafe(48))')" \
   DJANGO_ALLOWED_HOSTS=kanban.example.com \
   KANBAN_DATA_DIR="$(mktemp -d)" \
   uv run python manage.py check --deploy --fail-level WARNING

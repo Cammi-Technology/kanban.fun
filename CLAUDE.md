@@ -13,7 +13,7 @@ This file guides Claude Code (claude.ai/code) when it works in this repository.
 - `uv run mypy .`: strict type checking with django-stubs
 - `uv run ruff format . && uv run ruff check .`: format and lint
 - `npm run typecheck`: TypeScript
-- `DJANGO_DEBUG=1 uv run python manage.py makemigrations`: set `DJANGO_DEBUG=1` for local manage.py commands
+- `uv run python manage.py <command>`: works with no environment set. Without `DJANGO_ENV` the app runs in development mode with `DEBUG` on. Production needs `DJANGO_ENV=production`, which the Docker image sets
 
 ## Architecture
 

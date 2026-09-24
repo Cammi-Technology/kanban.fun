@@ -16,6 +16,7 @@ ENV PYTHONDONTWRITEBYTECODE=1 \
     UV_PYTHON_DOWNLOADS=never \
     UV_PROJECT_ENVIRONMENT=/app/.venv \
     PATH=/app/.venv/bin:$PATH \
+    DJANGO_ENV=production \
     KANBAN_DATA_DIR=/data \
     KANBAN_MEDIA_DIR=/media
 COPY --from=ghcr.io/astral-sh/uv:0.9 /uv /usr/local/bin/uv

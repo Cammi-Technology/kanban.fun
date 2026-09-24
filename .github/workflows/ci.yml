@@ -12,9 +12,6 @@ concurrency:
   group: ci-${{ github.ref }}
   cancel-in-progress: true
 
-env:
-  DJANGO_DEBUG: "1"
-
 jobs:
   lint:
     name: Lint (ruff)
@@ -52,7 +49,7 @@ jobs:
       - run: uv run python manage.py makemigrations --check --dry-run
       - name: Deployment checks (production settings)
         env:
-          DJANGO_DEBUG: "0"
+          DJANGO_ENV: production
           DJANGO_SECRET_KEY: ${{ github.run_id }}-deploy-check-not-a-real-secret-0123456789abcdef
           DJANGO_ALLOWED_HOSTS: kanban.example.com
         run: KANBAN_DATA_DIR="$(mktemp -d)" uv run python manage.py check --deploy --fail-level WARNING

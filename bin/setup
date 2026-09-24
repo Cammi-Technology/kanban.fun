@@ -2,7 +2,6 @@
 # One-time local setup: dependencies, database, cache table, seed data, assets.
 set -euo pipefail
 cd "$(dirname "$0")/.."
-export DJANGO_DEBUG=1
 
 uv sync
 npm install --no-audit --no-fund

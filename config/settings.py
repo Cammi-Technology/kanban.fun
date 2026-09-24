@@ -39,11 +39,25 @@ def env_list(name: str, default: str = "") -> list[str]:
 
 
 TESTING = "pytest" in sys.modules or env_bool("DJANGO_TESTING")
-DEBUG = env_bool("DJANGO_DEBUG", default=False)
+
+# DJANGO_ENV picks the mode. A fresh checkout is development, so
+# `manage.py <command>` works with no environment set. Production has to be
+# asked for explicitly: the Docker image sets DJANGO_ENV=production, so
+# anything deployed from it fails closed (no secret key, no boot).
+ENVIRONMENTS = ("development", "production")
+ENVIRONMENT = env("DJANGO_ENV", "development") or "development"
+if ENVIRONMENT not in ENVIRONMENTS:
+    raise ImproperlyConfigured(
+        f"DJANGO_ENV must be one of {', '.join(ENVIRONMENTS)}, not {ENVIRONMENT!r}"
+    )
+PRODUCTION = ENVIRONMENT == "production"
+DEBUG = env_bool("DJANGO_DEBUG", default=not PRODUCTION)
+if PRODUCTION and DEBUG:
+    raise ImproperlyConfigured("DJANGO_DEBUG must be off when DJANGO_ENV=production")
 
 _secret_key = env("DJANGO_SECRET_KEY")
 if _secret_key is None:
-    if not (DEBUG or TESTING or "mypy" in sys.modules):
+    if PRODUCTION:
         raise ImproperlyConfigured("DJANGO_SECRET_KEY must be set in production")
     _secret_key = "django-insecure-development-key-only-for-local-use"  # noqa: S105
 SECRET_KEY: str = _secret_key

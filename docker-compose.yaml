@@ -8,6 +8,7 @@ x-app: &app
   build: .
   restart: unless-stopped
   environment: &env
+    DJANGO_ENV: production
     DJANGO_SECRET_KEY: ${DJANGO_SECRET_KEY:?set DJANGO_SECRET_KEY}
     DJANGO_ALLOWED_HOSTS: ${DJANGO_ALLOWED_HOSTS:-${SERVICE_FQDN_WEB}}
     DJANGO_CSRF_TRUSTED_ORIGINS: ${DJANGO_CSRF_TRUSTED_ORIGINS:-${SERVICE_URL_WEB}}

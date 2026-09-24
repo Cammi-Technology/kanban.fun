@@ -2,7 +2,6 @@
 # Local development: esbuild watch, Daphne (HTTP + WebSockets) and one worker.
 set -euo pipefail
 cd "$(dirname "$0")/.."
-export DJANGO_DEBUG=1
 
 trap 'kill 0' EXIT INT TERM
 npm run watch &
