@@ -18,7 +18,7 @@ from django.conf import settings
 from django.core import signing
 from django.db import transaction
 from django.utils import timezone
-from htpy import Renderable
+from htpy import Node, fragment
 
 from kanban.cable.models import CableEvent
 
@@ -65,9 +65,7 @@ def publish(topic: str, event_type: str, html: str) -> CableEvent:
     )
 
 
-def broadcast(
-    topic: str, event_type: str, render: Callable[[], Renderable | str]
-) -> None:
+def broadcast(topic: str, event_type: str, render: Callable[[], Node]) -> None:
     """Render and publish after the current transaction commits.
 
     ``render`` is called after commit so it sees the committed state. Every
@@ -76,7 +74,7 @@ def broadcast(
 
     def emit() -> None:
         try:
-            publish(topic, event_type, str(render()))
+            publish(topic, event_type, str(fragment[render()]))
         except Exception:
             # A failed broadcast must never break the request that caused it;
             # clients recover on the next event or page load.

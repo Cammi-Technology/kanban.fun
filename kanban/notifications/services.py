@@ -8,6 +8,7 @@ from django.conf import settings
 from django.db import IntegrityError, transaction
 from django.urls import reverse
 from django.utils import timezone
+from htpy import Node
 
 from kanban.accounts.models import AccountUser, User
 from kanban.cable.broadcast import broadcast, user_topic
@@ -72,9 +73,9 @@ def notify(
 
 
 def broadcast_count(user_id: int) -> None:
-    def render() -> str:
+    def render() -> Node:
         forget_unread_count(user_id)
-        return str(components.count_broadcast(user_id, unread_count(user_id)))
+        return components.count_broadcast(user_id, unread_count(user_id))
 
     broadcast(user_topic(user_id), "notification-count", render)
 

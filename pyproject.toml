@@ -55,7 +55,7 @@ ignore = [
 ]
 
 [tool.ruff.lint.per-file-ignores]
-"tests/**" = ["S105", "S106", "PLR0915", "ANN"]
+"tests/**" = ["S105", "S106", "PLR0915", "ANN", "PT018", "PT012", "E501"]
 "**/migrations/**" = ["E501", "RUF", "I001"]
 "kanban/ui/icons.py" = ["E501"]
 

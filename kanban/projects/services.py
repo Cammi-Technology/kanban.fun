@@ -9,6 +9,7 @@ from __future__ import annotations
 from django.db import transaction
 from django.db.models import Count
 from django.utils import timezone
+from htpy import Node
 
 from kanban.accounts.models import Account, AccountUser
 from kanban.cable.broadcast import account_topic, broadcast, post_topic, project_topic
@@ -55,36 +56,34 @@ def post_comments(post: Post) -> list[Comment]:
 
 
 def broadcast_project_list(account: Account) -> None:
-    def render() -> str:
+    def render() -> Node:
         projects = list(Project.objects.filter(account=account))
-        return str(components.project_list_broadcast(account, projects))
+        return components.project_list_broadcast(account, projects)
 
     broadcast(account_topic(account.pk), "projects", render)
 
 
 def broadcast_post_list(project: Project) -> None:
-    def render() -> str:
-        return str(
-            components.post_list_broadcast(
-                project, published_posts_with_counts(project)
-            )
+    def render() -> Node:
+        return components.post_list_broadcast(
+            project, published_posts_with_counts(project)
         )
 
     broadcast(project_topic(project.pk), "posts", render)
 
 
 def broadcast_post(post: Post) -> None:
-    def render() -> str:
+    def render() -> Node:
         fresh = Post.objects.select_related("author__user", "project").get(pk=post.pk)
-        return str(components.post_body_broadcast(fresh))
+        return components.post_body_broadcast(fresh)
 
     broadcast(post_topic(post.pk), "post", render)
 
 
 def broadcast_comments(post: Post) -> None:
-    def render() -> str:
+    def render() -> Node:
         fresh = Post.objects.select_related("project").get(pk=post.pk)
-        return str(components.comments_broadcast(fresh, post_comments(fresh)))
+        return components.comments_broadcast(fresh, post_comments(fresh))
 
     broadcast(post_topic(post.pk), "comments", render)
 

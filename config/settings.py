@@ -207,6 +207,7 @@ USE_TZ = True
 
 STATIC_URL = "/static/"
 STATIC_ROOT = BASE_DIR / "staticfiles"
+STATIC_ROOT.mkdir(exist_ok=True)
 STATICFILES_DIRS = [BASE_DIR / "static"]
 STORAGES = {
     "default": {"BACKEND": "django.core.files.storage.FileSystemStorage"},
@@ -221,19 +222,25 @@ STORAGES = {
 MEDIA_URL = "/media/"
 MEDIA_ROOT = Path(env("KANBAN_MEDIA_DIR", str(BASE_DIR / "media")) or "media")
 
-EMAIL_BACKEND = env(
+# Outbound email (Django 6.1 MAILERS). SMTP in production, console in DEBUG;
+# the test runner swaps in the locmem backend.
+_mail_backend = env(
     "DJANGO_EMAIL_BACKEND",
     "django.core.mail.backends.console.EmailBackend"
     if DEBUG
     else "django.core.mail.backends.smtp.EmailBackend",
 )
-if TESTING:
-    EMAIL_BACKEND = "django.core.mail.backends.locmem.EmailBackend"
-EMAIL_HOST = env("DJANGO_EMAIL_HOST", "localhost")
-EMAIL_PORT = int(env("DJANGO_EMAIL_PORT", "587") or "587")
-EMAIL_HOST_USER = env("DJANGO_EMAIL_HOST_USER", "") or ""
-EMAIL_HOST_PASSWORD = env("DJANGO_EMAIL_HOST_PASSWORD", "") or ""
-EMAIL_USE_TLS = env_bool("DJANGO_EMAIL_USE_TLS", default=True)
+_mail_options: dict[str, object] = {}
+if _mail_backend == "django.core.mail.backends.smtp.EmailBackend":
+    _mail_options = {
+        "host": env("DJANGO_EMAIL_HOST", "localhost"),
+        "port": int(env("DJANGO_EMAIL_PORT", "587") or "587"),
+        "username": env("DJANGO_EMAIL_HOST_USER", "") or "",
+        "password": env("DJANGO_EMAIL_HOST_PASSWORD", "") or "",
+        "use_tls": env_bool("DJANGO_EMAIL_USE_TLS", default=True),
+        "timeout": 20,
+    }
+MAILERS = {"default": {"BACKEND": _mail_backend, "OPTIONS": _mail_options}}
 DEFAULT_FROM_EMAIL = env("DJANGO_DEFAULT_FROM_EMAIL", "Kanban.fun <hello@kanban.fun>")
 SERVER_EMAIL = DEFAULT_FROM_EMAIL
 
