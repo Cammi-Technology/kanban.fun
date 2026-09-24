@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# One-time local setup: dependencies, database, cache table, assets.
+# One-time local setup: dependencies, database, cache table, seed data, assets.
 set -euo pipefail
 cd "$(dirname "$0")/.."
 export DJANGO_DEBUG=1
@@ -9,4 +9,5 @@ npm install --no-audit --no-fund
 npm run build
 uv run python manage.py migrate
 uv run python manage.py createcachetable
+uv run python manage.py seed  # idempotent development data (db/seeds.rb)
 echo "Done. Start the app with bin/dev, then open http://localhost:8000"

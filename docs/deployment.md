@@ -22,9 +22,10 @@ Keep **one** web container and **one** worker. SQLite allows one writer at a tim
 5. **Storages**: Coolify creates the named volumes `kanban-data` and `kanban-media` from the compose file. Check they're listed under *Storages* and are *not* marked as ephemeral.
 6. **Health check**: `web` has a health check on `GET /up`, which returns `ok` once Django boots and SQLite answers. `worker` starts only after `web` is healthy, so migrations never run twice.
 7. **Deploy**. The web container's entrypoint runs `migrate` and `createcachetable` before Daphne starts. Static files are collected at build time and served by WhiteNoise with hashed names.
-8. **Create an admin** (optional): `docker compose exec web python manage.py createsuperuser`. Django Admin is at `/admin/`, and it includes the Steady Queue job, failed-task and process screens.
-9. **Scheduled backup**: in Coolify, open *Scheduled Tasks* on the `web` service and add `python manage.py backup_database --keep 14`, daily (e.g. `15 3 * * *`). See *Backups* below for copying snapshots off the server.
-10. **Check**: open the domain, sign up, and create an account and a project. Then confirm `docker compose logs worker` shows jobs finishing.
+8. **Don't seed production.** `manage.py seed` creates development users that share a weak password. It refuses to run with `DEBUG` off unless you pass `--force`.
+9. **Create an admin** (optional): `docker compose exec web python manage.py createsuperuser`. Django Admin is at `/admin/`, and it includes the Steady Queue job, failed-task and process screens.
+10. **Scheduled backup**: in Coolify, open *Scheduled Tasks* on the `web` service and add `python manage.py backup_database --keep 14`, daily (e.g. `15 3 * * *`). See *Backups* below for copying snapshots off the server.
+11. **Check**: open the domain, sign up, and create an account and a project. Then confirm `docker compose logs worker` shows jobs finishing.
 
 ## Environment variables
 

@@ -4,7 +4,8 @@ This file guides Claude Code (claude.ai/code) when it works in this repository.
 
 ## Development commands
 
-- `bin/setup`: install Python (uv) and Node dependencies, build assets, migrate, create the cache table
+- `bin/setup`: install Python (uv) and Node dependencies, build assets, migrate, create the cache table, seed
+- `uv run python manage.py seed [--reset]`: idempotent development data, the port of `db/seeds.rb`. It refuses to run with DEBUG off unless `--force` is given
 - `bin/dev`: esbuild watch, Daphne on :8000 and one Steady Queue worker
 - `bin/ci`: everything CI runs. Run it before pushing.
 - `uv run pytest`: unit and integration tests (the browser tests are excluded by default)

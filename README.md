@@ -11,11 +11,11 @@ Everything runs on **SQLite**, with no Redis, broker or cache server. The databa
 You need Python 3.14, [uv](https://docs.astral.sh/uv/) and Node 24.
 
 ```bash
-bin/setup   # install dependencies, build assets, migrate, create the cache table
+bin/setup   # install dependencies, build assets, migrate, create the cache table, seed
 bin/dev     # esbuild watch + Daphne on :8000 + one task worker
 ```
 
-Open http://localhost:8000 and sign up. In development, emails are printed to the console. There is also a "developer" OAuth login.
+Open http://localhost:8000 and sign in as `account_owner@test.com`, `account_user@test.com` or `test@test.com`, with the password `1234567890`. These are the seed users, the same as in the Rails `db/seeds.rb`. You can also sign up. In development, emails are printed to the console. There is also a "developer" OAuth login.
 
 ## Commands
 
@@ -29,6 +29,7 @@ Open http://localhost:8000 and sign up. In development, emails are printed to th
 | Django checks | `uv run python manage.py check` and `check --deploy` |
 | Web server | `uv run daphne config.asgi:application` |
 | Task worker | `uv run python manage.py steady_queue` |
+| Seed development data (idempotent; `--reset` to recreate) | `uv run python manage.py seed` |
 | Back up SQLite | `uv run python manage.py backup_database` |
 | Web Push keys | `uv run python manage.py generate_vapid_keys` |
 

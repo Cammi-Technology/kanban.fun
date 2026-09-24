@@ -120,6 +120,7 @@ Posts and comments store **Tiptap JSON**. The browser is never trusted:
 | `syntax_highlight_controller` (highlight.js) | `frontend/src/highlight.ts` (same languages, plus TS/bash/json/sql) |
 | PWA manifest + service worker | `/manifest.json`, `/service-worker.js` (`kanban/pwa`) |
 | Kamal + Puma + Thruster | Coolify (Docker Compose), Daphne, WhiteNoise |
+| `db/seeds.rb` | `manage.py seed` (`kanban/core/management/commands/seed.py`): idempotent `get_or_create`, `--reset`, refuses without `DEBUG` unless `--force` |
 | Minitest + fixtures, Capybara system tests | pytest + pytest-django fixtures, Channels `WebsocketCommunicator`, Playwright |
 
 ## Custom pieces the no-external-infrastructure rule required
