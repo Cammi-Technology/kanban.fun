@@ -15,10 +15,11 @@ dependencies = [
     "qrcode>=8.2",
     "pywebpush>=2.5",
     "authlib>=1.8",
-    "httpx>=0.28",
+    "requests>=2.32",
     "whitenoise>=6.12",
     "markupsafe>=3.0",
     "django-stubs-ext>=6.1",
+    "cryptography>=45",
 ]
 
 [dependency-groups]
@@ -55,7 +56,7 @@ ignore = [
 ]
 
 [tool.ruff.lint.per-file-ignores]
-"tests/**" = ["S105", "S106", "PLR0915", "ANN", "PT018", "PT012", "E501"]
+"tests/**" = ["S105", "S106", "S603", "PLR0915", "ANN", "PT018", "PT012", "E501"]
 "**/migrations/**" = ["E501", "RUF", "I001"]
 "kanban/ui/icons.py" = ["E501"]
 
@@ -86,7 +87,7 @@ django_settings_module = "config.settings"
 
 [tool.pytest.ini_options]
 DJANGO_SETTINGS_MODULE = "config.settings"
-addopts = "-ra --strict-markers -p no:cacheprovider"
+addopts = "-ra --strict-markers -p no:cacheprovider -m \"not system\""
 testpaths = ["tests"]
 asyncio_mode = "auto"
 asyncio_default_fixture_loop_scope = "function"

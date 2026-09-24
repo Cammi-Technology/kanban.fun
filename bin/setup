@@ -1,0 +1,12 @@
+#!/usr/bin/env bash
+# One-time local setup: dependencies, database, cache table, assets.
+set -euo pipefail
+cd "$(dirname "$0")/.."
+export DJANGO_DEBUG=1
+
+uv sync
+npm install --no-audit --no-fund
+npm run build
+uv run python manage.py migrate
+uv run python manage.py createcachetable
+echo "Done. Start the app with bin/dev, then open http://localhost:8000"

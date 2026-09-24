@@ -1,0 +1,12 @@
+#!/bin/sh
+# Prepare the SQLite database, then run the container's command.
+# Only the web container migrates; the worker sets KANBAN_SKIP_MIGRATE=1 and
+# waits for web to be healthy, so the two never migrate at once.
+set -e
+
+if [ "${KANBAN_SKIP_MIGRATE:-0}" != "1" ]; then
+  python manage.py migrate --noinput
+  python manage.py createcachetable
+fi
+
+exec "$@"

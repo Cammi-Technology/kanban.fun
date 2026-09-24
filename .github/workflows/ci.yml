@@ -1,0 +1,88 @@
+name: CI
+
+on:
+  pull_request:
+  push:
+    branches: [main]
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
+
+env:
+  DJANGO_DEBUG: "1"
+
+jobs:
+  lint:
+    name: Lint (ruff)
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+      - uses: astral-sh/setup-uv@v10
+      - run: uv sync --frozen
+      - run: uv run ruff format --check .
+      - run: uv run ruff check --output-format github .
+
+  typecheck:
+    name: Type check (mypy strict + TypeScript)
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+      - uses: astral-sh/setup-uv@v10
+      - uses: actions/setup-node@v7
+        with:
+          node-version: 24
+          cache: npm
+      - run: uv sync --frozen
+      - run: uv run mypy .
+      - run: npm ci --no-audit --no-fund
+      - run: npm run typecheck
+
+  test:
+    name: Tests and Django checks
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+      - uses: astral-sh/setup-uv@v10
+      - run: uv sync --frozen
+      - run: uv run python manage.py check --fail-level WARNING
+      - run: uv run python manage.py makemigrations --check --dry-run
+      - name: Deployment checks (production settings)
+        env:
+          DJANGO_DEBUG: "0"
+          DJANGO_SECRET_KEY: ${{ github.run_id }}-deploy-check-not-a-real-secret-0123456789abcdef
+          DJANGO_ALLOWED_HOSTS: kanban.example.com
+        run: KANBAN_DATA_DIR="$(mktemp -d)" uv run python manage.py check --deploy --fail-level WARNING
+      - run: uv run pytest
+
+  system:
+    name: Browser tests (Playwright)
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+      - uses: astral-sh/setup-uv@v10
+      - uses: actions/setup-node@v7
+        with:
+          node-version: 24
+          cache: npm
+      - run: uv sync --frozen
+      - run: npm ci --no-audit --no-fund
+      - run: npm run build
+      - run: uv run playwright install --with-deps chromium
+      - run: uv run pytest -m system --tracing retain-on-failure --output test-results
+      - uses: actions/upload-artifact@v7
+        if: failure()
+        with:
+          name: playwright-traces
+          path: test-results
+          if-no-files-found: ignore
+
+  docker:
+    name: Docker image builds
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+      - run: docker build -t kanban-fun:ci .
