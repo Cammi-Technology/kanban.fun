@@ -7,6 +7,15 @@ function triggerFor(dialog: HTMLDialogElement): HTMLElement | null {
 }
 
 export function installDialogs(): void {
+  // HTMX fragments swapped into #modal-body open the shared dialog.
+  document.addEventListener("htmx:afterSwap", (event) => {
+    const target = (event as CustomEvent<{ target: Element }>).detail.target
+    const dialog = document.getElementById("modal")
+    if (target.id === "modal-body" && dialog instanceof HTMLDialogElement && !dialog.open) {
+      dialog.showModal()
+    }
+  })
+
   document.addEventListener("click", (event) => {
     const target = event.target
     if (!(target instanceof Element)) return

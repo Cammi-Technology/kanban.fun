@@ -154,6 +154,8 @@ def member(request: HttpRequest, account_id: int, member_id: int) -> HttpRespons
     )
     if target is None:
         raise Http404
+    if wants_fragment(request):
+        return html_response(components.member_card(target))
     return render_page(
         request, target.user.name, components.member_profile(target), membership=viewer
     )

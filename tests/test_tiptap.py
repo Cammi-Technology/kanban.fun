@@ -89,8 +89,9 @@ def test_render_escapes_and_links_mentions() -> None:
     html = render(doc)
     assert "&lt;img src=x onerror=alert(1)&gt;" in html
     assert (
-        '<a class="mention" href="/m/42" data-mention-id="42">@Rachel Jones</a>' in html
-    )
+        '<a class="mention" href="/m/42" data-mention-id="42" hx-get="/m/42" '
+        'hx-target="#modal-body" hx-swap="innerHTML">@Rachel Jones</a>'
+    ) in html
     assert (
         '<a href="https://kanban.fun" rel="noopener noreferrer nofollow">site</a>'
         in html

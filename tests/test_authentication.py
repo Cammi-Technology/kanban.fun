@@ -5,10 +5,12 @@ from __future__ import annotations
 
 import re
 from datetime import timedelta
+from typing import Any
+from unittest import mock
 
 import pytest
 from django.core import mail
-from django.test import Client
+from django.test import Client, override_settings
 from django.utils import timezone
 
 from kanban.accounts.models import User
@@ -314,3 +316,43 @@ def test_inactive_user_cannot_sign_in(db: None) -> None:
         "/sign-in/", {"email": "gone@example.com", "password": PASSWORD}
     )
     assert response.status_code == 422
+
+
+class FakeGitHubClient:
+    def authorize_redirect(self, request: object, callback: str) -> Any:
+        from django.http import HttpResponseRedirect
+
+        return HttpResponseRedirect(
+            f"https://github.com/login/oauth/authorize?redirect_uri={callback}"
+        )
+
+    def authorize_access_token(self, request: object) -> dict[str, str]:
+        return {"access_token": "t"}
+
+    def get(self, path: str, token: object) -> Any:
+        payloads: dict[str, object] = {
+            "user": {"id": 77, "name": "Git Hubber", "login": "gh"},
+            "user/emails": [
+                {"email": "old@example.com", "primary": False, "verified": True},
+                {"email": "GH@example.com", "primary": True, "verified": True},
+            ],
+        }
+        return mock.Mock(json=mock.Mock(return_value=payloads[path]))
+
+
+@override_settings(
+    OAUTH_PROVIDERS={"github": {"client_id": "id", "client_secret": "s"}}
+)
+def test_github_oauth_round_trip(db: None) -> None:
+    client = Client()
+    with mock.patch("kanban.identity.oauth._client", return_value=FakeGitHubClient()):
+        assert "Sign in with Github" in client.get("/sign-in/").content.decode()
+        start = client.post("/oauth/github/")
+        assert start["Location"].startswith("https://github.com/login/oauth/authorize")
+        assert "/oauth/github/callback/" in start["Location"]
+        callback = client.get("/oauth/github/callback/?code=abc&state=xyz")
+    assert callback.status_code == 303
+    user = User.objects.get(email="gh@example.com")
+    assert (user.first_name, user.last_name, user.verified) == ("Git", "Hubber", True)
+    assert OAuthIdentity.objects.filter(provider="github", uid="77", user=user).exists()
+    assert DeviceSession.objects.filter(user=user).exists()

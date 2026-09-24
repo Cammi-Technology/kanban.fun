@@ -245,3 +245,10 @@ def test_pages_subscribe_to_signed_streams(world: World) -> None:
         post_topic(post.pk),
         user_topic(world.member_user.pk),
     }
+
+
+def test_pages_embed_the_latest_event_id_for_catch_up(world: World) -> None:
+    client = sign_in(Client(), world.member_user)
+    event = publish(user_topic(world.member_user.pk), "x", "<p>before render</p>")
+    html = client.get(f"/accounts/{world.account.pk}/").content.decode()
+    assert f'data-since="{event.pk}"' in html

@@ -21,7 +21,7 @@ from django.conf import settings
 from django.core import signing
 
 from kanban.accounts.models import AccountUser, User
-from kanban.cable.broadcast import unsign_streams
+from kanban.cable.broadcast import latest_event_id, unsign_streams
 from kanban.cable.models import CableEvent
 from kanban.identity.models import DeviceSession
 from kanban.identity.services import DEVICE_SESSION_KEY
@@ -71,11 +71,6 @@ def session_is_live(user_id: int, device_session_id: int | None) -> bool:
     if device_session_id is None:
         return False
     return DeviceSession.objects.filter(pk=device_session_id, user_id=user_id).exists()
-
-
-def latest_event_id() -> int:
-    latest = CableEvent.objects.order_by("-id").values_list("id", flat=True).first()
-    return latest or 0
 
 
 def events_after(topics: list[str], after_id: int) -> list[tuple[int, str]]:
@@ -143,7 +138,12 @@ class CableConsumer(AsyncWebsocketConsumer):  # type: ignore[misc]
     async def receive(
         self, text_data: str | None = None, bytes_data: bytes | None = None
     ) -> None:
-        """Handle ``{"type": "resume", "last_event_id": N}`` after a reconnect."""
+        """Handle ``{"type": "resume", "last_event_id": N}``.
+
+        Sent on every open: with the id embedded in the page on first
+        connect (so nothing between render and connect is lost), and with
+        the last id the browser applied after a reconnect.
+        """
         if not text_data:
             return
         try:

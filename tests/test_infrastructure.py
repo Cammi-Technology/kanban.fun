@@ -47,7 +47,9 @@ def test_unread_count_is_cached_and_invalidated(world: World) -> None:
     world.post()
     run_jobs()  # notify() forgets the cached count
     assert unread_count(world.member_user.pk) == 1
-    cache.set(f"notifications:unread:{world.member_user.pk}", 99, 60)
+    from kanban.notifications.counts import _count_key
+
+    cache.set(_count_key(world.member_user.pk), 99, 60)
     assert unread_count(world.member_user.pk) == 99
     forget_unread_count(world.member_user.pk)
     assert unread_count(world.member_user.pk) == 1

@@ -83,6 +83,12 @@ def broadcast(topic: str, event_type: str, render: Callable[[], Node]) -> None:
     transaction.on_commit(emit)
 
 
+def latest_event_id() -> int:
+    """The newest event id; pages embed it so the socket can catch up."""
+    latest = CableEvent.objects.order_by("-id").values_list("id", flat=True).first()
+    return latest or 0
+
+
 def prune_expired() -> int:
     deleted, _ = CableEvent.objects.filter(expires_at__lte=timezone.now()).delete()
     return deleted

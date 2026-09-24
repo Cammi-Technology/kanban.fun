@@ -203,3 +203,18 @@ def test_outbound_email_is_idempotent(world: World) -> None:
     assert email.attempts == 1
     assert len(mail.outbox) == 1
     assert OutboundEmail.objects.count() == 1
+
+
+def test_generate_vapid_keys_prints_usable_keys() -> None:
+    import base64
+    from io import StringIO
+
+    from django.core.management import call_command
+
+    out = StringIO()
+    call_command("generate_vapid_keys", stdout=out)
+    values = dict(line.split("=", 1) for line in out.getvalue().splitlines())
+    public = base64.urlsafe_b64decode(values["VAPID_PUBLIC_KEY"] + "==")
+    private = base64.urlsafe_b64decode(values["VAPID_PRIVATE_KEY"] + "=")
+    assert len(public) == 65 and public[0] == 4
+    assert len(private) == 32

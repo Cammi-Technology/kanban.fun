@@ -316,7 +316,14 @@ def _render_node(node: Mapping[str, Any], mention_link: MentionLink) -> Node:
             href = mention_link(mention_id)
             if href is None:
                 return label
-            return a(".mention", href=href, data_mention_id=mention_id)[label]
+            return a(
+                ".mention",
+                href=href,
+                data_mention_id=mention_id,
+                hx_get=href,
+                hx_target="#modal-body",
+                hx_swap="innerHTML",
+            )[label]
         case "paragraph":
             return p[children]
         case "heading":

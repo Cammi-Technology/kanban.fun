@@ -49,6 +49,10 @@ if _secret_key is None:
 SECRET_KEY: str = _secret_key
 
 ALLOWED_HOSTS = env_list("DJANGO_ALLOWED_HOSTS", "localhost,127.0.0.1,[::1]")
+# The container health check calls http://127.0.0.1:8000/up directly.
+ALLOWED_HOSTS += [
+    host for host in ("localhost", "127.0.0.1") if host not in ALLOWED_HOSTS
+]
 CSRF_TRUSTED_ORIGINS = env_list("DJANGO_CSRF_TRUSTED_ORIGINS")
 
 # Coolify terminates TLS in its Traefik/Caddy proxy and forwards the scheme.
@@ -171,7 +175,9 @@ TASKS = {
         "OPTIONS": {},
     }
 }
-STEADY_QUEUE = None  # use Steady Queue defaults; see kanban.core.worker for tuning
+# Steady Queue defaults: one supervisor forking one worker process (3 threads),
+# one dispatcher and the recurring-task scheduler. See docs/deployment.md.
+STEADY_QUEUE = None
 
 # No CHANNEL_LAYERS on purpose: broadcasts go through the CableEvent table.
 CABLE_POLL_INTERVAL = float(env("KANBAN_CABLE_POLL_INTERVAL", "0.25") or "0.25")
@@ -206,8 +212,10 @@ USE_I18N = True
 USE_TZ = True
 
 STATIC_URL = "/static/"
-STATIC_ROOT = BASE_DIR / "staticfiles"
-STATIC_ROOT.mkdir(exist_ok=True)
+STATIC_ROOT = Path(
+    env("KANBAN_STATIC_ROOT", str(BASE_DIR / "staticfiles")) or "staticfiles"
+)
+STATIC_ROOT.mkdir(parents=True, exist_ok=True)
 STATICFILES_DIRS = [BASE_DIR / "static"]
 STORAGES = {
     "default": {"BACKEND": "django.core.files.storage.FileSystemStorage"},

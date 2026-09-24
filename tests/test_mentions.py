@@ -73,9 +73,21 @@ def test_post_mentions_create_records_and_render_links(
     ).content.decode()
     member_url = f"/accounts/{world.account.pk}/members/{world.member.pk}/"
     assert (
-        f'<a class="mention" href="{member_url}" data-mention-id="{world.member.pk}">@Sam Taylor</a>'
-        in html
+        f'<a class="mention" href="{member_url}" data-mention-id="{world.member.pk}" '
+        f'hx-get="{member_url}" hx-target="#modal-body" hx-swap="innerHTML">@Sam Taylor</a>'
+    ) in html
+
+
+def test_mention_link_opens_member_card_fragment(
+    world: World, owner_client: Client
+) -> None:
+    url = f"/accounts/{world.account.pk}/members/{world.member.pk}/"
+    fragment = owner_client.get(url, headers={"HX-Request": "true"}).content.decode()
+    assert fragment.startswith(
+        f'<div class="profile" id="member-card-{world.member.pk}">'
     )
+    assert "<html" not in fragment
+    assert "Member of Cammi" in fragment
 
 
 def test_forged_mention_in_submission_is_not_linked(

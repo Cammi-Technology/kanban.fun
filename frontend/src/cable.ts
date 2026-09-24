@@ -3,7 +3,9 @@
 // The server prefixes every message with <!--cable:ID-->. IDs increase
 // monotonically across all topics, so we drop anything we've already applied
 // (duplicate protection) and, after a reconnect, ask the server to replay
-// what we missed ("resume").
+// what we missed ("resume"). The first connection resumes from the event id
+// the server embedded in the page, so nothing published between rendering
+// and connecting is lost.
 
 const FRAME = /^<!--cable:(\d+)-->/
 
@@ -38,6 +40,10 @@ export function installCable(): void {
   document.body.addEventListener("htmx:wsOpen", (event) => {
     const detail = (event as CustomEvent<WsOpenDetail>).detail
     document.body.dataset["cableConnected"] = "true"
+    // First connection: catch up from the moment the page was rendered.
+    if (lastEventId === 0) {
+      lastEventId = Number(document.getElementById("cable")?.dataset["since"] ?? "0")
+    }
     if (lastEventId > 0) {
       detail.socketWrapper.send(JSON.stringify({ type: "resume", last_event_id: lastEventId }))
     }

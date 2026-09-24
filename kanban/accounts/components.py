@@ -33,6 +33,7 @@ from kanban.ui.components import (
     primary_button,
     text_field,
 )
+from kanban.ui.layout import modal_link
 
 
 def csrf(token: str) -> VoidElement:
@@ -137,9 +138,10 @@ def member_row(member: AccountUser, viewer: AccountUser, csrf_token: str) -> Ele
     return li(id=f"member-{member.pk}", class_="member-row")[
         avatar(member.user.name, size="md"),
         div(class_="member-row__body")[
-            a(href=reverse("accounts:member", args=[account_id, member.pk]))[
-                member.user.name
-            ],
+            modal_link(
+                member.user.name,
+                href=reverse("accounts:member", args=[account_id, member.pk]),
+            ),
             span(class_="member-row__meta")[
                 f"{member.user.email} · {member.get_role_display()}"
             ],
@@ -226,14 +228,19 @@ def invitation_section(
     ]
 
 
+def member_card(member: AccountUser) -> Element:
+    """A member's profile card: the modal body, or the heart of the page."""
+    return div(class_="profile", id=f"member-card-{member.pk}")[
+        avatar(member.user.name, size="lg"),
+        h1(id="modal-title")[member.user.name],
+        p(class_="muted")[member.user.email],
+        p[f"{member.get_role_display()} of {member.account.name}"],
+    ]
+
+
 def member_profile(member: AccountUser) -> Element:
     return content_shell(
-        div(class_="surface-panel panel-padded profile")[
-            avatar(member.user.name, size="lg"),
-            h1[member.user.name],
-            p(class_="muted")[member.user.email],
-            p[f"{member.get_role_display()} of {member.account.name}"],
-        ],
+        div(class_="surface-panel panel-padded")[member_card(member)],
         width="narrow",
     )
 

@@ -42,7 +42,7 @@ from htpy import (
 from markupsafe import Markup
 
 from kanban.accounts.models import AccountUser, User
-from kanban.cable.broadcast import sign_streams, user_topic
+from kanban.cable.broadcast import latest_event_id, sign_streams, user_topic
 from kanban.projects.models import Project
 from kanban.ui.components import avatar, quick_action_tile
 from kanban.ui.icons import icon
@@ -288,8 +288,36 @@ def cable_connection(ctx: PageContext) -> Element | None:
         id="cable",
         hx_ext="ws",
         ws_connect=f"/cable/?streams={sign_streams(topics)}",
+        data_since=str(latest_event_id()),
         hidden=True,
     )
+
+
+def modal() -> Element:
+    """A shared dialog; ``hx-target="#modal-body"`` loads a fragment into it."""
+    return dialog(id="modal", class_="modal", aria_labelledby="modal-title")[
+        div(class_="modal__panel")[
+            button(
+                type="button",
+                class_="modal__close",
+                aria_label="Close",
+                data_dialog_close="",
+            )["Close"],
+            div(id="modal-body"),
+        ]
+    ]
+
+
+def modal_link(text: Node, *, href: str, extra_class: str = "") -> Element:
+    """A link that opens its target in the modal via HTMX, or navigates."""
+    return a(
+        href=href,
+        class_=extra_class or None,
+        hx_get=href,
+        hx_target="#modal-body",
+        hx_swap="innerHTML",
+        hx_push_url="false",
+    )[text]
 
 
 def page(ctx: PageContext, *content: Node) -> Element:
@@ -325,6 +353,7 @@ def page(ctx: PageContext, *content: Node) -> Element:
             ],
             main(class_="app-shell__main", id="main")[content],
             footer(class_="app-shell__footer")[user_menu(ctx)],
+            modal(),
             cable_connection(ctx),
         ],
     ]
