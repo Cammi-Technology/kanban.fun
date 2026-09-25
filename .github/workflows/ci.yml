@@ -3,88 +3,83 @@ name: CI
 on:
   pull_request:
   push:
-    branches: [ main ]
+    branches: [main]
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
 
 jobs:
-  scan_ruby:
-    runs-on: ubuntu-latest
-
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v4
-
-      - name: Set up Ruby
-        uses: ruby/setup-ruby@v1
-        with:
-          ruby-version: .ruby-version
-          bundler-cache: true
-
-      - name: Scan for common Rails security vulnerabilities using static analysis
-        run: bin/brakeman --no-pager
-
-  scan_js:
-    runs-on: ubuntu-latest
-
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v4
-
-      - name: Set up Ruby
-        uses: ruby/setup-ruby@v1
-        with:
-          ruby-version: .ruby-version
-          bundler-cache: true
-
-      - name: Scan for security vulnerabilities in JavaScript dependencies
-        run: bin/importmap audit
-
   lint:
+    name: Lint (ruff)
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout code
-        uses: actions/checkout@v4
+      - uses: actions/checkout@v7
+      - uses: astral-sh/setup-uv@v10.2.0
+      - run: uv sync --frozen
+      - run: uv run ruff format --check .
+      - run: uv run ruff check --output-format github .
 
-      - name: Set up Ruby
-        uses: ruby/setup-ruby@v1
+  typecheck:
+    name: Type check (mypy strict + TypeScript)
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+      - uses: astral-sh/setup-uv@v10.2.0
+      - uses: actions/setup-node@v7
         with:
-          ruby-version: .ruby-version
-          bundler-cache: true
-
-      - name: Lint code for consistent style
-        run: bin/rubocop -f github
+          node-version: 24
+          cache: npm
+      - run: uv sync --frozen
+      - run: uv run mypy .
+      - run: npm ci --no-audit --no-fund
+      - run: npm run typecheck
 
   test:
+    name: Tests and Django checks
     runs-on: ubuntu-latest
-
-    # services:
-    #  redis:
-    #    image: redis
-    #    ports:
-    #      - 6379:6379
-    #    options: --health-cmd "redis-cli ping" --health-interval 10s --health-timeout 5s --health-retries 5
     steps:
-      - name: Install packages
-        run: sudo apt-get update && sudo apt-get install --no-install-recommends -y build-essential git libyaml-dev pkg-config google-chrome-stable
-
-      - name: Checkout code
-        uses: actions/checkout@v4
-
-      - name: Set up Ruby
-        uses: ruby/setup-ruby@v1
-        with:
-          ruby-version: .ruby-version
-          bundler-cache: true
-
-      - name: Run tests
+      - uses: actions/checkout@v7
+      - uses: astral-sh/setup-uv@v10.2.0
+      - run: uv sync --frozen
+      - run: uv run python manage.py check --fail-level WARNING
+      - run: uv run python manage.py makemigrations --check --dry-run
+      - name: Deployment checks (production settings)
         env:
-          RAILS_ENV: test
-          # REDIS_URL: redis://localhost:6379/0
-        run: bin/rails db:test:prepare test test:system
+          DJANGO_ENV: production
+          DJANGO_SECRET_KEY: ${{ github.run_id }}-deploy-check-not-a-real-secret-0123456789abcdef
+          DJANGO_ALLOWED_HOSTS: kanban.example.com
+        run: KANBAN_DATA_DIR="$(mktemp -d)" uv run python manage.py check --deploy --fail-level WARNING
+      - run: uv run pytest
 
-      - name: Keep screenshots from failed system tests
-        uses: actions/upload-artifact@v4
+  system:
+    name: Browser tests (Playwright)
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+      - uses: astral-sh/setup-uv@v10.2.0
+      - uses: actions/setup-node@v7
+        with:
+          node-version: 24
+          cache: npm
+      - run: uv sync --frozen
+      - run: npm ci --no-audit --no-fund
+      - run: npm run build
+      - run: uv run playwright install --with-deps chromium
+      - run: uv run pytest -m system --tracing retain-on-failure --output test-results
+      - uses: actions/upload-artifact@v7
         if: failure()
         with:
-          name: screenshots
-          path: ${{ github.workspace }}/tmp/screenshots
+          name: playwright-traces
+          path: test-results
           if-no-files-found: ignore
+
+  docker:
+    name: Docker image builds
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+      - run: docker build -t kanban-fun:ci .

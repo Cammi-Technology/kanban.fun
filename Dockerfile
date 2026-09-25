@@ -1,72 +1,41 @@
-# syntax=docker/dockerfile:1
-# check=error=true
+# syntax=docker/dockerfile:1.7
+# Kanban.fun: one image, two roles (web = Daphne, worker = Steady Queue).
 
-# This Dockerfile is designed for production, not development. Use with Kamal or build'n'run by hand:
-# docker build -t wokecamp .
-# docker run -d -p 80:80 -e RAILS_MASTER_KEY=<value from config/master.key> --name wokecamp wokecamp
+FROM node:24-slim AS assets
+WORKDIR /app
+COPY package.json package-lock.json ./
+RUN npm ci --no-audit --no-fund
+COPY frontend ./frontend
+RUN npm run typecheck && npm run build
 
-# For a containerized dev environment, see Dev Containers: https://guides.rubyonrails.org/getting_started_with_devcontainer.html
-
-# Make sure RUBY_VERSION matches the Ruby version in .ruby-version
-ARG RUBY_VERSION=3.4.5
-FROM docker.io/library/ruby:$RUBY_VERSION-slim AS base
-
-# Rails app lives here
-WORKDIR /rails
-
-# Install base packages
-RUN apt-get update -qq && \
-  apt-get install --no-install-recommends -y curl libjemalloc2 libvips sqlite3 && \
-  rm -rf /var/lib/apt/lists /var/cache/apt/archives
-
-# Set production environment
-ENV RAILS_ENV="production" \
-  BUNDLE_DEPLOYMENT="1" \
-  BUNDLE_PATH="/usr/local/bundle" \
-  BUNDLE_WITHOUT="development"
-
-# Throw-away build stage to reduce size of final image
-FROM base AS build
-
-# Install packages needed to build gems
-RUN apt-get update -qq && \
-  apt-get install --no-install-recommends -y build-essential git libyaml-dev pkg-config && \
-  rm -rf /var/lib/apt/lists /var/cache/apt/archives
-
-# Install application gems
-COPY Gemfile Gemfile.lock ./
-RUN bundle install && \
-  rm -rf ~/.bundle/ "${BUNDLE_PATH}"/ruby/*/cache "${BUNDLE_PATH}"/ruby/*/bundler/gems/*/.git && \
-  bundle exec bootsnap precompile --gemfile
-
-# Copy application code
+FROM python:3.14-slim AS app
+ENV PYTHONDONTWRITEBYTECODE=1 \
+    PYTHONUNBUFFERED=1 \
+    UV_COMPILE_BYTECODE=1 \
+    UV_LINK_MODE=copy \
+    UV_PYTHON_DOWNLOADS=never \
+    UV_PROJECT_ENVIRONMENT=/app/.venv \
+    PATH=/app/.venv/bin:$PATH \
+    DJANGO_ENV=production \
+    KANBAN_DATA_DIR=/data \
+    KANBAN_MEDIA_DIR=/media
+COPY --from=ghcr.io/astral-sh/uv:0.9 /uv /usr/local/bin/uv
+RUN apt-get update \
+    && apt-get install --no-install-recommends -y sqlite3 \
+    && rm -rf /var/lib/apt/lists/*
+WORKDIR /app
+COPY pyproject.toml uv.lock .python-version ./
+RUN uv sync --frozen --no-dev --no-install-project
 COPY . .
-
-# Precompile bootsnap code for faster boot times
-RUN bundle exec bootsnap precompile app/ lib/
-
-# Precompiling assets for production without requiring secret RAILS_MASTER_KEY
-RUN SECRET_KEY_BASE_DUMMY=1 ./bin/rails assets:precompile
-
-
-
-
-# Final stage for app image
-FROM base
-
-# Copy built artifacts: gems, application
-COPY --from=build "${BUNDLE_PATH}" "${BUNDLE_PATH}"
-COPY --from=build /rails /rails
-
-# Run and own only the runtime files as a non-root user for security
-RUN groupadd --system --gid 1000 rails && \
-  useradd rails --uid 1000 --gid 1000 --create-home --shell /bin/bash && \
-  chown -R rails:rails db log storage tmp
-USER 1000:1000
-
-# Entrypoint prepares the database.
-ENTRYPOINT ["/rails/bin/docker-entrypoint"]
-
-# Start server via Thruster by default, this can be overwritten at runtime
-EXPOSE 80
-CMD ["./bin/thrust", "./bin/rails", "server"]
+COPY --from=assets /app/static/dist ./static/dist
+RUN DJANGO_SECRET_KEY=collectstatic-only python manage.py collectstatic --noinput \
+    && useradd --uid 1000 --create-home app \
+    && mkdir -p /data /media \
+    && chown -R app:app /data /media
+USER app
+VOLUME ["/data", "/media"]
+EXPOSE 8000
+HEALTHCHECK --interval=15s --timeout=5s --start-period=30s --retries=3 \
+    CMD python -c "import urllib.request; urllib.request.urlopen('http://127.0.0.1:8000/up', timeout=4)" || exit 1
+ENTRYPOINT ["bin/docker-entrypoint"]
+CMD ["daphne", "-b", "0.0.0.0", "-p", "8000", "--proxy-headers", "config.asgi:application"]

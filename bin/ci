@@ -1,0 +1,38 @@
+#!/usr/bin/env bash
+# Everything CI runs, in the same order. Run before pushing.
+set -euo pipefail
+cd "$(dirname "$0")/.."
+
+step() { printf '\n\033[1m== %s\033[0m\n' "$*"; }
+
+step "Install"
+uv sync --frozen
+npm ci --no-audit --no-fund
+
+step "Lint (ruff)"
+uv run ruff format --check .
+uv run ruff check .
+
+step "Type check (mypy --strict)"
+uv run mypy .
+
+step "Frontend type check and build"
+npm run typecheck
+npm run build
+
+step "Django checks"
+uv run python manage.py check --fail-level WARNING
+uv run python manage.py makemigrations --check --dry-run
+DJANGO_ENV=production DJANGO_SECRET_KEY="ci-deploy-check-$(python3 -c 'import secrets; print(secrets.token_urlsafe(48))')" \
+  DJANGO_ALLOWED_HOSTS=kanban.example.com \
+  KANBAN_DATA_DIR="$(mktemp -d)" \
+  uv run python manage.py check --deploy --fail-level WARNING
+
+step "Tests (pytest)"
+uv run pytest
+
+step "Browser tests (Playwright, Daphne + worker)"
+uv run playwright install chromium >/dev/null
+uv run pytest -m system
+
+printf '\n\033[1;32mAll green.\033[0m\n'

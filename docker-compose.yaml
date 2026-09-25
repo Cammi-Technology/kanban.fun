@@ -1,0 +1,60 @@
+# Coolify deployment: choose "Docker Compose" as the build pack.
+# web    → Daphne serving Django over HTTP and the /cable WebSocket
+# worker → Steady Queue (database-backed Django Tasks)
+# storage→ persistent volumes for SQLite (/data) and uploads (/media)
+# No Redis, broker or cache service: everything lives in SQLite.
+
+x-app: &app
+  build: .
+  restart: unless-stopped
+  environment: &env
+    DJANGO_ENV: production
+    DJANGO_SECRET_KEY: ${DJANGO_SECRET_KEY:?set DJANGO_SECRET_KEY}
+    DJANGO_ALLOWED_HOSTS: ${DJANGO_ALLOWED_HOSTS:-${SERVICE_FQDN_WEB}}
+    DJANGO_CSRF_TRUSTED_ORIGINS: ${DJANGO_CSRF_TRUSTED_ORIGINS:-${SERVICE_URL_WEB}}
+    KANBAN_BASE_URL: ${KANBAN_BASE_URL:-${SERVICE_URL_WEB}}
+    DJANGO_DEFAULT_FROM_EMAIL: ${DJANGO_DEFAULT_FROM_EMAIL:-Kanban.fun <hello@kanban.fun>}
+    DJANGO_EMAIL_HOST: ${DJANGO_EMAIL_HOST:-}
+    DJANGO_EMAIL_PORT: ${DJANGO_EMAIL_PORT:-587}
+    DJANGO_EMAIL_HOST_USER: ${DJANGO_EMAIL_HOST_USER:-}
+    DJANGO_EMAIL_HOST_PASSWORD: ${DJANGO_EMAIL_HOST_PASSWORD:-}
+    VAPID_PUBLIC_KEY: ${VAPID_PUBLIC_KEY:-}
+    VAPID_PRIVATE_KEY: ${VAPID_PRIVATE_KEY:-}
+    VAPID_SUBJECT: ${VAPID_SUBJECT:-mailto:hello@kanban.fun}
+    OAUTH_GITHUB_CLIENT_ID: ${OAUTH_GITHUB_CLIENT_ID:-}
+    OAUTH_GITHUB_CLIENT_SECRET: ${OAUTH_GITHUB_CLIENT_SECRET:-}
+    OAUTH_GOOGLE_CLIENT_ID: ${OAUTH_GOOGLE_CLIENT_ID:-}
+    OAUTH_GOOGLE_CLIENT_SECRET: ${OAUTH_GOOGLE_CLIENT_SECRET:-}
+  volumes:
+    - kanban-data:/data
+    - kanban-media:/media
+
+services:
+  web:
+    <<: *app
+    command: ["daphne", "-b", "0.0.0.0", "-p", "8000", "--proxy-headers", "config.asgi:application"]
+    environment:
+      <<: *env
+      SERVICE_FQDN_WEB_8000: ""
+    healthcheck:
+      test: ["CMD", "python", "-c", "import urllib.request; urllib.request.urlopen('http://127.0.0.1:8000/up', timeout=4)"]
+      interval: 15s
+      timeout: 5s
+      retries: 3
+      start_period: 30s
+
+  worker:
+    <<: *app
+    command: ["python", "manage.py", "steady_queue"]
+    environment:
+      <<: *env
+      KANBAN_SKIP_MIGRATE: "1"
+    healthcheck:
+      disable: true
+    depends_on:
+      web:
+        condition: service_healthy
+
+volumes:
+  kanban-data:
+  kanban-media:

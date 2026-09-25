@@ -1,0 +1,19 @@
+agent: claude
+mode: session
+
+post_create:
+  - bin/setup
+
+windows:
+  - name: editor
+    panes:
+      - command: nvim
+        focus: true
+  - name: agent
+    panes:
+      - command: <agent>
+  - name: server
+    panes:
+      # The preview arrives with the tailnet hostname; the database is a
+      # SQLite file inside the worktree, so nothing else is per-worktree.
+      - command: DJANGO_ALLOWED_HOSTS=.ts.net,localhost,127.0.0.1 wt serve bin/dev
